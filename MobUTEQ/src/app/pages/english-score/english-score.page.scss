@@ -1,0 +1,331 @@
+.mobile-only ion-segment-button {
+    color: #000000; /* Color para el texto y los íconos */
+}
+
+ion-footer, ion-buttons.desktop-only {
+    display: none; /* Ocultar por defecto */
+}
+
+.custom-modal {
+    position: fixed; /* Posicionamiento fijo */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ancho del modal ocupa toda la pantalla */
+    height: 100%; /* Altura del modal ocupa toda la pantalla */
+    background: rgba(0, 0, 0, 0.5); /* Fondo negro transparente */
+    z-index: 9999; /* Por encima del contenido */
+}
+
+.modal-content {
+    position: absolute; /* Posicionamiento absoluto dentro del modal */
+    bottom: 75px; /* 10px desde el fondo */
+    right: 20px; /* 10px desde la derecha */
+    width: 250px;
+    border-radius: 5px; /* Bordes redondeados para el contenido */
+    background: rgb(0, 0, 0); /* Fondo oscuro para el contenido */
+    padding: 5px; /* Espaciado interno */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra del contenido */
+}
+
+.grafica-container {
+    justify-content: center;
+    margin: 2%;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 0;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 350px;
+    height: 100%; 
+    overflow: hidden;
+    overflow: auto;
+}
+
+.content-wrapper {
+    text-align: center;
+  }
+  
+.average-score h2 {
+    color: #888;
+    font-weight: bold;
+}
+  
+.average-value {
+    font-size: 2.5rem;
+    color: #007aff; /* Personaliza este color */
+}
+  
+.chart-container {
+    margin: 20px 0;
+    width: 100% !important; /* Asegúrate de que use el 100% del ancho disponible */
+    display: block !important;
+    border-radius: 10px;
+    justify-content: center;
+}
+  
+.semester-selection {
+    max-width: 100%;
+    overflow: hidden;
+}
+  
+.semester-selection ion-slide {
+    margin: 5px;
+}
+
+.nav-div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: #f6f6f6 !important
+}
+
+.cuatrimestre-text {
+    color: #ffffff; /* Color de texto */
+    background-color: #007bff; /* Color de fondo del "botón" */
+    padding: 10px;
+    border-radius: 5px; /* Bordes redondeados */
+    border: 2px solid #0056b3; /* Color y grosor del borde */
+    display: inline-block; /* Para que el tamaño se ajuste al contenido */
+    text-align: center;
+    font-size: 0.7rem;
+    cursor: default;
+    margin-top: 2%;
+    margin-right: 2%;
+  }
+  
+.back-button {
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--ion-color-primary);
+    margin-left: 5%;
+    margin-top: 2%;
+  }  
+
+::ng-deep ion-button.cuatri {
+    width: 100px;
+    text-transform: none;
+    --background: #f6f6f6 !important;
+    color: #007aff;
+    border: 3px solid #007aff;
+    border-radius: 10px;
+}
+
+::ng-deep ion-button.cuatri.selected {
+    --background: #003cff !important; /* Color de fondo cuando está seleccionado */
+    color: #f6f6f6;
+}
+
+.div-materias {
+    width: 100%;
+    justify-items: center;
+}
+
+::ng-deep ion-button.ver-materias {
+    display: block;
+    margin: 20px auto;
+    text-transform: none;
+    color: #f6f6f6 !important;
+    --backgorund:#1300bb !important;
+    width: 250px;
+    border-radius: 8px;
+}
+
+ion-slides {
+    display: flex; /* Usa flexbox para la alineación */
+    overflow-x: auto; /* Permite el desplazamiento horizontal */
+    scrollbar-width: thin; /* (Opcional) Estilo del scroll en Firefox */
+}
+  
+ion-slide {
+    flex: 0 0 auto;
+    width: 30%; /* Muestra 3 botones (100% / 3) */
+    min-width: 30%;
+    margin-right: 10px;
+}
+
+.tabla-calif {
+    color: #000000;
+}
+
+.cuatrimestre-container {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    padding: 10px;
+  }
+
+.delete-icon {
+    margin-right: 10px; /* Espacio entre el icono y el texto */
+    cursor: pointer;
+    font-size: 24px; /* Tamaño del icono */
+    color: red; /* Color del icono */
+  }
+
+/* Para dispositivos con un ancho mayor a 768px (desktop) */
+@media screen and (min-width: 769px) {
+
+    .grafica-container {
+        width: 50%;
+        height: 750px;
+        max-width: 90%;
+        max-height: 90%;
+    }
+    
+    .content-wrapper {
+        display: flex;
+        justify-content: space-between; /* El contenido adicional se acomoda a la derecha */
+    }
+
+    .content-wrapper .grafica-container {
+        flex: 1;
+    }
+
+    .content-wrapper .semester-selection {
+        flex: 1;
+        margin-left: 2px; /* Espacio entre el calendario y el contenido adicional */
+        margin-top: 2%;
+    }
+
+    ion-footer.mobile-only {
+        display: none; /* Ocultar el navbar inferior en desktop */
+    }
+
+    .mobile-only {
+        display: none;
+    }
+
+    ion-buttons.desktop-only {
+        display: flex; /* Mostrar los botones del header en desktop */
+    }
+}
+
+/* Para dispositivos con un ancho menor a 768px (móviles) */
+@media screen and (max-width: 768px) {
+    .content-wrapper {
+        margin: 2% 5%; /* Margen en los costados para móviles */
+        display: flex; /* Usar flexbox para el layout */
+        flex-direction: column; /* Colocar los hijos en columna */
+        align-items: center; /* Centrar los hijos horizontalmente */
+    }
+
+    .grafica-container {
+        width: 95%;
+        height: 20%;
+        margin: 2% 5%; /* Margen superior del 10% */
+        margin-bottom: 10px; /* Margen inferior para separación con el contenido adicional */
+    }
+
+    .semester-selection {
+        margin-top: 20px; /* El contenido adicional se coloca debajo del calendario en móviles */
+    }
+
+    ion-footer.mobile-only {
+        display: block; /* Mostrar el navbar inferior en móviles */
+    }
+
+    .mobile-only {
+        display: block;
+    }
+
+    ion-buttons.desktop-only {
+        display: none; /* Ocultar los botones del header en móviles */
+    }
+}
+
+
+/* Estilos generales de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Elimina los espacios entre celdas */
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra sutil */
+  }
+  
+  thead {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left; /* Alineación a la izquierda */
+    border: 1px solid #ddd; /* Borde gris claro */
+  }
+  
+  th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  td {
+    background-color: #f9f9f9;
+  }
+  
+  /* Estilo para la celda de Materia */
+  td:first-child {
+    font-weight: bold;
+    background-color: #e0e0e0; /* Fondo gris claro para la columna de Materia */
+  }
+  
+  /* Estilo de las filas alternas */
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  /* Hover sobre las filas */
+  tbody tr:hover {
+    background-color: #e9ecef;
+  }
+  
+  /* Fila de Promedio */
+  tr:last-child {
+    background-color: #d1ecf1; /* Azul claro para la fila de promedio */
+    font-weight: bold;
+  }
+  
+  /* Estilos para las celdas de "Promedio" */
+  tr:last-child td {
+    color: #007bff;
+  }
+  
+  /* Celda para el título "Promedio" */
+  tr:last-child td:first-child {
+    font-weight: normal;
+    background-color: #ffffff;
+  }
+  
+  /* Estilo para el texto en la celda de Materia */
+  td[rowspan] {
+    vertical-align: middle; /* Alinea el contenido verticalmente */
+    background-color: #e0e0e0; /* Fondo gris claro */
+  }
+  
+  /* Espaciado para la tabla */
+  table, th, td {
+    border-spacing: 0;
+  }
+
+  .ion-badge-a {
+    --background: rgb(253, 237, 14);
+    --color: rgb(0, 0, 0);
+    --padding-end: 20px;
+    --padding-start: 20px;
+  }
+
+  .ion-badge-b {
+    --background: rgb(3, 247, 255);
+    --color: rgb(0, 0, 0);
+    --padding-end: 20px;
+    --padding-start: 20px;
+  }
+  .ion-badge-c {
+    --background: rgb(243, 102, 168);
+    --color: rgb(0, 0, 0);
+    --padding-end: 20px;
+    --padding-start: 20px;
+  }
+  

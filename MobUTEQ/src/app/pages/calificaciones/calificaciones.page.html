@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calificaciones
+    </ion-title>
+    <img src="assets/images/logoMobUTEQ.png" alt="Logo" class="img-logo mobile-only" />
+    <ion-buttons slot="end" class="desktop-only">
+      <ion-button (click)="goToHomePage()">
+        Inicio
+      </ion-button>
+      <ion-button (click)="goToMapPage()">
+        Mapa
+      </ion-button>
+      <ion-button (click)="goToSchedulePage()">
+        Horario
+      </ion-button>
+      <ion-button *ngIf="isLoggedIn" class="name">
+        {{ userName }}
+      </ion-button>
+      <ion-button *ngIf="!isLoggedIn" (click)="login()" class="name">
+        Iniciar sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="separator"></div> <!-- Línea separadora -->
+<div class="nav-div">
+  <ion-button fill="clear" class="back-button" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </ion-button>
+</div>
+
+<ion-content>
+  <div class="content-wrapper">
+    <div class="grafica-container">
+
+      <div class="top-users">
+        <h3>Top 3 Usuarios</h3>
+        <ul>
+          <li *ngFor="let user of topUsers">
+            <strong>{{ user.usuario_nombre }}</strong> - Promedio: {{ user.promedio | number:'1.2-2' }}
+          </li>
+        </ul>
+      </div>
+      <!-- Sección de Promedio General -->
+      <div class="average-score">
+        <h2>Promedio general</h2>
+        <p class="average-value">{{ promedioGeneral | number: '1.2-2' }}</p> <!-- Reemplaza con tu valor dinámico si está disponible -->
+      </div>
+
+      <!-- Sección de Gráfica -->
+      <div class="chart-container">
+        <!-- Espacio para la gráfica. -->
+        <canvas id="gradesChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Sección de Selección de Cuatrimestre -->
+    <div class="semester-selection">
+      <ion-slides pager="true" [options]="slideOpts">
+        <!-- Listado de cuatrimestres existentes -->
+        <ion-slide *ngFor="let cuatrimestre of cuatrimestres">
+          <ion-button fill="solid" class="cuatri" [ngClass]="{'selected': selectedButton === cuatrimestre.id}"
+          (click)="selectButton({id: cuatrimestre.id, numero: cuatrimestre.numero})">
+            <b>{{ cuatrimestre.nombre }}</b>
+          </ion-button>
+        </ion-slide>
+
+        <!-- Botón Añadir Cuatrimestre -->
+        <ion-slide>
+          <ion-button fill="solid" class="cuatri" (click)="addCuatrimestre()">
+            Añadir Cuatri
+          </ion-button>
+        </ion-slide>
+      </ion-slides>
+
+      <!-- Botón para ver materias y calificaciones -->
+      <div class="div-materias">
+        <ion-button expand="block" class="ver-materias" (click)="goToMateriasPage()">Ver materias y
+          calificaciones</ion-button>
+          <ion-button expand="block" class="ver-materias" (click)="goToEnglishScorePage()">English Score</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<div class="separator"></div> <!-- Línea separadora -->
+
+<!-- Navbar inferior solo para móvil -->
+<ion-footer class="mobile-only">
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="tabService.selectedTab">
+      <ion-segment-button value="home" (click)="goToHomePage()">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map" (click)="goToMapPage()">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="schedule" (click)="goToSchedulePage()">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>Horario</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="profile" (click)="toggleProfileMenu()">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <!-- Modal que actúa como menú lateral desde la esquina inferior derecha -->
+  <div class="custom-modal" *ngIf="isProfileMenuOpen" (click)="closeProfileMenu()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <ion-list>
+        <ion-item>
+          <ion-label>{{ userName }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Configuración</ion-label>
+        </ion-item>
+        <ion-item (click)="logout()">
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-footer>

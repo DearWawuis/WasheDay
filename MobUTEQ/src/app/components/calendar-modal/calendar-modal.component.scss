@@ -1,0 +1,75 @@
+.modal-content{
+padding: 10px;
+}
+ion-datetime {
+    --background: rgb(255, 255, 255);
+    --background-rgb: rgb(255, 255, 255);
+    --wheel-highlight-background: rgb(255, 255, 255);
+    --wheel-fade-background-rgb: rgb(255, 255, 255);
+  }
+  
+  ion-datetime::part(wheel-item) {
+    color: rgb(118, 118, 122);
+  }
+  
+  ion-datetime::part(wheel-item active) {
+    color: rgb(30, 96, 171);
+  }
+
+  .editing-background {
+    background-color: rgb(19, 190, 153); /* Color de fondo semitransparente */
+  }
+
+  .form-container {
+    width: 95%; /* El formulario ocupa el 95% del ancho */
+    max-width: 600px; /* Más ancho en pantallas grandes */
+    height: auto; /* Ajusta a un alto automático */
+    padding: 10px; /* Mayor espaciado interno */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra más sutil */
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Borde delgado */
+    border-radius: 10px; /* Bordes redondeados */
+    display: flex; /* Habilita flexbox */
+    flex-direction: column; /* Alinea verticalmente */
+    justify-content: center; /* Centra el contenido */
+    transition: box-shadow 0.3s ease; /* Suaviza la transición de la sombra */
+    margin-bottom: 60px;
+    background: #fff !important;
+}
+
+.form-container ion-item {
+  --background: #fff; /* Fondo blanco para cada ion-item */
+  color: #000;
+}
+
+.form-container ion-item::part(native) {
+  background-color: #fff !important; /* Asegura el fondo blanco dentro del ion-item */
+}
+
+.form-container:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Efecto hover 3D */
+}
+.ion-card-header{
+  background-color: #114E7B;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px 
+}
+.ion-col-div{
+  background-color: #fff;
+  margin-top : 10px; 
+  padding : 10px
+}
+.ion-div-lines{
+  position: absolute; 
+  width: 100%; 
+  height: 100%; 
+  padding : 10px
+}
+h2{
+  color: #000;
+}
+.grid-eventos{
+  background: #fff;
+  ion-card-title{
+    color: #000;
+  }
+}

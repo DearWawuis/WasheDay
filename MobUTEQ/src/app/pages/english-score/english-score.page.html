@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      English Score
+    </ion-title>
+    <img src="assets/images/logoMobUTEQ.png" alt="Logo" class="img-logo mobile-only" />
+    <ion-buttons slot="end" class="desktop-only">
+      <ion-button (click)="goToHomePage()">
+        Inicio
+      </ion-button>
+      <ion-button (click)="goToMapPage()">
+        Mapa
+      </ion-button>
+      <ion-button (click)="goToSchedulePage()">
+        Horario
+      </ion-button>
+      <ion-button *ngIf="isLoggedIn" class="name">
+        {{ userName }}
+      </ion-button>
+      <ion-button *ngIf="!isLoggedIn" (click)="login()" class="name">
+        Iniciar sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="separator"></div> <!-- Línea separadora -->
+<div class="nav-div">
+  <ion-button fill="clear" class="back-button" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </ion-button>
+</div>
+
+<ion-content>
+  <div class="content-wrapper">
+    <div class="grafica-container">
+      <ion-button (click)="addScore()">Añadir Score</ion-button>
+      <ion-list>
+      <ion-list-header>
+        <ion-label>Mis scores</ion-label>
+      </ion-list-header>
+    </ion-list>
+      <!--<ion-item *ngFor="let score of scores" (click)="editScore(score)">
+        <ion-label>{{score.score}}</ion-label>
+      </ion-item>-->
+      <ion-list [inset]="true">
+        <ion-item-sliding *ngFor="let score of scores">
+          <ion-item [button]="true">
+            <ion-label>{{score.score}}</ion-label>
+            <ion-icon name="chevron-back-outline" style="color:#b0b0b0"></ion-icon>
+          </ion-item>
+          <ion-item-options slot="end">
+            <ion-item-option color="tertiary" (click)="editScore(score)">
+              <ion-icon slot="icon-only" name="create-sharp"></ion-icon>
+            </ion-item-option>
+            <ion-item-option color="danger" expandable="true" (click)="confirmDelete(score)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+    </div>
+
+    <ion-alert
+  trigger="add-score-alert"
+  header="{{alertHeader}}"
+    ></ion-alert>
+    
+    <div class="semester-selection">
+      <div *ngIf="scores.length > 0">
+      <h2 style="color: #000000">Último nivel</h2>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="12" size-sm="12" size-lg="12">
+            <ion-card class="responsive-card">
+              <ion-card-content class="card-content">
+                <div>
+                   <div *ngIf="predictedScore !== null">
+                    <ion-text color="medium">
+                      <ion-badge [ngClass]="getBadgeClass(scores[scores.length-1].level)">
+                        <h3>Score actual:</h3>
+                        <h2>{{scores[scores.length-1].score}}</h2>
+                      </ion-badge>
+                    </ion-text>
+                   </div>
+               </div>
+                <img [src]="getImageSrc(scores[scores.length-1].level)" 
+                alt="Mi ultimo nivel">
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    </div>
+
+    <div class="semester-selection">
+      <div *ngIf="scores.length > 0">
+      <h2 style="color: #000000">Próximo nivel</h2>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" size-md="12" size-sm="12" size-lg="12">
+            <ion-card class="responsive-card">
+              <ion-card-content class="card-content">
+                <div>
+                  <div *ngIf="predictedScore !== null">
+                   <ion-text color="medium">
+                     <ion-badge [ngClass]="getBadgeClass(levelNext)">
+                       <h3>Prediccion sig. Score:</h3>
+                       <h2>{{ predictedScore | number:'1.0-2' }}</h2>
+                     </ion-badge>
+                   </ion-text>
+                  </div>
+              </div>
+                <img [src]="getImageSrc(levelNext)" 
+                alt="Mi próximo nivel">
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    </div>
+  </div>
+</ion-content>
+
+<div class="separator"></div> <!-- Línea separadora -->
+
+<!-- Navbar inferior solo para móvil -->
+<ion-footer class="mobile-only">
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="tabService.selectedTab">
+      <ion-segment-button value="home" (click)="goToHomePage()">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map" (click)="goToMapPage()">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="schedule" (click)="goToSchedulePage()">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>Horario</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="profile" (click)="toggleProfileMenu()">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <!-- Modal que actúa como menú lateral desde la esquina inferior derecha -->
+  <div class="custom-modal" *ngIf="isProfileMenuOpen" (click)="closeProfileMenu()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <ion-list>
+        <ion-item>
+          <ion-label>{{ userName }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Configuración</ion-label>
+        </ion-item>
+        <ion-item (click)="logout()">
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-footer>

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="font-size: 1.2rem; padding-top: 3%;">Añadir Materia y Calificación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Selecciona una materia</ion-label>
+    <ion-select [(ngModel)]="selectedMateria">
+      <ion-select-option *ngFor="let option of options" [value]="option.value">
+        {{ option.text }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Parcial (número):    </ion-label>
+    <ion-input [(ngModel)]="parcial" type="number"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Calificación:    </ion-label>
+    <ion-input [(ngModel)]="calificacion" type="number"></ion-input>
+  </ion-item>
+</ion-content>
+
+<ion-footer style="background: #f5f5f5;">
+  <ion-button (click)="cerrarModal()">Cancelar</ion-button>
+  <ion-button (click)="guardar()">Guardar</ion-button>
+</ion-footer>

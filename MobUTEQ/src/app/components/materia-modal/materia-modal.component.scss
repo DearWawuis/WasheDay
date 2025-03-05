@@ -1,0 +1,36 @@
+/* Estilos generales para el modal */
+ion-item {
+    margin-bottom: 12px;  /* Espacio entre los campos */
+  }
+  
+  /* Espacio adicional en la parte inferior de los campos de texto */
+  ion-input, ion-select {
+    margin-bottom: 5px;  /* Da un pequeño espacio entre el campo y el siguiente */
+  }
+  
+  /* Puedes agregar un poco de padding dentro de los inputs para mayor claridad */
+  ion-input, ion-select {
+    padding: 8px;  /* Ajusta este valor según el estilo visual que prefieras */
+  }
+  
+  /* Estilo opcional para botones, separándolos del contenido */
+  ion-footer {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between; /* Alinea los botones en los extremos */
+  }
+  
+  ion-button {
+    margin: 0 5px; /* Da un pequeño margen a los botones */
+  }
+  
+  ion-input {
+    margin-left: 10px;  /* Esto asegura que haya espacio entre la etiqueta y el campo de entrada */
+    padding: 10px;    /* Ajusta el padding para un campo más espacioso */
+    border-radius: 5px;  /* Redondea los bordes del input */
+  }
+
+  ion-item {
+    --background-color: #e9ecef !important;  /* Color de fondo para el item completo */
+    border-radius: 8px;  /* Opcional: Redondea los bordes del ion-item */
+  }

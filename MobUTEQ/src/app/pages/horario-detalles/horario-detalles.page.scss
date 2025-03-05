@@ -1,0 +1,72 @@
+.mobile-only ion-segment-button {
+    color: #000000; /* Color para el texto y los íconos */
+}
+
+ion-footer, ion-buttons.desktop-only {
+    display: none; /* Ocultar por defecto */
+}
+/* Para dispositivos con un ancho mayor a 768px (desktop) */
+@media screen and (min-width: 769px) {
+
+    .mapa-container {
+        justify-content: center; /* Alinear el calendario a la izquierda en desktop */
+        margin: 2% 5%; /* Margen 2% arriba y abajo, 5% a los lados */
+    }
+    
+    .content-wrapper {
+        display: flex;
+        justify-content: space-between; /* El contenido adicional se acomoda a la derecha */
+    }
+
+    .content-wrapper .mapa-container {
+        flex: 1;
+    }
+
+    .content-wrapper .additional-content {
+        flex: 1;
+        margin-left: 20px; /* Espacio entre el calendario y el contenido adicional */
+    }
+
+    ion-footer.mobile-only {
+        display: none; /* Ocultar el navbar inferior en desktop */
+    }
+
+    .mobile-only {
+        display: none;
+    }
+
+    ion-buttons.desktop-only {
+        display: flex; /* Mostrar los botones del header en desktop */
+    }
+}
+
+/* Para dispositivos con un ancho menor a 768px (móviles) */
+@media screen and (max-width: 768px) {
+    .content-wrapper {
+        margin: 5%; /* Margen en los costados para móviles */
+        display: block;
+    }
+
+    .mapa-container {
+        width: 100%;
+        height: 50vh; /* Ajustar el alto del mapa al 50% de la altura de la pantalla */
+        margin-top: 5%; /* Margen superior del 10% */
+        margin-bottom: 10px; /* Margen inferior para separación con el contenido adicional */
+    }
+
+    .additional-content {
+        margin-top: 20px; /* El contenido adicional se coloca debajo del calendario en móviles */
+    }
+
+    ion-footer.mobile-only {
+        display: block; /* Mostrar el navbar inferior en móviles */
+    }
+
+    .mobile-only {
+        display: block;
+    }
+
+    ion-buttons.desktop-only {
+        display: none; /* Ocultar los botones del header en móviles */
+    }
+}

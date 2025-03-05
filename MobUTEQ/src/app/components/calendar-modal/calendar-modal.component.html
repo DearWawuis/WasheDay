@@ -1,0 +1,182 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{date}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  >
+  <div class="modal-content">
+  <div *ngIf="eventsUteq && eventsUteq.length > 0; else noEvents" >
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <h2>Eventos UTEQ</h2>
+      </ion-row>
+    </ion-grid>
+  <div *ngFor="let event of eventsUteq">
+    <ion-card>
+      <ion-card-header class="ion-justify-content-end ion-card-header">    
+        <ion-card-subtitle color="dark">
+          {{ event.fecha_fin === '0000-00-00' ? event.fecha_inicio : event.fecha_inicio + ' - ' + event.fecha_fin }}
+        </ion-card-subtitle>      
+      </ion-card-header>
+      <ion-grid class="grid-eventos">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="9" push="3">
+            <ion-card-title>{{ event.nombre_evento }}</ion-card-title>
+          </ion-col>
+          <ion-col size="3" pull="9">
+            <div class="ion-col-div">
+              <ion-item-divider [ngStyle]="{
+                'border': getBorder(event.relleno, event.textColor, event.color),
+                'backgroundColor': getBackgroundColor(event.relleno, event.textColor, event.color),
+                'color': '#000000',
+                'padding' : '5px',
+                'position' : 'relative'
+              }">
+              <div *ngIf="event.relleno === 6" class="ion-div-lines">
+                <div *ngFor="let line of [0, 1, 2, 3, 4]; let i = index"
+                     [ngStyle]="{
+                       'position': 'absolute',
+                       'left': '0',
+                       'top': (i * 22) + '%',
+                       'width': '100%',
+                       'height': '5px',
+                       'backgroundColor': event.color,
+                       
+                     }"></div>
+              </div>
+              <ion-icon size="large" *ngIf="event.relleno === 3 || event.relleno === 5" 
+              name="caret-back-outline" 
+              [style.color]="event.color"></ion-icon>
+              <ion-icon size="large" *ngIf="event.relleno === 4" 
+              name="caret-forward-outline" 
+              [style.color]="event.color"></ion-icon>
+                <ion-label></ion-label>
+              </ion-item-divider>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </div>
+</div>
+<ng-template #noEvents>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <h2>Eventos UTEQ</h2>
+    </ion-row>
+    <ion-row>
+      <ion-text color="danger">No hay eventos programados</ion-text>
+    </ion-row>
+  </ion-grid>
+  
+</ng-template>
+<br>
+<div *ngIf="userId > 0">
+<ion-grid>
+<ion-row class="ion-justify-content-center">
+<h2>Mis eventos</h2>
+</ion-row>
+</ion-grid>
+<ion-grid>
+  <ion-row class="ion-justify-content-end">
+    <ion-button aria-label="Agregar nuevo evento" color="secondary" (click)="isAddingEvent = true" *ngIf="!isAddingEvent && parsedDate >= normalizedToday">
+      Agregar
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-button>
+  </ion-row>
+</ion-grid>
+
+<div *ngIf="isAddingEvent"  class="form-container">
+  <ion-item>
+    <ion-label position="floating">Nombre del evento</ion-label>
+    <ion-input [(ngModel)]="newEvent.nombre_evento"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-textarea [(ngModel)]="newEvent.descripcion"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Fecha</ion-label>
+    <ion-input [(ngModel)]="newEvent.fecha_inicio" disabled></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Fecha fin (opcional)</ion-label>
+    <ion-datetime 
+    [(ngModel)]="newEvent.fecha_fin" 
+    presentation="date" 
+    [preferWheel]="true" 
+    placeholder="Fecha de Fin"
+    [min]="newEvent.fecha_inicio"
+    [max]="maxDate"
+    displayFormat="YYYY-MM-DD"
+    pickerFormat="YYYY-MM-DD">
+  </ion-datetime>
+  </ion-item>
+  
+  
+  <ion-row class="ion-justify-content-end">
+    <ion-button (click)="addEvent()" >Guardar</ion-button>
+    <ion-button (click)="cancelAdd()" color="medium">Cancelar</ion-button>
+  </ion-row>
+</div>
+
+<div *ngIf="eventsUser && eventsUser.length > 0; else noEventsUser">
+  <ion-list>
+    <ion-item *ngFor="let userEvent of eventsUser"  [ngClass]="{ 'form-container': userEvent.isEditing}">
+      <ion-label class="form-containerx">
+        <h2 *ngIf="!userEvent.isEditing">{{ userEvent.nombre_evento }}</h2>
+        <ion-item *ngIf="userEvent.isEditing">
+          <ion-label position="floating">Nombre de evento</ion-label>
+          <ion-input [(ngModel)]="userEvent.nombre_evento" placeholder="Nombre del evento"></ion-input>
+        </ion-item>
+        <p *ngIf="!userEvent.isEditing">Descripción: {{ userEvent.descripcion }}</p>
+        <ion-item *ngIf="userEvent.isEditing" >
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-textarea [(ngModel)]="userEvent.descripcion" placeholder="Descripción"></ion-textarea>
+        </ion-item>
+
+        <p>
+          {{ userEvent.fecha_fin === '0000-00-00' ? userEvent.fecha_inicio : userEvent.fecha_inicio + ' - ' + userEvent.fecha_fin }}
+        </p>
+        
+        <ion-datetime 
+          *ngIf="userEvent.isEditing " 
+          [(ngModel)]="userEvent.fecha_fin" 
+          presentation="date" 
+          [preferWheel]="true" 
+          placeholder="Fecha de Fin" 
+          [min]="userEvent.fecha_inicio">
+        </ion-datetime>
+        <ion-row class="ion-justify-content-end">
+          <ion-button (click)="userEvent.isEditing ? saveEvent(userEvent) : editEventUser(userEvent)">
+            {{ userEvent.isEditing ? 'Guardar' : 'Editar' }}
+          </ion-button>
+          <ion-button 
+            (click)="userEvent.isEditing ? cancelEdit(userEvent) : deleteEventUser(userEvent.id)"
+            [color]="userEvent.isEditing ? 'medium' : 'danger'">
+            {{ userEvent.isEditing ? 'Cancelar' : 'Eliminar' }}
+          </ion-button>
+        </ion-row>
+      </ion-label>  
+    </ion-item>
+  </ion-list>
+</div>
+  <ng-template #noEventsUser>
+    <ion-text color="danger">No hay eventos programados, Agrega uno!</ion-text>
+  </ng-template>
+</div>
+</div>
+
+<ion-toast
+    [isOpen]="isToastOpen"
+    [message]="toastMessage"
+    [duration]="5000"
+  ></ion-toast>
+
+</ion-content>

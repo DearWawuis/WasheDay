@@ -1,0 +1,143 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calificaciones
+    </ion-title>
+    <img src="assets/images/logoMobUTEQ.png" alt="Logo" class="img-logo mobile-only" />
+    <ion-buttons slot="end" class="desktop-only">
+      <ion-button (click)="goToHomePage()">
+        Inicio
+      </ion-button>
+      <ion-button (click)="goToMapPage()">
+        Mapa
+      </ion-button>
+      <ion-button (click)="goToSchedulePage()">
+        Horario
+      </ion-button>
+      <ion-button *ngIf="isLoggedIn" class="name">
+        {{ userName }}
+      </ion-button>
+      <ion-button *ngIf="!isLoggedIn" (click)="login()" class="name">
+        Iniciar sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="separator"></div> <!-- Línea separadora -->
+<div class="nav-div">
+  <ion-button fill="clear" class="back-button" (click)="volver()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+    Volver
+  </ion-button>
+
+  <div class="cuatrimestre-container">
+    <!-- Icono para eliminar -->
+    <ion-icon *ngIf="mostrarIconoEliminar" name="trash-outline" class="delete-icon"
+      (click)="confirmarEliminacion(cuatrimestreId, cuatrimestreNumber)">
+    </ion-icon>
+
+    <!-- Texto del cuatrimestre -->
+    <div class="cuatrimestre-text">
+      Cuatrimestre {{ cuatrimestreNumber }}
+    </div>
+  </div>
+</div>
+
+<ion-content>
+  <div class="content-wrapper">
+    <div class="grafica-container">
+      <ion-button (click)="agregarMateria()">Añadir materia</ion-button>
+    </div>
+
+    <!-- Sección de Selección de Cuatrimestre -->
+    <div class="semester-selection">
+      <h2 style="color: #000000">Materias y Calificaciones</h2>
+      <div *ngIf="calificacionesAgrupadas && calificacionesAgrupadas.length > 0; else noCalificaciones">
+        <table class="tabla-calif">
+          <thead>
+            <tr>
+              <th>Materia</th>
+              <th>Parcial</th>
+              <th>Calificación</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let calificacion of calificacionesAgrupadas">
+              <!-- Fila de la materia, ocupa varias filas por los parciales -->
+              <tr>
+                <td [attr.rowspan]="calificacion.parciales.length + 1">{{ calificacion.materia }}</td>
+              </tr>
+              <!-- Filas de parciales -->
+              <ng-container *ngFor="let parcial of calificacion.parciales">
+                <tr>
+                  <td>{{ parcial.parcial }}</td>
+                  <td>{{ parcial.calificacion }}</td>
+                  <td>{{ parcial.fecha | date }}</td>
+                </tr>
+              </ng-container>
+              <!-- Fila de Promedio -->
+              <tr>
+                <td colspan="2">Promedio</td>
+                <td>{{ calificacion.promedio }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">Promedio General</td>
+              <td>{{ promedioGeneral.toFixed(2) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <ng-template #noCalificaciones>
+        <p style="color: #000000">No se encontraron calificaciones para este alumno.</p>
+      </ng-template>
+    </div>
+  </div>
+</ion-content>
+
+<div class="separator"></div> <!-- Línea separadora -->
+
+<!-- Navbar inferior solo para móvil -->
+<ion-footer class="mobile-only">
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="tabService.selectedTab">
+      <ion-segment-button value="home" (click)="goToHomePage()">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map" (click)="goToMapPage()">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="schedule" (click)="goToSchedulePage()">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>Horario</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="profile" (click)="toggleProfileMenu()">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <!-- Modal que actúa como menú lateral desde la esquina inferior derecha -->
+  <div class="custom-modal" *ngIf="isProfileMenuOpen" (click)="closeProfileMenu()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <ion-list>
+        <ion-item>
+          <ion-label>{{ userName }}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Configuración</ion-label>
+        </ion-item>
+        <ion-item (click)="logout()">
+          <ion-label>Cerrar sesión</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+</ion-footer>

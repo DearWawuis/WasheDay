@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ existId > 0 ? 'Editar' : 'Agregar' }} Horario</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  >
+  <div class="modal-content">
+    <ion-grid>
+      <form #form="ngForm" (ngSubmit)="sendData()">
+      <ion-row>
+        <ion-col size="12">
+            <ion-select [(ngModel)]="idSubject" name="idSubject" label="Selecciona materia" label-placement="floating" fill="outline" required>
+              <ion-select-option *ngFor="let subject of subjects" [value]="subject.id">
+                {{ subject.nombre }}
+              </ion-select-option>
+            </ion-select>
+        </ion-col>
+        <ion-col size="12">
+          <ion-input
+           id="profesor"
+           name="teacher"
+           label="Nombre del profesor"
+           labelPlacement="floating"
+           maxlength="50"
+           [(ngModel)]="teacher"
+           fill="outline"
+           required
+            ></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <p>Establece dias y horarios</p>
+      </ion-row>
+        
+          <ion-row *ngFor="let day of daysOfWeek" class="ion-align-items-center">
+            <ion-col size="4">
+              <ion-checkbox [(ngModel)]="scheduleData[day].selected" [name]="day + '-selected'" labelPlacement="end">{{day}}</ion-checkbox>
+            </ion-col>
+            <ion-col size="8">
+              <ion-row>
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-input [(ngModel)]="scheduleData[day].building" name="{{day}}-building" placeholder="Edificio" [disabled]="!scheduleData[day].selected" fill="outline" [required]="scheduleData[day].selected"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-item>
+                    <ion-input [(ngModel)]="scheduleData[day].classroom" name="{{day}}-classroom" placeholder="Aula" [disabled]="!scheduleData[day].selected" fill="outline" [required]="scheduleData[day].selected"></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-list>
+                    <ion-item>
+                      <ion-select [(ngModel)]="scheduleData[day].startTime" 
+                      name="{{day}}-startTime" interface="action-sheet" 
+                      placeholder="Inicio" [disabled]="!scheduleData[day].selected" 
+                      fill="outline" (ionChange)="updateEndTimes(day)" 
+                      [required]="scheduleData[day].selected">
+                        <ion-select-option value="07:00:00">07:00</ion-select-option>
+                        <ion-select-option value="08:00:00">08:00</ion-select-option>
+                        <ion-select-option value="09:00:00">09:00</ion-select-option>
+                        <ion-select-option value="10:00:00">10:00</ion-select-option>
+                        <ion-select-option value="11:00:00">11:00</ion-select-option>
+                        <ion-select-option value="12:00:00">12:00</ion-select-option>
+                        <ion-select-option value="13:00:00">13:00</ion-select-option>
+                        <ion-select-option value="14:00:00">14:00</ion-select-option>
+                        <ion-select-option value="15:00:00">15:00</ion-select-option>
+                        <ion-select-option value="16:00:00">16:00</ion-select-option>
+                        <ion-select-option value="17:00:00">17:00</ion-select-option>
+                        <ion-select-option value="18:00:00">18:00</ion-select-option>
+                        <ion-select-option value="19:00:00">19:00</ion-select-option>
+                        <ion-select-option value="20:00:00">20:00</ion-select-option>
+                        <ion-select-option value="21:00:00">21:00</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-list>
+                    <ion-item>
+                      <ion-select [(ngModel)]="scheduleData[day].endTime" 
+                      name="{{day}}-endTime" interface="action-sheet" 
+                      placeholder="Fin" [disabled]="!scheduleData[day].selected" 
+                      fill="outline" [required]="scheduleData[day].selected">
+                        <ion-select-option *ngFor="let endTime of selected[day]" [value]="endTime">{{ endTime }}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+            <ion-item-divider>
+            </ion-item-divider>
+          </ion-row>
+               
+          <!--<ion-button type="submit" expand="full" color="secondary" [disabled]="form.invalid">Guardar</ion-button>
+          <div *ngIf="idSubject > 0" style="padding-top: 5px;">
+            <ion-button expand="full" color="danger" (click)="deleteSubjectAndSchedules()">Eliminar </ion-button>
+          </div>-->
+        </form>
+      <ion-item-divider>
+      </ion-item-divider>
+    </ion-grid>
+  </div>
+  <ion-alert
+  [header]="messageAlert"
+  [buttons]="alertButtons"
+  (didDismiss)="setResult($event)"
+></ion-alert>
+<ion-toast
+    [isOpen]="isToastOpen"
+    [message]="toastMessage"
+    [duration]="5000"
+  ></ion-toast>
+</ion-content>
+<ion-footer style="background: #f5f5f5;">
+  <ion-button color="danger" *ngIf="existId > 0" (click)="deleteSubjectAndSchedules()">Eliminar</ion-button>
+  <ion-button (click)="submitForm()" [disabled]="form.invalid">Guardar</ion-button>
+</ion-footer>
+
