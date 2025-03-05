@@ -1,0 +1,7 @@
+{
+  "name": "WasheDay",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
