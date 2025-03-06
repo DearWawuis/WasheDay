@@ -1,17 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Mi dirección</ion-title>
+    <ion-buttons slot="start">
+      <img src="assets/images/icon-logo.png" alt="Logo" class="logo-header">
+      <div style="display: flex; flex-direction: column;">
+        <span>Mi dirección</span>
+        <p class="text-direction">{{ address }}</p>
+      </div>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<app-modal *ngIf="modalStatus"></app-modal>
 <ion-content [fullscreen]="true">
-  <ion-item>
-    <ion-label position="stacked">Ubicación</ion-label>
-    <div class="map-container">
-      <iframe width="100%" height="300px" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCFBJ7H1y-gK9mGqCaTOicbHmD0hcd5jYQ&q=Querétaro,México"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </ion-item>
+  <div #mapContainer class="mapContainer"></div>
+  <div class="container-div">
+    <img src="assets/images/Img-1.png" alt="Logo" class="img-div">
+    <h3><strong>TU LAVANDERÍA</strong></h3>
+    <p>Más cercana</p>
+    <p class="text-2">Ubícala fácilmente</p>
+  </div>
+  
+<app-tab-bar></app-tab-bar>
 </ion-content>
