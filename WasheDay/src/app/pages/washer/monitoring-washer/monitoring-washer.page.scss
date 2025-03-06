@@ -2,7 +2,7 @@
     color: #000000; /* Color para el texto y los íconos */
 
     background-color: #ffffff;
-    border-top: 4px solid black;
+    
     
 }
 
@@ -170,3 +170,76 @@ ion-row {
   justify-content: center; /* Centra verticalmente */
   height: 100%; 
 }
+
+.center-content{
+    max-width: 100px;
+    margin: auto;
+    padding: 10px;
+}
+
+ion-searchbar{
+    border-radius: 10px;
+
+}
+#texto-logo{
+
+    margin-top: 10px;
+    text-align: justify;
+
+    align-items: center;
+
+    text-align: center;
+
+}
+
+.envio{
+    color: rgb(47, 0, 255);
+    font-weight: 600;
+}
+.buttons {
+
+    margin-top: 1px;
+    border-radius: 40px;
+    gap: 10px;
+    display: flex;
+
+  }
+
+ion-badge{
+
+    margin-top: 500px;
+    margin-left: 20px;
+
+
+
+}
+
+.status {
+    display: flex;
+    align-items: center; /* Asegura que el icono y el texto estén alineados */
+    gap: 5px; /* Espacio entre el icono y el texto */
+    
+
+  }
+  
+  ion-icon[name="ellipse"] {
+    color: rgb(0, 255, 0);
+    font-size: 16px;
+    margin-left: 30px;
+
+  }
+  ion-content {
+    --padding-bottom: 60px;
+  }
+
+  #boton-cancelar {
+    --background: #b0b0b0 !important; /* Color gris */
+    --color: white !important; /* Color del texto */
+    --border-radius: 30px !important; /* Bordes redondeados */
+
+  }
+  
+  #btn-aceptar{
+    --border-radius: 30px !important; 
+  }
+  
