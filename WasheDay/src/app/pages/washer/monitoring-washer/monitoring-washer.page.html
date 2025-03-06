@@ -1,15 +1,66 @@
-<ion-header fixed>
+<ion-header>
   <ion-toolbar>
-    <ion-title>monitoring-washer</ion-title>
+    <ion-title>
+      <ion-icon name="water"></ion-icon> Mi Washer
+    </ion-title>
+    <div class="status">
+      <ion-icon name="ellipse"></ion-icon>
+      <span>Abierto</span>
+    </div>
+
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">monitorinng</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card>
+    <ion-card-content class="center-content">
+      <ion-img src="logo-lavadoras.png"></ion-img>
+     
+    </ion-card-content>
+    <p id="texto-logo">Esperando nuevos servicios de Washos</p>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-segment value="domicilio">
+        <ion-segment-button value="domicilio"><p>Recoleccion a domicilio</p></ion-segment-button>
+        <ion-segment-button value="washer"><p>Entrega a mi Washer</p></ion-segment-button>
+      </ion-segment>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-searchbar placeholder="Buscar..."></ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let servicio of servicios">
+      <ion-thumbnail slot="start">
+        <img src="pedido.png">
+      </ion-thumbnail>
+      <ion-label>
+        <p>ID: {{ servicio.id }}</p>
+        <p>Washo: {{ servicio.nombre }}</p>
+        <p>Fecha: {{ servicio.fecha }} - {{ servicio.hora }}</p>
+        <p class="envio">Envío: {{ servicio.tipoEnvio }}</p>
+        <div class="buttons">
+          <ion-button id="boton-cancelar" size="large" fill="solid">Cancelar</ion-button>
+
+          <ion-button id="btn-aceptar" size="large" color="primary">Aceptar</ion-button>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+
+
+
 
   <!-- Navbar inferior solo para móvil -->
   <ion-footer class="mobile-only" style="position: fixed; bottom: 0; width: 100%; z-index: 1;">
@@ -17,19 +68,20 @@
       <ion-segment>
         <ion-segment-button>
           <ion-icon name="home-outline"></ion-icon>
-          <ion-label>Inicio</ion-label>
+          
         </ion-segment-button>
         <ion-segment-button>
           <ion-icon name="map-outline"></ion-icon>
-          <ion-label>Mapa</ion-label>
+       
         </ion-segment-button>
         <ion-segment-button>
-          <ion-icon name="calendar-outline"></ion-icon>
-          <ion-label>Horario</ion-label>
+          <ion-icon name="settings-outline"></ion-icon>
+
+   
         </ion-segment-button>
         <ion-segment-button>
           <ion-icon name="person-outline"></ion-icon>
-          <ion-label>Perfil</ion-label>
+
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
