@@ -1,0 +1,101 @@
+.status {
+    color: red;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+  }
+  
+  .menu {
+    background-color: #fff;
+    padding: 5px;
+    width: 150px;
+    border: 1px solid #ccc;
+  }
+  
+  .menu-header {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+  
+  .menu-header img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .circle {
+    width: 200px;
+    height: 200px;
+    background-color: #40e0d0;
+    border-radius: 50%;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .circle-img {
+    width: 70%;
+    height: 70%;
+    object-fit: cover;
+  }
+  
+  .circle-text,
+.small-text {
+  text-align: center; /* Centra el texto horizontalmente */
+  margin: 10px 0; /* Añade un poco de espacio superior e inferior */
+}
+
+.circle-text {
+  font-weight: bold;
+  font-size: 18px; /* Ajusta el tamaño de la fuente si es necesario */
+}
+
+.small-text {
+  font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+  color: #555; /* Color gris para el texto */
+}
+
+  .disconnect-btn {
+   // background-color: #40e0d0;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+    font-size: 15px; /* Ajusta el tamaño de texto */
+    color: red;
+    font-weight: bold;
+  }
+  
+  ion-title {
+    font-size: 20px; /* Tamaño de texto para el título "Mi Washer" */
+  }
+  
+  ion-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+  
+  ion-buttons ion-button {
+    padding: 0;
+  }
+  ion-content {
+    --background: #ffffff !important; /* Color de fondo del contenido */
+}
