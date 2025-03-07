@@ -6,6 +6,11 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeWashoPageRoutingModule } from './home-washo-routing.module';
 
+// Importamos el tab-bar
+import { TabBarComponent } from '../../../components/tab-bar/tab-bar.component';
+// Importamos el modal
+import { ModalComponent } from '../../../components/modal/modal.component';
+
 import { HomeWashoPage } from './home-washo.page';
 
 @NgModule({
@@ -14,8 +19,9 @@ import { HomeWashoPage } from './home-washo.page';
     FormsModule,
     IonicModule,
     HomeWashoPageRoutingModule,
-    HomeWashoPage
+    TabBarComponent,
+    ModalComponent,
   ],
-  declarations: []
+  declarations: [HomeWashoPage],
 })
 export class HomeWashoPageModule {}
