@@ -1,22 +1,4 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button>
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>Inicio</ion-label>
-    </ion-tab-button>
-    <ion-tab-button>
-      <ion-icon name="list-outline"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button>
-      <ion-icon name="sparkles-outline"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button (click)="openMenu()">
-      <ion-icon name="person-outline"></ion-icon>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
-
-<!-- <ion-menu side="end" menuId="main-menu">
+<ion-menu side="end" menuId="main-menu" contentId="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-title>Menu</ion-title>
@@ -35,4 +17,22 @@
       </ion-item>
     </ion-list>
   </ion-content>
-</ion-menu> -->
+</ion-menu>
+
+<ion-tabs *ngIf="showTabs">
+  <ion-tab-bar slot="bottom" class="custom-tab-bar">
+    <ion-tab-button>
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+    <ion-tab-button>
+      <ion-icon name="list-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button>
+      <ion-icon name="sparkles-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button (click)="openMenu()">
+      <ion-icon name="person-outline"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
