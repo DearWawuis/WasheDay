@@ -6,10 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeWashoPageRoutingModule } from './home-washo-routing.module';
 
-// Importamos el tab-bar
-import { TabBarComponent } from '../../../components/tab-bar/tab-bar.component';
-// Importamos el modal
-import { ModalComponent } from '../../../components/modal/modal.component';
+// Importamos el mapa
+import { MapaComponent } from '../../../components/washo/mapa/mapa.component';
 
 import { HomeWashoPage } from './home-washo.page';
 
@@ -19,8 +17,7 @@ import { HomeWashoPage } from './home-washo.page';
     FormsModule,
     IonicModule,
     HomeWashoPageRoutingModule,
-    TabBarComponent,
-    ModalComponent,
+    MapaComponent
   ],
   declarations: [HomeWashoPage],
 })

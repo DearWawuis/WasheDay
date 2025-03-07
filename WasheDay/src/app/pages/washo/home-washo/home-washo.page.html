@@ -10,15 +10,17 @@
   </ion-toolbar>
 </ion-header>
 
-<app-modal *ngIf="modalStatus"></app-modal>
-<ion-content [fullscreen]="true">
-  <div #mapContainer class="mapContainer"></div>
+<ion-content id="main-content">
+
+  <!-- mapa -->
+  <app-mapa (addressChanged)="updateAddress($event)"></app-mapa>
+
+  <!-- carta  -->
   <div class="container-div">
     <img src="assets/images/Img-1.png" alt="Logo" class="img-div">
     <h3><strong>TU LAVANDERÍA</strong></h3>
     <p>Más cercana</p>
     <p class="text-2">Ubícala fácilmente</p>
   </div>
-  
-<app-tab-bar></app-tab-bar>
+
 </ion-content>
