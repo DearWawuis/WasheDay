@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ lavanderia?.nombre }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cerrarModal()"><ion-icon name="close-outline"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <img [src]="lavanderia?.fotografia" alt="{{ lavanderia?.nombre }}"
+    style="width: 100%; max-height: 200px; object-fit: cover;">
+  <p><strong>Calificación:</strong> {{ lavanderia?.calificacion }} ⭐</p>
+  <div *ngIf="lavanderia?.comentarios?.length">
+    <h3>Comentarios</h3>
+    <div *ngFor="let comentario of lavanderia.comentarios" class="comentario-item">
+      <img src="assets/images/perfil.png" alt="{{ comentario.usuario }}" class="perfil-img">
+      <div class="comentario-texto">
+        <p><strong>{{ comentario.usuario }}</strong></p>
+        <p>{{ comentario.comentario }}</p>
+      </div>
+    </div>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <button class="butoon_servicio">
+      Ver servicios
+    </button>
+  </ion-toolbar>
+</ion-footer>
