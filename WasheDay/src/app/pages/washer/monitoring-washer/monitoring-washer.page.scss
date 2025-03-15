@@ -155,3 +155,33 @@ ion-content {
 #btn-aceptar {
   --border-radius: 30px !important;
 }
+
+
+.status {
+  display: flex;
+  align-items: center; /* Alinea el icono y el texto */
+  gap: 5px; /* Espacio entre el icono y el texto */
+  color: rgb(255, 0, 0);
+  background: #ffffff;
+}
+
+ion-icon[name="ellipse"] {
+  color: rgb(255, 0, 0);
+  font-size: 16px;
+  margin-left: 30px;
+}
+
+ion-title {
+  font-size: 20px; /* Tamaño del título "Mi Washer" */
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+ion-buttons ion-button {
+  padding: 0;
+}

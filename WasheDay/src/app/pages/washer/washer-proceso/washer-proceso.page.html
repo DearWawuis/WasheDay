@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Logo a la izquierda -->
+    <ion-buttons slot="start">
+      <ion-button>
+        <img src="assets/images/logo-home.png" alt="Logo" style="width: 30px; height: 30px;" />
+      </ion-button>
+    </ion-buttons>
+
+    <!-- Título y botón -->
+    <ion-title>Mi Washer</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Status CERRADA debajo de Mi Washer -->
+  <div class="status">
+    <ion-icon name="ellipse"></ion-icon>
+    <span>Abierto</span>
+  </div>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-segment [(ngModel)]="selectedSegment">
+        <ion-segment-button value="recibir">
+          <p>Por recibir</p>
+        </ion-segment-button>
+        <ion-segment-button value="ocupados">
+          <p>Servicios ocupados</p>
+        </ion-segment-button>
+        <ion-segment-button value="historial">
+          <p>Historial</p>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-searchbar placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
+    </ion-card-content>
+  </ion-card>
+
+
+
+
+  <ion-list *ngIf ="selectedSegment == 'recibir'">
+
+    <ion-item *ngFor="let recibido of recibidos">
+      <ion-label>
+        <p> ID: {{recibido.id}}</p>
+
+        <p>Washo: {{recibido.Washo}}</p>
+
+        <p>Hora: {{recibido.Hora}}</p>
+
+        <p>Ubicacion: {{recibido.Ubicacion}}</p>
+      </ion-label>
+
+
+      <p *ngIf="pedido_recibido == recibido.id" id="recogiendo_pedido">Recogiendo...</p>
+
+      <ion-button id="boton-recoger" color="primary" slot="end" fill="solid" (click)="recoger_pedido(recibido)">
+        Recibir
+      </ion-button>
+
+    </ion-item>
+
+
+  </ion-list>
+
+  <ion-list *ngIf="selectedSegment == 'ocupados'">
+
+    <ion-item *ngFor="let ocupado of ocupados">
+
+      <ion-label>
+
+        <p>{{ocupado.nombre}}</p>
+
+      </ion-label>
+
+
+    </ion-item>
+
+
+  </ion-list>
+
+  <ion-list *ngIf="selectedSegment == 'historial'">
+
+
+
+    <ion-item *ngFor="let hist of historial">
+      <ion-label>
+        <p>{{hist.nombre}}</p>
+      </ion-label>
+
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- Navbar inferior solo para móvil -->
+<ion-footer class="mobile-only">
+  <ion-toolbar>
+    <ion-segment>
+      <ion-segment-button value="home">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Pendientes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="schedule">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>Configuración</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="profile">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>

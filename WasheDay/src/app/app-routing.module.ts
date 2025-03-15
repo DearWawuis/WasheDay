@@ -31,6 +31,15 @@ const routes: Routes = [
     path: 'monitoring-washer',
     loadChildren: () => import('./pages/washer/monitoring-washer/monitoring-washer.module').then( m => m.MonitoringWasherPageModule)
   },
+  {
+    path: 'washer-proceso',
+    loadChildren: () => import('./pages/washer/washer-proceso/washer-proceso.module').then( m => m.WasherProcesoPageModule)
+  },
+  {
+    path: 'washer-proceso',
+    loadChildren: () => import('./pages/washer/washer-proceso/washer-proceso.module').then( m => m.WasherProcesoPageModule)
+  },
+
 ];
 
 @NgModule({
