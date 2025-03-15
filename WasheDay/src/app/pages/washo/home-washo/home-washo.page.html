@@ -1,13 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home-washo</ion-title>
+    <ion-buttons slot="start">
+      <img src="assets/images/icon-logo.png" alt="Logo" class="logo-header">
+      <div style="display: flex; flex-direction: column;">
+        <span>Mi dirección</span>
+        <p class="text-direction">{{ address }}</p>
+      </div>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home-washo</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content id="main-content">
+
+  <!-- mapa -->
+  <app-mapa (addressChanged)="updateAddress($event)"></app-mapa>
+
+  <!-- carta  -->
+  <div class="container-div">
+    <img src="assets/images/Img-1.png" alt="Logo" class="img-div">
+    <h3><strong>TU LAVANDERÍA</strong></h3>
+    <p>Más cercana</p>
+    <p class="text-2">Ubícala fácilmente</p>
+  </div>
+
 </ion-content>

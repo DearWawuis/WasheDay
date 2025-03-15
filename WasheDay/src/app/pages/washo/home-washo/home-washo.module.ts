@@ -6,6 +6,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeWashoPageRoutingModule } from './home-washo-routing.module';
 
+// Importamos el mapa
+import { MapaComponent } from '../../../components/washo/mapa/mapa.component';
+
 import { HomeWashoPage } from './home-washo.page';
 
 @NgModule({
@@ -14,8 +17,8 @@ import { HomeWashoPage } from './home-washo.page';
     FormsModule,
     IonicModule,
     HomeWashoPageRoutingModule,
-    HomeWashoPage
+    MapaComponent
   ],
-  declarations: []
+  declarations: [HomeWashoPage],
 })
 export class HomeWashoPageModule {}

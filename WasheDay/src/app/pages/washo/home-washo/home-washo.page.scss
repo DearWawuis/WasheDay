@@ -1,0 +1,38 @@
+ion-content {
+  --background: #ffffff !important;
+}
+
+ion-header {
+  box-shadow: none !important;
+}
+
+.logo-header {
+  height: 90px;
+  width: auto;
+}
+
+.text-direction {
+  font-size: 13px;
+}
+
+.container-div {
+  background-color: var(--color-principal);
+  margin: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  color: #ffffff;
+  position: relative;
+  cursor: pointer;
+}
+
+.text-2 {
+  color: #fff306;
+}
+
+.img-div {
+  position: absolute;
+  top: 17px;
+  right: 20px;
+  width: 120px;
+  height: auto;
+}

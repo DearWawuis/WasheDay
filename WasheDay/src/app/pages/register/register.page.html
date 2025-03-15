@@ -1,13 +1,105 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="background-washeday">
+    <div class="container-washeday">
+      <img [src]="'assets/images/' + client_image" alt="Logo de la app" />
+      <div class="container-frame-text">
+        <ion-text class="container-text">
+          {{client_text1}}
+        </ion-text>
+      </div>
+      <div class="container-frame-second">
+       <div class="container-frame-line">
+       </div>
+       <div class="container-frame-second-text">
+        <div class="container-text-second">
+          {{client_text2}}
+        </div>
+      </div>
+      <div class="container-frame-line2">
+      </div>
+      </div>
+      <div class="container-frame-text">
+        <ion-text class="container-text-client">
+          {{client}}
+        </ion-text>
+      </div>
+      
+    </div>
+    <div class="container-washeday">
+    <div class="container-form-card">
+      <div class="container-form-card-intern">
+        <div class="container-form-title">
+          REGÍSTRATE
+        </div>
+        <form style="width: 100%;" [formGroup]="registerForm" >
+          <ion-item class="container-form-input">
+            <ion-input  type="text" placeholder="Nombre" formControlName="nombre"></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('nombre') }}</p>
+            </ion-text>
+          </div>
+          <ion-item class="container-form-input">
+            <ion-input  type="text" placeholder="Apellidos" formControlName="apellidos"></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('apellidos')?.invalid && registerForm.get('apellidos')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('apellidos') }}</p>
+            </ion-text>
+          </div>
+          <ion-item class="container-form-input">
+            <ion-input  type="text" placeholder="Dirección" formControlName="direccion"></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('direccion')?.invalid && registerForm.get('direccion')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('direccion') }}</p>
+            </ion-text>
+          </div>
+          <ion-item class="container-form-input">
+            <ion-input  type="email" placeholder="Correo" formControlName="correo"></ion-input>
+          </ion-item>
+          <div *ngIf="registerForm.get('correo')?.invalid && registerForm.get('correo')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('correo') }}</p>
+            </ion-text>
+          </div>
+          <ion-item class="container-form-input">
+            <ion-input  [type]="passwordType" placeholder="Ingresa contraseña" formControlName="password"></ion-input>
+            <ion-icon
+              name="{{ passwordIcon }}"
+              slot="end"
+              class="password-toggle-icon"
+              (click)="togglePasswordVisibility()"></ion-icon>
+          </ion-item>
+          <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('password') }}</p>
+            </ion-text>
+          </div>
+          <ion-item class="container-form-input">
+            <ion-input  [type]="confirmPasswordType" placeholder="Confirmar contraseña" formControlName="confirmPassword"></ion-input>
+            <ion-icon
+              name="{{ confirmPasswordIcon }}"
+              slot="end"
+              class="password-toggle-icon"
+              (click)="toggleConfirmPasswordVisibility()"></ion-icon>
+          </ion-item>
+          <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('confirmPassword') }}</p>
+            </ion-text>
+          </div>
+          <div class="container-washeday">
+            <ion-button shape="round" class="container-form-button" [disabled]="registerForm.invalid">Registrar</ion-button>
+          </div>
+        </form>
+        <div class="container-form-title">
+          <p><ion-text >¿Ya tienes una cuenta? </ion-text>
+            <ion-text class="container-link" (click)="goToLoginPage()">Inicia sesión</ion-text></p>
+        </div>
+      </div>
+    </div>
+   </div>
+  </div>
 </ion-content>
