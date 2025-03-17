@@ -66,7 +66,8 @@ export class WasherProcesoPage implements OnInit {
     console.log("Soy id del pedido guardado .. ", this.pedido_recibido);
 
 
-
+    console.log("Soy cambios para washer-proceso");
+    
     
     
       setTimeout(() => {
