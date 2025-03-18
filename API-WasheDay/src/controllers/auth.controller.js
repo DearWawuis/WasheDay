@@ -21,7 +21,7 @@ export const signToken = (user) => {
 export const signUp = async (req, res) => {
     try {
         // Extraer datos del cuerpo de la petición
-        const { name, lname, age, email, password, roles } = req.body;
+        const { name, lname, address, email, password, roles } = req.body;
 
         // Verificar que los roles existen y obtener sus IDs
         const foundRoles = await Role.find({ name: { $in: roles } });
@@ -33,7 +33,7 @@ export const signUp = async (req, res) => {
         const newUser = new User({
             name,
             lname,
-            age,
+            address,
             email,
             password: await User.encryptPassword(password),
             roles: foundRoles.map(role => role._id)

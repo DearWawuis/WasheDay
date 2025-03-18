@@ -31,13 +31,13 @@ var signToken = exports.signToken = function signToken(user) {
 };
 var signUp = exports.signUp = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var _req$body, name, lname, age, email, password, roles, foundRoles, newUser, saveUser;
+    var _req$body, name, lname, address, email, password, roles, foundRoles, newUser, saveUser;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           // Extraer datos del cuerpo de la petición
-          _req$body = req.body, name = _req$body.name, lname = _req$body.lname, age = _req$body.age, email = _req$body.email, password = _req$body.password, roles = _req$body.roles; // Verificar que los roles existen y obtener sus IDs
+          _req$body = req.body, name = _req$body.name, lname = _req$body.lname, address = _req$body.address, email = _req$body.email, password = _req$body.password, roles = _req$body.roles; // Verificar que los roles existen y obtener sus IDs
           _context.next = 4;
           return _Roles["default"].find({
             name: {
@@ -57,7 +57,7 @@ var signUp = exports.signUp = /*#__PURE__*/function () {
           _context.t0 = _Users["default"];
           _context.t1 = name;
           _context.t2 = lname;
-          _context.t3 = age;
+          _context.t3 = address;
           _context.t4 = email;
           _context.next = 14;
           return _Users["default"].encryptPassword(password);
@@ -69,7 +69,7 @@ var signUp = exports.signUp = /*#__PURE__*/function () {
           _context.t7 = {
             name: _context.t1,
             lname: _context.t2,
-            age: _context.t3,
+            address: _context.t3,
             email: _context.t4,
             password: _context.t5,
             roles: _context.t6

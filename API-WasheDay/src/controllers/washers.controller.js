@@ -34,7 +34,7 @@ export const getWasherById = async (req, res) => {
 // Crear un profesor
 export const createWasher = async (req, res) => {
     try {
-        const { name, lname, email, password, age } = req.body;
+        const { name, lname, email, password, address } = req.body;
 
         // Buscar el rol de profesor
         const washerRole = await Role.findOne({ name: "washer" });
@@ -45,7 +45,7 @@ export const createWasher = async (req, res) => {
             lname,
             email,
             password: await User.encryptPassword(password),
-            age,
+            address,
             roles: [washerRole._id]
         });
 
@@ -59,7 +59,7 @@ export const createWasher = async (req, res) => {
 // Actualizar un profesor por su ID
 export const updateWasherById = async (req, res) => {
     const { washerId } = req.params;
-    const { name, lname, age } = req.body;
+    const { name, lname, address } = req.body;
     try {
         // Buscar el rol de estudiante
         const washerRole = await Role.findOne({ name: "washer" });
@@ -67,7 +67,7 @@ export const updateWasherById = async (req, res) => {
         // Actualizar el estudiante con los nuevos datos y división
         const updatedWasher = await User.findByIdAndUpdate(
             washerId,
-            { name, lname, age },
+            { name, lname, address },
             { new: true }
         );
 

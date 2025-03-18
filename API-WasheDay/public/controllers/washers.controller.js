@@ -107,12 +107,12 @@ var getWasherById = exports.getWasherById = /*#__PURE__*/function () {
 // Crear un profesor
 var createWasher = exports.createWasher = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var _req$body, name, lname, email, password, age, washerRole, newWasher, savedWasher;
+    var _req$body, name, lname, email, password, address, washerRole, newWasher, savedWasher;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
           _context3.prev = 0;
-          _req$body = req.body, name = _req$body.name, lname = _req$body.lname, email = _req$body.email, password = _req$body.password, age = _req$body.age; // Buscar el rol de profesor
+          _req$body = req.body, name = _req$body.name, lname = _req$body.lname, email = _req$body.email, password = _req$body.password, address = _req$body.address; // Buscar el rol de profesor
           _context3.next = 4;
           return _Roles["default"].findOne({
             name: "washer"
@@ -127,14 +127,14 @@ var createWasher = exports.createWasher = /*#__PURE__*/function () {
           return _Users["default"].encryptPassword(password);
         case 11:
           _context3.t4 = _context3.sent;
-          _context3.t5 = age;
+          _context3.t5 = address;
           _context3.t6 = [washerRole._id];
           _context3.t7 = {
             name: _context3.t1,
             lname: _context3.t2,
             email: _context3.t3,
             password: _context3.t4,
-            age: _context3.t5,
+            address: _context3.t5,
             roles: _context3.t6
           };
           newWasher = new _context3.t0(_context3.t7);
@@ -166,12 +166,12 @@ var createWasher = exports.createWasher = /*#__PURE__*/function () {
 // Actualizar un profesor por su ID
 var updateWasherById = exports.updateWasherById = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var washerId, _req$body2, name, lname, age, washerRole, updatedWasher;
+    var washerId, _req$body2, name, lname, address, washerRole, updatedWasher;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           washerId = req.params.washerId;
-          _req$body2 = req.body, name = _req$body2.name, lname = _req$body2.lname, age = _req$body2.age;
+          _req$body2 = req.body, name = _req$body2.name, lname = _req$body2.lname, address = _req$body2.address;
           _context4.prev = 2;
           _context4.next = 5;
           return _Roles["default"].findOne({
@@ -183,7 +183,7 @@ var updateWasherById = exports.updateWasherById = /*#__PURE__*/function () {
           return _Users["default"].findByIdAndUpdate(washerId, {
             name: name,
             lname: lname,
-            age: age
+            address: address
           }, {
             "new": true
           });
