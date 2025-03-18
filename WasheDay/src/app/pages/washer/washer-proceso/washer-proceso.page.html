@@ -38,9 +38,23 @@
       </ion-segment>
     </ion-card-header>
     <ion-card-content>
-      <ion-searchbar placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
   </ion-card>
+
+
+
+  <ion-list *ngIf="searchQuery?.trim()">
+    <ion-item *ngFor="let busqueda of filteredItems">
+
+      <ion-label>
+        {{busqueda.nombre}}
+      </ion-label>
+
+
+    </ion-item>
+
+  </ion-list>
 
 
 
@@ -99,6 +113,15 @@
   </ion-list>
 </ion-content>
 
+<!--Author: Jesus Gonzalez Leal IDGS08 -->
+
+
+
+
+
+
+
+
 <!-- Navbar inferior solo para móvil -->
 <ion-footer class="mobile-only">
   <ion-toolbar>
@@ -108,7 +131,7 @@
         <ion-label>Inicio</ion-label>
       </ion-segment-button>
       <ion-segment-button value="map">
-        <ion-icon name="list-outline"></ion-icon>
+        <ion-icon name="list-outline" color="warning"></ion-icon>
         <ion-label>Pendientes</ion-label>
       </ion-segment-button>
       <ion-segment-button value="schedule">
