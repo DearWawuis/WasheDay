@@ -45,15 +45,36 @@ export class WasherProcesoPage implements OnInit {
 
 
   ocupados = [
-    { id: '101', nombre: 'Servicio 101', Washo: 'Mario Torres', Hora: '09:00 AM', Ubicacion: 'Av. Libertad 789' },
-    { id: '102', nombre: 'Servicio 102', Washo: 'Lucía Fernández', Hora: '10:45 AM', Ubicacion: 'Calle 8 No. 32' }
+    { 
+      id: '101', 
+      nombre: 'Servicio 101', 
+      Washo: 'Mario Torres', 
+      Hora: '09:00 AM', 
+      Ubicacion: 'Av. Libertad 789', 
+      FechaSolicitud: 'lunes, 17 de febrero de 2025', 
+      FechaEntrega: 'martes, 18 de febrero', 
+      Detergentes: ['Tide Free & Gentle', 'Ariel Detergente', 'Ecovor'], 
+      EstadoPago: 'Pendiente por pagar o definir pago' 
+    },
+    { 
+      id: '102', 
+      nombre: 'Servicio 102', 
+      Washo: 'Lucía Fernández', 
+      Hora: '10:45 AM', 
+      Ubicacion: 'Calle 8 No. 32', 
+      FechaSolicitud: 'Martes, 27 de enero de 2025', 
+      FechaEntrega: 'martes, 03 de marzo', 
+      Detergentes: ['Tide Free & Gentle', 'Ariel Detergente', 'Ecovor'], 
+      EstadoPago: 'Pago realizado' 
+    }
   ];
+  
 
   recibidos = [
     
-      { id: '001', nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
-      { id: '002', nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
-      { id: '003', nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
+      { id: '001', kg: 12, nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
+      { id: '002', kg: 33, nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
+      { id: '003', kg: 21, nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
     
   ];
 
@@ -119,7 +140,7 @@ export class WasherProcesoPage implements OnInit {
           Le agregue nadamas unos id para poder detectarlos en la funcion de de flecha que 
           esta bajo con el setTimeout
         */
-        { name: 'kg', type: 'number', placeholder: 'Kilo de ropa', value: '', id: 'kg-input' },
+        { name: 'kg', type: 'number', placeholder: 'Kilo de ropa', value: pedido.kg , id: 'kg-input' },
         { name: 'precio', type: 'number', placeholder: 'Precio por kilo', value: '', id: 'precio-input' },
         { name: 'total', type: 'number', placeholder: 'Total a pagar', value: '', id: 'total-input', disabled: true },
         { name: 'fecha_entrega', type: 'text', placeholder: 'Fecha de entrega', value: '' },
