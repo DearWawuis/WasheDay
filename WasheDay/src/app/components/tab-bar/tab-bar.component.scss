@@ -3,6 +3,50 @@ ion-tab-button {
 }
 
 ion-tab-button.ion-selected {
-  color: #007bff;
+  color: var(--color-principal);
 }
 
+ion-tabs ion-segment-button {
+  font-size: 15px !important;
+
+  ion-label {
+    font-size: 8px !important;
+  }
+}
+
+ion-header {
+  box-shadow: none !important;
+}
+
+.css_direccion_big {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.css_direccion_smoll {
+  display: flex;
+  flex-direction: column;
+  font-size: 9px;
+}
+
+.logo-header {
+  height: 40px;
+  width: auto;
+  position: relative;
+}
+
+
+ion-buttons {
+  ion-icon {
+    margin-right: 5px;
+  }
+
+  ion-button {
+    color: #666;
+
+    &:hover {
+      border-bottom: var(--color-principal) solid 1px;
+    }
+  }
+}

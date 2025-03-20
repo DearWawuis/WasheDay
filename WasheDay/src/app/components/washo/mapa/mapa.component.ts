@@ -7,6 +7,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { Capacitor } from '@capacitor/core';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../../../components/washo/modal/modal.component';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-mapa',
@@ -24,19 +25,24 @@ export class MapaComponent implements OnInit {
   user: { lat: number; lon: number } = { lat: 19.432608, lon: -99.133209 };
   modalStatus: boolean = false;
 
-
-  
-  constructor(public modalController: ModalController) {}
+  constructor(
+    public modalController: ModalController,
+    private generalService: GeneralService
+  ) {}
 
   ngOnInit() {
     this.getLocation();
   }
 
   ngAfterViewInit() {
-    this.loadMap();
+    // this.getLocation();
   }
 
   async getLocation(): Promise<void> {
+    const apiKey = this.generalService.getApiUrl();
+
+    await this.loadGoogleMapsScript(apiKey);
+
     if (Capacitor.isNativePlatform()) {
       try {
         const permissionStatus = await Geolocation.requestPermissions();
@@ -44,11 +50,16 @@ export class MapaComponent implements OnInit {
           const position = await Geolocation.getCurrentPosition({
             enableHighAccuracy: true,
           });
+          // this.generalService.showToast('Ubicación optenida', 'success');
           this.user.lat = position.coords.latitude;
           this.user.lon = position.coords.longitude;
           this.loadMap();
           this.getAddress(this.user.lat, this.user.lon);
         } else {
+          this.generalService.showToast(
+            'Permisos de geolocalización denegados.',
+            'danger'
+          );
           console.error('Permisos de geolocalización denegados.');
         }
       } catch (error) {
@@ -58,12 +69,17 @@ export class MapaComponent implements OnInit {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            // this.generalService.showToast('Ubicación optenida', 'success');
             this.user.lat = position.coords.latitude;
             this.user.lon = position.coords.longitude;
             this.loadMap();
             this.getAddress(this.user.lat, this.user.lon);
           },
           (error) => {
+            this.generalService.showToast(
+              'Permisos de geolocalización denegados.',
+              'danger'
+            );
             console.error('Error obteniendo ubicación:', error);
           },
           { enableHighAccuracy: true, timeout: 10000 }
@@ -109,6 +125,19 @@ export class MapaComponent implements OnInit {
     this.RandomLavadoras(9);
   }
 
+  // ☢️ Función para cargar dinámicamente el script de Google Maps
+  async loadGoogleMapsScript(apiKey: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=maps,marker`;
+
+      script.onload = () => resolve();
+      script.onerror = (error) => reject('Error al cargar la API de Google Maps: ' + error);
+
+      document.head.appendChild(script);
+    });
+  }
+
   RandomLavadoras(count: number) {
     for (let i = 0; i < count; i++) {
       const { lat, lng } = this.generateRandomLavadoras(
@@ -125,7 +154,7 @@ export class MapaComponent implements OnInit {
           scaledSize: new google.maps.Size(27, 27),
         },
       });
-      
+
       marker.addListener('click', async () => {
         await this.abrirModal();
       });
@@ -163,6 +192,7 @@ export class MapaComponent implements OnInit {
       if (status === 'OK' && results && results.length > 0) {
         const address = results[0].formatted_address;
         this.addressChanged.emit(address);
+        this.generalService.changeAddress(address);
       } else {
         console.error('No se pudo obtener la dirección:', status);
       }
@@ -175,118 +205,63 @@ export class MapaComponent implements OnInit {
       'assets/images/prueba2.jpg',
       'assets/images/prueba3.jpg',
       'assets/images/prueba4.jpg',
-      'assets/images/prueba5.jpg'
+      'assets/images/prueba5.jpg',
     ];
-  
-    const obtenerImagenAleatoria = () => imagenes[Math.floor(Math.random() * imagenes.length)];
-  
+
+    const obtenerImagenAleatoria = () =>
+      imagenes[Math.floor(Math.random() * imagenes.length)];
+
     const lavanderias = [
       {
-        "nombre": "Lavandería El Buen Lavado",
-        "ubicacion": { "lat": 19.432608, "lng": -99.133209 },
-        "calificacion": 4.5,
-        "comentarios": [
-          { "comentario": "Excelente servicio y ropa bien cuidada.", "usuario": "Carlos M." },
-          { "comentario": "Rápidos y atentos, recomendados.", "usuario": "Ana P." },
-          { "comentario": "El servicio es bueno pero el tiempo de entrega podría mejorar.", "usuario": "Luis G." },
-          { "comentario": "Personal amable, pero la ropa no queda tan fresca como esperaba.", "usuario": "María T." }
+        _id: 1,
+        nombre: 'Lavandería El Buen Lavado',
+        ubicacion: { lat: 19.432608, lng: -99.133209 },
+        calificacion: 4.5,
+        comentarios: [
+          { comentario: 'Excelente servicio y ropa bien cuidada.', usuario: 'Carlos M.' },
+          { comentario: 'Rápidos y atentos, recomendados.', usuario: 'Ana P.' },
+          { comentario: 'El servicio es bueno pero el tiempo de entrega podría mejorar.', usuario: 'Luis G.' },
+          { comentario: 'Personal amable, pero la ropa no queda tan fresca como esperaba.', usuario: 'María T.' },
         ],
-        "fotografia": obtenerImagenAleatoria()
+        fotografia: obtenerImagenAleatoria(),
       },
       {
-        "nombre": "Lavandería La Perla",
-        "ubicacion": { "lat": 19.435670, "lng": -99.132000 },
-        "calificacion": 3.8,
-        "comentarios": [
-          { "comentario": "El servicio es bueno pero el tiempo de entrega podría mejorar.", "usuario": "Luis G." },
-          { "comentario": "Personal amable, pero la ropa no queda tan fresca como esperaba.", "usuario": "María T." },
-          { "comentario": "Buen servicio y rápido, pero un poco caro.", "usuario": "Pedro H." },
-          { "comentario": "Excelente servicio y ropa bien cuidada.", "usuario": "Carlos M." },
+        _id: 2,
+        nombre: 'Lavandería La Perla',
+        ubicacion: { lat: 19.43567, lng: -99.132 },
+        calificacion: 3.8,
+        comentarios: [
+          { comentario: 'El servicio es bueno pero el tiempo de entrega podría mejorar.', usuario: 'Luis G.' },
+          { comentario: 'Personal amable, pero la ropa no queda tan fresca como esperaba.', usuario: 'María T.' },
+          { comentario: 'Buen servicio y rápido, pero un poco caro.', usuario: 'Pedro H.' },
+          { comentario: 'Excelente servicio y ropa bien cuidada.', usuario: 'Carlos M.' },
         ],
-        "fotografia": obtenerImagenAleatoria()
+        fotografia: obtenerImagenAleatoria(),
       },
       {
-        "nombre": "Limpieza Rápida",
-        "ubicacion": { "lat": 19.430123, "lng": -99.135200 },
-        "calificacion": 4.0,
-        "comentarios": [
-          { "comentario": "Buen servicio y rápido, pero un poco caro.", "usuario": "Pedro H." },
-          { "comentario": "Excelente atención al cliente, pero las máquinas están algo antiguas.", "usuario": "Sara D." }
+        _id: 3,
+        nombre: 'Limpieza Rápida',
+        ubicacion: { lat: 19.430123, lng: -99.1352 },
+        calificacion: 4.0,
+        comentarios: [
+          { comentario: 'Buen servicio y rápido, pero un poco caro.', usuario: 'Pedro H.' },
+          { comentario: 'Excelente atención al cliente, pero las máquinas están algo antiguas.', usuario: 'Sara D.' },
         ],
-        "fotografia": obtenerImagenAleatoria()
+        fotografia: obtenerImagenAleatoria(),
       },
-      {
-        "nombre": "Lavado Express",
-        "ubicacion": { "lat": 19.437200, "lng": -99.134500 },
-        "calificacion": 4.2,
-        "comentarios": [
-          { "comentario": "Muy rápidos y económicos.", "usuario": "Jorge F." },
-          { "comentario": "Buen servicio, pero podrían ofrecer más productos ecológicos.", "usuario": "Claudia N." }
-        ],
-        "fotografia": obtenerImagenAleatoria()
-      },
-      {
-        "nombre": "Lavandería Lux",
-        "ubicacion": { "lat": 19.438500, "lng": -99.136000 },
-        "calificacion": 5.0,
-        "comentarios": [
-          { "comentario": "El mejor servicio en la zona. La ropa queda impecable.", "usuario": "Marcos J." },
-          { "comentario": "Recomiendo 100%. Siempre puntual y muy amable.", "usuario": "Sofía L." }
-        ],
-        "fotografia": obtenerImagenAleatoria()
-      },
-      {
-        "nombre": "Tu Lavado",
-        "ubicacion": { "lat": 19.433900, "lng": -99.137000 },
-        "calificacion": 3.5,
-        "comentarios": [
-          { "comentario": "No fue tan rápido como prometen, pero la calidad es buena.", "usuario": "Carlos V." },
-          { "comentario": "El lugar está limpio, pero la atención podría mejorar.", "usuario": "Luz M." }
-        ],
-        "fotografia": obtenerImagenAleatoria()
-      },
-      {
-        "nombre": "Lavandería El Sol",
-        "ubicacion": { "lat": 19.439600, "lng": -99.138200 },
-        "calificacion": 4.3,
-        "comentarios": [
-          { "comentario": "Muy buena calidad, pero me gustaría que tuviera más horarios.", "usuario": "Raúl P." },
-          { "comentario": "El personal es muy amable, pero los precios un poco altos.", "usuario": "Gabriela S." }
-        ],
-        "fotografia": obtenerImagenAleatoria()
-      },
-      {
-        "nombre": "Lavado Total",
-        "ubicacion": { "lat": 19.431700, "lng": -99.139300 },
-        "calificacion": 3.9,
-        "comentarios": [
-          { "comentario": "Buena opción para urgencias, pero el servicio no es siempre constante.", "usuario": "José L." },
-          { "comentario": "La ropa está limpia, pero en ocasiones los pliegues no son perfectos.", "usuario": "Renata F." }
-        ],
-        "fotografia": obtenerImagenAleatoria()
-      },
-      {
-        "nombre": "Lavandería Casa Blanca",
-        "ubicacion": { "lat": 19.434800, "lng": -99.140500 },
-        "calificacion": 4.7,
-        "comentarios": [
-          { "comentario": "Servicio rápido y eficiente, muy contento con el resultado.", "usuario": "Mónica R." },
-          { "comentario": "Me encanta que usen productos ecológicos.", "usuario": "Daniela B." }
-        ],
-        "fotografia": obtenerImagenAleatoria()
-      }
     ];
-  
+    
+
     // aleatoria del array
-    const lavanderiaRandom = lavanderias[Math.floor(Math.random() * lavanderias.length)];
-  
+    const lavanderiaRandom =
+      lavanderias[Math.floor(Math.random() * lavanderias.length)];
+
     const modal = await this.modalController.create({
       component: ModalComponent,
       componentProps: {
-        lavanderia: lavanderiaRandom 
-      }
+        lavanderia: lavanderiaRandom,
+      },
     });
     await modal.present();
   }
-  
 }

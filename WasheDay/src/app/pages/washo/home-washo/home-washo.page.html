@@ -1,5 +1,8 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+  <!-- <ion-toolbar>
     <ion-buttons slot="start">
       <img src="assets/images/icon-logo.png" alt="Logo" class="logo-header">
       <div style="display: flex; flex-direction: column;">
@@ -7,20 +10,36 @@
         <p class="text-direction">{{ address }}</p>
       </div>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 
-<ion-content id="main-content">
+<ion-content>
+  <main [ngClass]="{ 'main_css_lage': isLargeScreen, 'main_css_Nolage': !isLargeScreen }">
+    <!-- <br> -->
+    <ion-refresher *ngIf="!isLargeScreen" slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content pullingIcon="arrow-down-circle-outline" pullingText="Desliza para actualizar"
+        refreshingSpinner="circles" refreshingText="Cargando ...">
+      </ion-refresher-content>
+    </ion-refresher>
 
-  <!-- mapa -->
-  <app-mapa (addressChanged)="updateAddress($event)"></app-mapa>
-
-  <!-- carta  -->
-  <div class="container-div">
-    <img src="assets/images/Img-1.png" alt="Logo" class="img-div">
-    <h3><strong>TU LAVANDERÍA</strong></h3>
-    <p>Más cercana</p>
-    <p class="text-2">Ubícala fácilmente</p>
-  </div>
-
+    <div [ngClass]="{ 'grid-large': isLargeScreen, 'grid-small': !isLargeScreen }">
+      <!-- Mapa -->
+      <app-mapa (addressChanged)="updateAddress($event)"></app-mapa>
+      <!-- Carta -->
+      <div class="container-div">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8">
+              <h3><strong>TU LAVANDERÍA</strong></h3>
+              <p>Más cercana</p>
+              <p class="text-2">Ubícala fácilmente</p>
+            </ion-col>
+            <ion-col size="4">
+              <img src="assets/images/Img-1.png" alt="Logo" class="img-div">
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+  </main>
 </ion-content>

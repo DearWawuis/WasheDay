@@ -1,3 +1,40 @@
+<ion-header *ngIf="showTabs">
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col [size]="isLargeScreen ? '1' : '2'">
+          <img src="assets/images/icon-logo.png" alt="Logo" class="logo-header">
+        </ion-col>
+        <ion-col [size]="isLargeScreen ? '11' : '10'">
+          <div [ngClass]="{ 'css_direccion_big': isLargeScreen, 'css_direccion_smoll': !isLargeScreen }">
+            <span>Mi dirección</span>
+            <p class="text-direction">{{ address }}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-buttons slot="end" *ngIf="isLargeScreen">
+      <ion-button (click)="redirecion('home-washo')">
+        <ion-icon name="home-outline"></ion-icon>
+        Inicio
+      </ion-button>
+      <ion-button (click)="redirecion('history-washo')">
+        <ion-icon name="list-outline"></ion-icon>
+        Historial
+      </ion-button>
+      <ion-button (click)="redirecion('recommendations')">
+        <ion-icon name="sparkles-outline"></ion-icon>
+        Recomendaciones
+      </ion-button>
+      <ion-button (click)="openMenu()">
+        <ion-icon name="person-outline"></ion-icon>
+        Perfil
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
 <ion-menu side="end" menuId="main-menu" contentId="main-content">
   <ion-header>
     <ion-toolbar>
@@ -12,27 +49,32 @@
       <ion-item button>
         <ion-label>Option 1</ion-label>
       </ion-item>
-      <ion-item button>
-        <ion-label>Option 2</ion-label>
+      <ion-item button (click)="logout()">
+        <ion-label>Cerrar Seción</ion-label>
       </ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
 
-<ion-tabs *ngIf="showTabs">
-  <ion-tab-bar slot="bottom" class="custom-tab-bar">
-    <ion-tab-button>
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>Inicio</ion-label>
-    </ion-tab-button>
-    <ion-tab-button>
-      <ion-icon name="list-outline"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button>
-      <ion-icon name="sparkles-outline"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button (click)="openMenu()">
-      <ion-icon name="person-outline"></ion-icon>
-    </ion-tab-button>
-  </ion-tab-bar>
+<ion-tabs *ngIf="showTabs && !isLargeScreen">
+  <ion-toolbar>
+    <ion-segment>
+      <ion-segment-button value="home" (click)="redirecion('home-washo')">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map" (click)="redirecion('history-washo')">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Historial</ion-label>
+      </ion-segment-button >
+      <ion-segment-button value="schedule" (click)="redirecion('recommendations')">
+        <ion-icon name="sparkles-outline"></ion-icon>
+        <ion-label>Recomendaciones</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="profile" (click)="openMenu()">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-tabs>
