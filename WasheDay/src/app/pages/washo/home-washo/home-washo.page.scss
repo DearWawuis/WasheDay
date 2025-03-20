@@ -30,9 +30,30 @@ ion-header {
 }
 
 .img-div {
-  position: absolute;
-  top: 17px;
+  top: 30px;
   right: 20px;
-  width: 120px;
+  width: 100px;
   height: auto;
+}
+
+ion-refresher {
+  background-color: #fff;
+
+  ion-refresher-conten {
+    color: #000000;
+  }
+}
+
+
+.grid-large {
+  display: grid;
+  grid-template-columns: 2fr 1fr; 
+  gap: 40px;
+  align-items: center;
+}
+
+.grid-small {
+  display: flex;
+  flex-direction: column; // Elementos en columna
+  gap: 20px;
 }

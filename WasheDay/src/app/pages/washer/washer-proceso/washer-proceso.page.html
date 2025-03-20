@@ -38,6 +38,7 @@
       </ion-segment>
     </ion-card-header>
     <ion-card-content>
+      <ion-searchbar placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
       <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
   </ion-card>
@@ -86,6 +87,16 @@
 
   <ion-list *ngIf="selectedSegment == 'ocupados'">
 
+    <ion-item *ngFor="let ocupado of ocupados">
+
+      <ion-label>
+
+        <p>{{ocupado.nombre}}</p>
+
+      </ion-label>
+
+
+    </ion-item>
 
       <ion-card *ngFor="let ocupado of ocupados">
         <ion-card-header>
@@ -124,7 +135,6 @@
     </ion-item>
   </ion-list>
 </ion-content>
-
 <!--Author: Jesus Gonzalez Leal IDGS08 -->
 
 

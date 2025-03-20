@@ -13,6 +13,7 @@ import { AlertController,  AlertInput } from '@ionic/angular';
 
 import { ToastController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-washer-proceso',
   templateUrl: './washer-proceso.page.html',
@@ -37,14 +38,21 @@ export class WasherProcesoPage implements OnInit {
 
 
 
-
-
-
   
 
 
 
   ocupados = [
+    { id: '101', nombre: 'Servicio 101', Washo: 'Mario Torres', Hora: '09:00 AM', Ubicacion: 'Av. Libertad 789' },
+    { id: '102', nombre: 'Servicio 102', Washo: 'Lucía Fernández', Hora: '10:45 AM', Ubicacion: 'Calle 8 No. 32' }
+  ];
+
+  recibidos = [
+    
+      { id: '001', nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
+      { id: '002', nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
+      { id: '003', nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
+
     { 
       id: '101', 
       nombre: 'Servicio 101', 
@@ -75,6 +83,7 @@ export class WasherProcesoPage implements OnInit {
       { id: '001', kg: 12, nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
       { id: '002', kg: 33, nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
       { id: '003', kg: 21, nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
+
     
   ];
 
@@ -86,6 +95,7 @@ export class WasherProcesoPage implements OnInit {
   pedido_recibido: string = "";
 
 
+  constructor() { }
   constructor(private alertController: AlertController, private toastController: ToastController) { 
 
     this.todos_array = [...this.ocupados, ...this.recibidos,...this.historial];
@@ -106,7 +116,39 @@ export class WasherProcesoPage implements OnInit {
   ngOnInit() {
   }
 
+ 
 
+
+  recoger_pedido(pedido : any){
+
+
+    console.log("soy tu pedido lokote ..", pedido);
+
+    this.pedido_recibido = pedido.id;
+
+    console.log("Soy id del pedido. . ", pedido.id);
+
+
+    console.log("Soy id del pedido guardado .. ", this.pedido_recibido);
+
+
+    console.log("Soy cambios para washer-proceso");
+    
+    
+    
+      setTimeout(() => {
+        this.pedido_recibido = "";
+
+      }, 5000);
+
+
+
+
+
+
+
+
+  }
   closeModal(){
 
 

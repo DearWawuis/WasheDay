@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { MapaComponent } from '../../../components/washo/mapa/mapa.component';
 
 @Component({
   selector: 'app-home-washo',
@@ -9,11 +10,34 @@ import { ModalController } from '@ionic/angular';
 })
 export class HomeWashoPage implements OnInit {
   address: string = 'Obteniendo ubicación...';
-  constructor(public modalController: ModalController) {}
+  public isLargeScreen: boolean = false;
 
-  ngOnInit() {}
+  @ViewChild(MapaComponent) mapaComponent!: MapaComponent;
   
+  constructor(
+    public modalController: ModalController
+  ) {
+    this.isLargeScreen = window.innerWidth >= 765;
+  }
+
+  // cambios tiempo real
+  @HostListener('window:resize', ['$event'])
+  updateScreenSize() {
+    this.isLargeScreen = window.innerWidth >= 765;
+  }
+
+  ngOnInit() {
+    this.updateScreenSize() 
+  }
+
   updateAddress(newAddress: string) {
     this.address = newAddress;
+  }
+
+  handleRefresh(event: any) {
+    this.mapaComponent.getLocation();
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
   }
 }
