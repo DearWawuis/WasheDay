@@ -23,6 +23,17 @@ export const signUp = async (req, res) => {
         // Extraer datos del cuerpo de la petición
         const { name, lname, address, email, password, roles } = req.body;
 
+        // Validar que todos los campos requeridos estén presentes
+        if (!name || !lname || !address || !email || !password || !roles) {
+            return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        }
+
+        // Verificar si el correo electrónico ya está registrado
+        const existingUser = await User.findOne({ email: email.toLowerCase() }); // Convertir a minúsculas para evitar duplicados
+        if (existingUser) {
+            return res.status(400).json({ message: "El correo electrónico ya está registrado" });
+        }
+
         // Verificar que los roles existen y obtener sus IDs
         const foundRoles = await Role.find({ name: { $in: roles } });
         if (foundRoles.length !== roles.length) {
@@ -34,51 +45,58 @@ export const signUp = async (req, res) => {
             name,
             lname,
             address,
-            email,
-            password: await User.encryptPassword(password),
-            roles: foundRoles.map(role => role._id)
+            email: email.toLowerCase(), // Guardar el correo en minúsculas
+            password: await User.encryptPassword(password), // Asegúrate de que esta función esté implementada
+            roles: foundRoles.map(role => role._id) // Asignar los IDs de los roles
         });
 
-        // Guardar el usuario en la bd
-        const saveUser = await newUser.save();
+        // Guardar el usuario en la base de datos
+        const savedUser = await newUser.save();
 
-        // Verificar que esten llegando correctamente
-        console.log(saveUser);
-        res.json({ token: signToken(saveUser) });
+        // Generar un token de autenticación
+        const token = signToken(savedUser);
+
+        // Responder con el token
+        res.status(201).json({ token });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        if (error.code === 11000) { // Código de error de MongoDB para duplicados
+            return res.status(400).json({ message: "El correo electrónico ya está registrado" });
+        }
+        console.error("Error en signUp:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
     }
-}
+};
 
 export const signIn = async (req, res) => {
     try {
-        // Imprimir el cuerpo de la solicitud
-        console.log('Cuerpo de la solicitud:', req.body);
+        // Validar que los campos requeridos estén presentes
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "El correo y la contraseña son obligatorios" });
+        }
 
         // Buscar usuario por correo
-        const userFound = await User.findOne({ email: req.body.email }).populate("roles");
+        const userFound = await User.findOne({ email: email.toLowerCase() }).populate("roles");
         if (!userFound) {
             console.error('Usuario no encontrado');
             return res.status(400).json({ message: "Usuario no encontrado" });
         }
 
         // Verificar contraseña
-        const matchPassword = await User.comparePassword(req.body.password, userFound.password);
+        const matchPassword = await User.comparePassword(password, userFound.password);
         if (!matchPassword) {
             console.error('Contraseña inválida');
             return res.status(401).json({ token: null, message: "Contraseña inválida" });
         }
 
-        // Generar token
-        const token = jwt.sign({ id: userFound.id }, process.env.SECRET, {
-            expiresIn: 86400 // 24 horas
-        });
+        // Generar token usando la función signToken
+        const token = signToken(userFound);
 
         console.log('Inicio de sesión exitoso:', userFound);
         res.json({ token });
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: "Error interno del servidor" });
     }
 }
 
@@ -88,7 +106,7 @@ export const getUserInfo = async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         
         // Verificar y decodificar el token
-        const decoded = jwt.verify(token, process.env.SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.id).populate("roles");
 
         if (!user) {
