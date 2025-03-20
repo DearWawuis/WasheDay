@@ -39,8 +39,23 @@
     </ion-card-header>
     <ion-card-content>
       <ion-searchbar placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
   </ion-card>
+
+
+
+  <ion-list *ngIf="searchQuery?.trim()">
+    <ion-item *ngFor="let busqueda of filteredItems">
+
+      <ion-label>
+        {{busqueda.nombre}}
+      </ion-label>
+
+
+    </ion-item>
+
+  </ion-list>
 
 
 
@@ -83,6 +98,28 @@
 
     </ion-item>
 
+      <ion-card *ngFor="let ocupado of ocupados">
+        <ion-card-header>
+          <ion-card-title>{{ocupado.FechaSolicitud}}</ion-card-title>
+        </ion-card-header>
+        <ion-badge [color]="ocupado.EstadoPago === 'Pago realizado' ? 'success' : 'danger'">
+          {{ ocupado.EstadoPago }}
+        </ion-badge>
+        <ion-card-content>
+          <p>Fecha de entrega: {{ocupado.FechaEntrega}}</p>
+
+          <p><strong>Detergentes:</strong></p>
+            <ul *ngFor="let det of ocupado.Detergentes">
+              <li>{{det}}</li>
+            </ul>
+          
+          <ion-chip>ID: {{ocupado.id}}</ion-chip>
+          <ion-chip color="primary">WASHO: {{ocupado.Washo}}</ion-chip>
+          <ion-button id="boton-lavar" expand="block" color="primary">LAVAR</ion-button>
+        </ion-card-content>
+      </ion-card>
+    
+
 
   </ion-list>
 
@@ -98,6 +135,14 @@
     </ion-item>
   </ion-list>
 </ion-content>
+<!--Author: Jesus Gonzalez Leal IDGS08 -->
+
+
+
+
+
+
+
 
 <!-- Navbar inferior solo para móvil -->
 <ion-footer class="mobile-only">
@@ -108,7 +153,7 @@
         <ion-label>Inicio</ion-label>
       </ion-segment-button>
       <ion-segment-button value="map">
-        <ion-icon name="list-outline"></ion-icon>
+        <ion-icon name="list-outline" color="warning"></ion-icon>
         <ion-label>Pendientes</ion-label>
       </ion-segment-button>
       <ion-segment-button value="schedule">

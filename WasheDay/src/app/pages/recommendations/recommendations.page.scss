@@ -1,0 +1,51 @@
+/* main_css_lage (pantallas grandes) */
+.main_css_lage {
+  padding: 20px;
+}
+
+.main_css_lage ion-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+
+.main_css_lage ion-avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.main_css_lage ion-label h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* main_css_Nolage (pantallas pequeñas) */
+.main_css_Nolage {
+  padding: 10px;
+}
+
+.main_css_Nolage ion-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.main_css_Nolage ion-avatar {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.main_css_Nolage ion-label h2 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.error-message {
+  background-color: #ffdddd;
+  color: #ff0000;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}

@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Recomendaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main [ngClass]="{ 'main_css_lage': isLargeScreen, 'main_css_Nolage': !isLargeScreen }">
+    <h3>¡Bienvenido a las Recomendaciones de Lavado!</h3>
+
+    <!-- Buscador -->
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="searchTips()" placeholder="Buscar consejos de lavado"></ion-searchbar>
+
+    <!-- Mostrar mensaje de error si existe -->
+    <div *ngIf="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <ion-list>
+      <ion-item *ngFor="let recomendacion of recomendaciones" (click)="openTipModal(recomendacion.titulo, recomendacion.descripcion)">
+        <ion-avatar slot="start">
+          <img src="assets/images/idea.png" alt="Recomendación" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ recomendacion.titulo }}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </main>
+</ion-content>

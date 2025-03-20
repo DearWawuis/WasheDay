@@ -1,6 +1,147 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
 :root {
-    --color-principal: #289cbc;
+  --color-principal: #289cbc;
+}
+
+.main_css_lage {
+  margin: 12px 10px 10px 10px;
+}
+
+.main_css_Nolage {
+  margin: 10px 2px 2px 2px;
+}
+
+ion-header {
+  --shadow: none !important;
+
+  /* Estilos para el ion-toolbar dentro del encabezado */
+  ion-toolbar {
+    --shadow: none !important;
+    --background: #ffffff;
+    /* Color de fondo del toolbar */
+    // color: black;
+    /* Color del texto dentro del toolbar */
+
+    /* Estilos para el título dentro del toolbar */
+    ion-title {
+      font-size: 15px;
+      /* Ajusta el tamaño del texto del título */
+      font-weight: bold;
+      /* Hace el texto en negrita */
+    }
+
+    /* Estilos para el logo que se posiciona en la esquina derecha */
+    .img-logo {
+      width: 60px;
+      /* Ancho del logo */
+      height: 60px;
+      /* Altura del logo */
+      position: absolute;
+      /* Posiciona el logo en relación al toolbar */
+      right: 10px;
+      /* Espaciado desde la derecha */
+      top: 50%;
+      /* Posiciona el logo verticalmente centrado */
+      transform: translateY(-50%);
+      /* Ajusta el logo para que esté centrado verticalmente */
+    }
   }
-  
+}
+
+ion-content {
+  --background: #ffffff;
+  /* Color de fondo del contenido */
+}
+
+/* Estilos para el pie de página de la aplicación */
+ion-footer {
+
+  /* Estilos para el ion-toolbar dentro del pie de página */
+  ion-toolbar {
+    // height: 80px;
+    /* Ajusta la altura del toolbar */
+    --background: #ffffff;
+    /* Color de fondo del toolbar */
+    // color: black;
+    /* Color del texto dentro del toolbar */
+    // box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra en la parte superior del footer */
+  }
+}
+
+/* Para dispositivos con un ancho mayor a 768px (desktop) */
+@media screen and (min-width: 769px) {
+  .calendar-container {
+    justify-content: flex-start;
+    /* Alinear el calendario a la izquierda en desktop */
+  }
+
+  .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    /* El contenido adicional se acomoda a la derecha */
+  }
+
+  .content-wrapper .calendar-container {
+    flex: 1;
+  }
+
+  .content-wrapper .additional-content {
+    flex: 1;
+    margin-left: 20px;
+    /* Espacio entre el calendario y el contenido adicional */
+  }
+
+  .mobile-only {
+    display: none;
+  }
+
+  ion-buttons.desktop-only {
+    display: flex;
+    /* Mostrar los botones del header en desktop */
+  }
+}
+
+/* Para dispositivos con un ancho menor a 768px (móviles) */
+@media screen and (max-width: 768px) {
+  .calendar-container {
+    justify-content: center;
+    /* Centramos el calendario en móviles */
+  }
+
+  .additional-content {
+    margin-top: 20px;
+    /* El contenido adicional se coloca debajo del calendario en móviles */
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  ion-buttons.desktop-only {
+    display: none;
+    /* Ocultar los botones del header en móviles */
+  }
+}
+
+.mobile-only ion-segment-button {
+  color: #000000;
+  /* Color para el texto y los íconos */
+  background-color: #ffffff;
+}
+
+
+ion-card {
+  background: #ffffff;
+}
+
+ion-list {
+  background: #ffffff;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+ion-item {
+  --background: #ffffff;
+}
