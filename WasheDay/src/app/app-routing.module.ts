@@ -30,7 +30,8 @@ const routes: Routes = [
   {
     path: 'monitoring-washer',
     loadChildren: () => import('./pages/washer/monitoring-washer/monitoring-washer.module').then( m => m.MonitoringWasherPageModule)
-  },  {
+  },
+  {
     path: 'recommendations',
     loadChildren: () => import('./pages/recommendations/recommendations.module').then( m => m.RecommendationsPageModule)
   },

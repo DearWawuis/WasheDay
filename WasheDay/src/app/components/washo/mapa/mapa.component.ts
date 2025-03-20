@@ -154,7 +154,6 @@ export class MapaComponent implements OnInit {
           scaledSize: new google.maps.Size(27, 27),
         },
       });
-
       marker.addListener('click', async () => {
         await this.abrirModal();
       });
