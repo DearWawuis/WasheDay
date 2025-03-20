@@ -34,6 +34,9 @@ const routes: Routes = [
   {
     path: 'recommendations',
     loadChildren: () => import('./pages/recommendations/recommendations.module').then( m => m.RecommendationsPageModule)
+
+    path: 'washer-proceso',
+    loadChildren: () => import('./pages/washer/washer-proceso/washer-proceso.module').then( m => m.WasherProcesoPageModule)
   },
 
 ];

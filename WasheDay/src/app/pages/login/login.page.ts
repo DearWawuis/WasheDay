@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn, ReactiveFormsModule} from "@angular/forms";
 //import { AuthService } from '../../services/auth.service'; // Asegúrate de tener la ruta correcta
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
@@ -16,7 +15,13 @@ import { AlertController } from '@ionic/angular'; // Importa AlertController
   imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, RouterModule],
 })
 export class LoginPage {
-  loginForm: FormGroup;
+  loginForm: FormGroup = this.formBuilder.group({
+    correo: ['',[Validators.required, Validators.email, this.noWhitespace()]],
+    password: ['', [
+      Validators.required, 
+      Validators.minLength(6), 
+      Validators.pattern(/^(?!.*(\d)\1\1)(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*(\d{3})).{8,}$/), 
+      this.noWhitespace()]]});
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
   users: any[] = [
@@ -25,14 +30,33 @@ export class LoginPage {
   ];
 
   constructor(
-    private fb: FormBuilder,
-    private router: Router,
+    private formBuilder: FormBuilder,
+  private router: Router,
     private alertController: AlertController
-  ) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
+  ) {}
+
+  //Obtener mensaje de error para mostrar en cada campo
+  getErrorMessage(controlName: string) {
+    const control = this.loginForm.get(controlName);
+    if (control?.hasError('required')) {
+      return 'Este campo es obligatorio.';
+    }
+    if (control?.hasError('email')) {
+      return 'Por favor ingrese un correo electrónico válido.';
+    }
+    if (control?.hasError('pattern')) {
+      if(controlName=='password'){
+        return 'La contraseña debe tener al menos 1 mayúscula, 1 número, 1 carácter especial, NO números consecutivos y NO números repetidos.'; 
+      }
+      return 'El formato del campo es incorrecto.';
+    }
+    if (control?.hasError('minlength')) {
+      return 'La contraseña debe tener al menos 6 carácteres.';
+    }
+    if (control?.hasError('whitespace')) {
+      return 'Este campo no puede contener espacios';
+    }
+    return '';
   }
 
   async onLogin() {
@@ -62,21 +86,18 @@ export class LoginPage {
         }
       );
       */
-    } else {
-      this.checkFormValidity(); // Llamar a la función para comprobar la validez del formulario
     }
   }
 
-  checkFormValidity() {
-    //Aqui se hacen todas las validaciones de los inputs
-    if (this.loginForm.get('email')?.hasError('required')) {
-      this.showAlert('Error', 'Rellena este campo: Correo.'); // Mensaje si el campo de correo está vacío
-    } else if (this.loginForm.get('email')?.hasError('email')) {
-      this.showAlert('Error', 'Formato de correo inválido.'); // Mensaje si el formato del correo es incorrecto
-    } else if (this.loginForm.get('password')?.hasError('required')) {
-      this.showAlert('Error', 'Rellena este campo: Contraseña.'); // Mensaje si el campo de contraseña está vacío
+  //Validar que no tenga espacios
+noWhitespace(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (control.value && control.value.includes(' ')) {
+      return { 'whitespace': true }; 
     }
-  }
+    return null; 
+  };
+}
 
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
@@ -125,7 +146,7 @@ export class LoginPage {
   }
 
   goToRegister() {
-    this.router.navigate(['/registro']); // Navegar a la página de registro
+    this.router.navigate(['/register']); // Navegar a la página de registro
   }
 
   togglePasswordVisibility(): void {
