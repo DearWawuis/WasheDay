@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
+import { Router} from '@angular/router';
+
+
 @Component({
   selector: 'app-monitoring-washer',
   templateUrl: './monitoring-washer.page.html',
@@ -47,9 +50,17 @@ export class MonitoringWasherPage implements OnInit {
   ];
 
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  navpend(){
+
+    this.router.navigate(['/washer-proceso']);
+
+
+
   }
 
 }

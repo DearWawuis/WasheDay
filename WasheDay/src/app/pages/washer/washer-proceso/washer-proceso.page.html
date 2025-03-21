@@ -91,16 +91,27 @@
         <ion-card-header>
           <ion-card-title>{{ocupado.FechaSolicitud}}</ion-card-title>
         </ion-card-header>
-        <ion-badge [color]="ocupado.EstadoPago === 'Pago realizado' ? 'success' : 'danger'">
-          {{ ocupado.EstadoPago }}
+        <ion-badge [color]="ocupado.Status === 'Pago realizado' ? 'success' : 'danger'">
+          {{ ocupado.Status }}
         </ion-badge>
         <ion-card-content>
           <p>Fecha de entrega: {{ocupado.FechaEntrega}}</p>
 
           <p><strong>Detergentes:</strong></p>
-            <ul *ngFor="let det of ocupado.Detergentes">
-              <li>{{det}}</li>
-            </ul>
+
+            <div *ngIf="ocupado.Detergentes && ocupado.Detergentes.length > 0; else noDetergents">
+              <ul>
+                <li *ngFor="let det of ocupado.Detergentes">
+                  {{ det }}
+                </li>
+              </ul>
+            </div>
+
+
+            <ng-template #noDetergents>
+              <p>No hay detergentes disponibles.</p>
+            </ng-template>
+              
           
           <ion-chip>ID: {{ocupado.id}}</ion-chip>
           <ion-chip color="primary">WASHO: {{ocupado.Washo}}</ion-chip>
