@@ -5,6 +5,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { provideHttpClient } from '@angular/common/http'; 
 
 // Importamos el tab-bar
 import { TabBarComponent } from './components/tab-bar/tab-bar.component';
@@ -18,7 +19,7 @@ import { TabBarComponent } from './components/tab-bar/tab-bar.component';
     GoogleMapsModule,
     TabBarComponent
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

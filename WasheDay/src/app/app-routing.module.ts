@@ -34,10 +34,20 @@ const routes: Routes = [
   {
     path: 'recommendations',
     loadChildren: () => import('./pages/recommendations/recommendations.module').then( m => m.RecommendationsPageModule)
-
+  },
+  {
     path: 'washer-proceso',
     loadChildren: () => import('./pages/washer/washer-proceso/washer-proceso.module').then( m => m.WasherProcesoPageModule)
   },
+  {
+    path: 'payment-method-washo',
+    loadChildren: () => import('./pages/washo/payment-method-washo/payment-method-washo.module').then( m => m.PaymentMethodWashoPageModule)
+  },
+  {
+    path: 'stripe-washo/:id',
+    loadChildren: () => import('./pages/washo/stripe-washo/stripe-washo.module').then( m => m.StripeWashoPageModule)
+  },
+
 
 ];
 
