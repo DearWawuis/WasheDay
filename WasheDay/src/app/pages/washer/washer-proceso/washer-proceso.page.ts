@@ -18,11 +18,6 @@ export class WasherProcesoPage implements OnInit {
 
   selectedSegment: string = 'recibir';
 
-
-  
-
-
-
   ocupados = [
     { id: '101', nombre: 'Servicio 101', Washo: 'Mario Torres', Hora: '09:00 AM', Ubicacion: 'Av. Libertad 789' },
     { id: '102', nombre: 'Servicio 102', Washo: 'Lucía Fernández', Hora: '10:45 AM', Ubicacion: 'Calle 8 No. 32' }
