@@ -38,7 +38,6 @@
       </ion-segment>
     </ion-card-header>
     <ion-card-content>
-      <ion-searchbar placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
       <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
   </ion-card>
@@ -87,31 +86,32 @@
 
   <ion-list *ngIf="selectedSegment == 'ocupados'">
 
-    <ion-item *ngFor="let ocupado of ocupados">
-
-      <ion-label>
-
-        <p>{{ocupado.nombre}}</p>
-
-      </ion-label>
-
-
-    </ion-item>
 
       <ion-card *ngFor="let ocupado of ocupados">
         <ion-card-header>
           <ion-card-title>{{ocupado.FechaSolicitud}}</ion-card-title>
         </ion-card-header>
-        <ion-badge [color]="ocupado.EstadoPago === 'Pago realizado' ? 'success' : 'danger'">
-          {{ ocupado.EstadoPago }}
+        <ion-badge [color]="ocupado.Status === 'Pago realizado' ? 'success' : 'danger'">
+          {{ ocupado.Status }}
         </ion-badge>
         <ion-card-content>
           <p>Fecha de entrega: {{ocupado.FechaEntrega}}</p>
 
           <p><strong>Detergentes:</strong></p>
-            <ul *ngFor="let det of ocupado.Detergentes">
-              <li>{{det}}</li>
-            </ul>
+
+            <div *ngIf="ocupado.Detergentes && ocupado.Detergentes.length > 0; else noDetergents">
+              <ul>
+                <li *ngFor="let det of ocupado.Detergentes">
+                  {{ det }}
+                </li>
+              </ul>
+            </div>
+
+
+            <ng-template #noDetergents>
+              <p>No hay detergentes disponibles.</p>
+            </ng-template>
+              
           
           <ion-chip>ID: {{ocupado.id}}</ion-chip>
           <ion-chip color="primary">WASHO: {{ocupado.Washo}}</ion-chip>
@@ -135,6 +135,7 @@
     </ion-item>
   </ion-list>
 </ion-content>
+
 <!--Author: Jesus Gonzalez Leal IDGS08 -->
 
 
