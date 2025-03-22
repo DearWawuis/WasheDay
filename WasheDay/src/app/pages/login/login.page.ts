@@ -20,8 +20,8 @@ export class LoginPage {
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
   users: any[] = [
-    { email: 'washer@gmail.com', password: '123456', home: '/home-washer' },
-    { email: 'washo@gmail.com', password: '123456', home: '/home-washo' },
+    { email: 'washer@gmail.com', password: '123456', home: '/home-washer', tipo: 'washer' },
+    { email: 'washo@gmail.com', password: '123456', home: '/home-washo', tipo: 'washo' },
   ];
 
   constructor(
@@ -43,7 +43,7 @@ export class LoginPage {
       );
 
       if (user) {
-        this.router.navigate([user.home]); // Redirigir a su respectiva página
+        this.router.navigate([user.home]); 
         this.showAlert('Inicio de sesión exitoso', `Bienvenido ${user.email}`);
       } else {
         this.showAlert('Error', 'Credenciales incorrectas');
