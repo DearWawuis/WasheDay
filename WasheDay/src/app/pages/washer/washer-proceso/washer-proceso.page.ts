@@ -40,10 +40,14 @@ export class WasherProcesoPage implements OnInit {
       Washo: 'Mario Torres', 
       Hora: '09:00 AM', 
       Ubicacion: 'Av. Libertad 789', 
-      FechaSolicitud: 'lunes, 17 de febrero de 2025', 
+      FechaSolicitud: new Date().toISOString().split("T")[0],
       FechaEntrega: new Date().toISOString(), 
       Detergentes: ['Tide Free & Gentle', 'Ariel Detergente', 'Ecovor'], 
-      Status: 'Pendiente por pagar o definir pago' 
+      Status: 'Pendiente por pagar o definir pago' ,
+      estadoActual: 3,
+      kg: 32,
+      precio: 34,
+      total: 450.0
     },
     { 
       id: '102', 
@@ -51,10 +55,15 @@ export class WasherProcesoPage implements OnInit {
       Washo: 'Lucía Fernández', 
       Hora: '10:45 AM', 
       Ubicacion: 'Calle 8 No. 32', 
-      FechaSolicitud: new Date().toISOString(),
+      FechaSolicitud: new Date().toISOString().split("T")[0],
       FechaEntrega: 'martes, 03 de marzo', 
       Detergentes: ['Tide Free & Gentle', 'Ariel Detergente', 'Ecovor'], 
-      Status: 'Pago realizado' 
+      Status: 'Pago realizado',
+      estadoActual: 0,
+      kg: 32,
+      precio: 34,
+      total: 450.0
+
     }
   ];
   
@@ -124,7 +133,7 @@ export class WasherProcesoPage implements OnInit {
       ///Pero el campo de id, washo y total los bloqueamos para que no se pueda editar
       inputs: [
         { name: 'id', type: 'text', placeholder: 'ID WASHO', value: pedido.id, disabled: true },
-        { name: 'washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.Washo, disabled: true },
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.Washo, disabled: true },
         /*
           Le agregue nadamas unos id para poder detectarlos en la funcion de de flecha que 
           esta bajo con el setTimeout
@@ -143,13 +152,19 @@ export class WasherProcesoPage implements OnInit {
               const newData = {
                 id: pedido.id,
                 nombre: pedido.nombre,
-                Washo: pedido.washo, // Cambio de "washo" a "Washo" (para coincidir con ocupados)
+                Washo: pedido.Washo,
                 Hora: data.hora || "00:00",
                 Ubicacion: data.ubicacion || "Sin ubicación",
-                FechaSolicitud: new Date().toISOString(),
-                FechaEntrega: data.fecha_entrega || new Date().toISOString(), // Cambio de "fecha_entrega" a "FechaEntrega"
-                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], // Asegura que sea un array de strings
-                Status: data.estado_pago || "Pendiente", // Cambio de "Status" a "EstadoPago"
+                FechaSolicitud: new Date().toISOString().split("T")[0],
+                FechaEntrega: data.fecha_entrega || new Date().toISOString(),
+                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], 
+                Status: data.estado_pago || "Pendiente",
+                estadoActual: 0,
+                kg: data.kg || 0,
+                precio: 34,
+                total: parseFloat((data.kg * 34).toFixed(2)),
+
+
               };
   
               console.log("Soy Pedido aceptado . . ", newData);
@@ -252,6 +267,12 @@ export class WasherProcesoPage implements OnInit {
     })
 
 
+
+  }
+
+  async finalizar_servicio(finalizar_ped : any){
+
+    console.log("Soy Finalizar pedido", finalizar_ped);
 
   }
   async mostrarToast(mensaje: string, color: string) {

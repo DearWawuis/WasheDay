@@ -85,43 +85,59 @@
   </ion-list>
 
   <ion-list *ngIf="selectedSegment == 'ocupados'">
+    <ion-card *ngFor="let ocupado of ocupados">
+      <ion-card-header>
+        <ion-card-title>{{ ocupado.FechaSolicitud }}</ion-card-title>
+      </ion-card-header>
+  
+      <ion-badge [color]="ocupado.Status === 'Pago realizado' ? 'success' : 'danger'">
+        {{ ocupado.Status }}
+      </ion-badge>
+  
+      <ion-card-content>
+        <p>Fecha de entrega: {{ ocupado.FechaEntrega }}</p>
 
+        
+        <ion-card>
+          <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let estado of ['Orden Creada', 'Lavando', 'Secando', 'Finalizado']; let i = index">
+                <ion-chip [color]="i <= ocupado.estadoActual ? 'success' : 'medium'">
+                  {{ estado }}
+                </ion-chip>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
 
-      <ion-card *ngFor="let ocupado of ocupados">
-        <ion-card-header>
-          <ion-card-title>{{ocupado.FechaSolicitud}}</ion-card-title>
-        </ion-card-header>
-        <ion-badge [color]="ocupado.Status === 'Pago realizado' ? 'success' : 'danger'">
-          {{ ocupado.Status }}
-        </ion-badge>
-        <ion-card-content>
-          <p>Fecha de entrega: {{ocupado.FechaEntrega}}</p>
+  
+        <p><strong>Detergentes:</strong></p>
+        <div *ngIf="ocupado.Detergentes && ocupado.Detergentes.length > 0; else noDetergents">
+          <ion-list>
+            <ion-item *ngFor="let det of ocupado.Detergentes">
+              <ion-label>{{ det }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+  
+        <ng-template #noDetergents>
+          <p>No hay detergentes disponibles.</p>
+        </ng-template>
 
-          <p><strong>Detergentes:</strong></p>
+  
+        <ion-chip>ID: {{ ocupado.id }}</ion-chip>
+        <ion-chip color="primary">WASHO: {{ ocupado.Washo }}</ion-chip>
+  
+        <ion-button id="boton-lavar" expand="block" color="primary" (click)="finalizar_servicio(ocupado)">
+          {{ ocupado.estadoActual === 0 ? 'Orden Creada' : ocupado.estadoActual === 1 ? 'Lavando' : ocupado.estadoActual === 2 ? 'Secando' : 'Finalizado' }}
+        </ion-button>
+        
+        <!-- Estado del servicio en formato iCard -->
 
-            <div *ngIf="ocupado.Detergentes && ocupado.Detergentes.length > 0; else noDetergents">
-              <ul>
-                <li *ngFor="let det of ocupado.Detergentes">
-                  {{ det }}
-                </li>
-              </ul>
-            </div>
-
-
-            <ng-template #noDetergents>
-              <p>No hay detergentes disponibles.</p>
-            </ng-template>
-              
-          
-          <ion-chip>ID: {{ocupado.id}}</ion-chip>
-          <ion-chip color="primary">WASHO: {{ocupado.Washo}}</ion-chip>
-          <ion-button id="boton-lavar" expand="block" color="primary">LAVAR</ion-button>
-        </ion-card-content>
-      </ion-card>
-    
-
-
+      </ion-card-content>
+    </ion-card>
   </ion-list>
+  
 
   <ion-list *ngIf="selectedSegment == 'historial'">
 
