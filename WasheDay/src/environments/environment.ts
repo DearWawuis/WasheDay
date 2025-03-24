@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  stripe_pk:'pk_test_51R2TH0QNgl65mkjdhPW7iVGpwkIT6BCSrPXJ4IfC5dKTdPt6m8F26Daq281x6wsCIdHbYcjYy5mOB9J4XsohgTmx00gEzFhd9n',
+  api:'https://api-washeday.vercel.app'
 };
 
 /*

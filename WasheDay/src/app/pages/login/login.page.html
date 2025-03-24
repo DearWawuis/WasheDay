@@ -1,51 +1,57 @@
-
-
 <ion-content>
-  <div class="login-container">
-    <div class="top-left-logo">
-      <img src="assets/images/logo-left.png" alt="Logo Esquina Izquierda">
+  <div class="background-washeday">
+    <div class="container-washeday">
+      <img [src]="'assets/images/login-logo.png'" alt="Logo de la app" style="width: 90%; max-width: 380px; min-width: 100px;"/>
+      <div class="container-frame-text">
+        <ion-text class="container-text">
+          Siempre
+        </ion-text>
+      </div>
+      <div class="container-frame-text">
+        <ion-text class="container-text-client">
+          Ropa limpia
+        </ion-text>
+      </div>
+      
     </div>
-
-    <div class="logo-container">
-      <img src="assets/images/logo-wash.png" alt="Logo de la app" />
+    <div class="container-washeday">
+    <div class="container-form-card">
+      <div class="container-form-card-intern">
+        <div class="container-form-title">
+          Inicia sesión
+        </div>
+        <form style="width: 100%;" [formGroup]="loginForm" >
+          <ion-item class="container-form-input">
+            <ion-input  type="email" placeholder="Correo" formControlName="correo"></ion-input>
+          </ion-item>
+          <div *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('correo') }}</p>
+            </ion-text>
+          </div>
+          <ion-item class="container-form-input">
+            <ion-input  [type]="passwordType" placeholder="Ingresa contraseña" formControlName="password"></ion-input>
+            <ion-icon
+              name="{{ passwordIcon }}"
+              slot="end"
+              class="password-toggle-icon"
+              (click)="togglePasswordVisibility()"></ion-icon>
+          </ion-item>
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="container-form-input-error">
+            <ion-text>
+              <p>{{ getErrorMessage('password') }}</p>
+            </ion-text>
+          </div>
+          <div class="container-washeday">
+            <ion-button shape="round" class="container-form-button" [disabled]="loginForm.invalid">Registrar</ion-button>
+          </div>
+        </form>
+        <div class="container-form-title">
+          <p><ion-text >¿No tienes cuenta? </ion-text>
+            <ion-text class="container-link" (click)="goToRegister()">Registrate aquí</ion-text></p>
+        </div>
+      </div>
     </div>
-
-    <div class="header-text">
-      <span class="white-text">SIEMPRE&nbsp;</span> <br>
-      <span class="orange-text">ROPA LIMPIA</span>
-    </div>
-
-    <div class="form-container">
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-        <ion-item>
-          <ion-label position="floating">Correo</ion-label>
-          <ion-input formControlName="email" type="email"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input
-            [type]="passwordType"
-            formControlName="password"
-          ></ion-input>
-          <ion-icon
-            [name]="passwordIcon"
-            slot="end"
-            class="password-toggle-icon"
-            (click)="togglePasswordVisibility()"
-          ></ion-icon>
-
-        </ion-item>
-        <ion-button type="submit" class="rounded-button">Iniciar Sesión</ion-button>
-      </form>
-    </div>
-    
-    <div class="register-container">
-      <ion-item lines="none">
-        <ion-label class="register-label">¿No tienes cuenta? <a [routerLink]="['/register']">Regístrate aquí</a></ion-label>
-      </ion-item>
-    </div>
+   </div>
   </div>
-
-  
 </ion-content>

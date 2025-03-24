@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Método de pago</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container-washeday">
+    <div class="container-form-card">
+      <div class="checkout-user">
+        <img class="avatar" src="assets/images/logo-home.png" alt="">
+      </div>
+      <div class="container-form-card-intern">
+        <div class="container-form-title">
+          
+        </div>
+        <ion-list>
+          <ion-item>
+            <ion-avatar aria-hidden="true" slot="start">
+              <img alt="" src="assets/images/shirt-clothes.png" />
+            </ion-avatar>
+            <ion-label>
+              <strong class="text-item">Servicio de lavado</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                {{description}}
+              </ion-note>
+              <div class="text-item-price">
+                <div class="price">
+                 $ {{amount}}
+                </div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list> 
+        <ion-list>
+          <div class="text-item-price">
+            <div class="total">
+             Total $ {{amount}}
+            </div>
+          </div>
+        </ion-list>
+      </div>
+    </div>
+    <div class="container-form-item">
+      <div class="container-form-card-intern">
+      <ion-radio-group [(ngModel)]="paymentMethod">
+        <ion-item>
+          <ion-radio value="money" justify="space-between">
+            <ion-item>
+              <ion-avatar aria-hidden="true" slot="start">
+                <img alt="" src="assets/images/money-pay.png" />
+              </ion-avatar>
+              <ion-label>Efectivo contra entrega</ion-label>
+            </ion-item>
+          </ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-radio value="card" justify="space-between">
+            <ion-item>
+              <ion-avatar aria-hidden="true" slot="start">
+                <img alt="" src="assets/images/card-pay.png" />
+              </ion-avatar>
+              <ion-label>Tarjeta de debito/crédito</ion-label>
+            </ion-item>
+          </ion-radio>
+        </ion-item>
+      </ion-radio-group>
+      <div class="container-washeday-end">
+        <ion-button shape="round" class="container-form-button" (click)="proceed()">Proceder</ion-button>
+      </div>
+      </div>
+    </div>
+   </div>
+</ion-content>

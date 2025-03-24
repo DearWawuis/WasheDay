@@ -38,9 +38,23 @@
       </ion-segment>
     </ion-card-header>
     <ion-card-content>
-      <ion-searchbar placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
   </ion-card>
+
+
+
+  <ion-list *ngIf="searchQuery?.trim()">
+    <ion-item *ngFor="let busqueda of filteredItems">
+
+      <ion-label>
+        {{busqueda.nombre}}
+      </ion-label>
+
+
+    </ion-item>
+
+  </ion-list>
 
 
 
@@ -72,29 +86,135 @@
 
   <ion-list *ngIf="selectedSegment == 'ocupados'">
 
-    <ion-item *ngFor="let ocupado of ocupados">
+    <div *ngIf="ocupados.length > 0">
 
-      <ion-label>
+      <ion-card *ngFor="let ocupado of ocupados">
+        <ion-card-header>
+          <ion-card-title>{{ ocupado.FechaSolicitud }}</ion-card-title>
+        </ion-card-header>
+    
+        <ion-badge [color]="ocupado.Status === 'Pago realizado' ? 'success' : 'danger'">
+          {{ ocupado.Status }}
+        </ion-badge>
+    
+        <ion-card-content>
+          <p>Fecha de entrega: {{ ocupado.FechaEntrega }}</p>
+  
+          
+          <ion-card>
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let estado of ['Orden Creada', 'Lavando', 'Secando', 'Finalizado']; let i = index">
+                  <ion-chip [color]="i <= ocupado.estadoActual ? 'success' : 'medium'">
+                    {{ estado }}
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+  
+    
+          <p><strong>Detergentes:</strong></p>
+          <div *ngIf="ocupado.Detergentes && ocupado.Detergentes.length > 0; else noDetergents">
+            <ion-list>
+              <ion-item *ngFor="let det of ocupado.Detergentes">
+                <ion-label>{{ det }}</ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+    
+          <ng-template #noDetergents>
+            <p>No hay detergentes disponibles.</p>
+          </ng-template>
+  
+    
+          <ion-chip>ID: {{ ocupado.id }}</ion-chip>
+          <ion-chip color="primary">WASHO: {{ ocupado.Washo }}</ion-chip>
+    
+          <ion-button id="boton-lavar" expand="block" color="primary" (click)="finalizar_servicio(ocupado)">
+            {{ ocupado.estadoActual === 0 ? 'Orden Creada' : ocupado.estadoActual === 1 ? 'Lavando' : ocupado.estadoActual === 2 ? 'Secando' : 'Finalizado' }}
+          </ion-button>
+          
+          <!-- Estado del servicio en formato iCard -->
+  
+        </ion-card-content>
+      </ion-card>
 
-        <p>{{ocupado.nombre}}</p>
+    </div>
+    <div *ngIf="ocupados.length === 0">
 
-      </ion-label>
+      <p id="validar_array">No hay servicios ocupados :c</p>
 
+    </div>
 
-    </ion-item>
-
-
+  
+  
+  
   </ion-list>
+  
 
   <ion-list *ngIf="selectedSegment == 'historial'">
 
+    <div *ngIf="historial.length > 0">
+      <ion-item *ngFor="let pedido of historial">
+        <ion-label>
+          <h2>Pedido #{{ pedido.id }}</h2>
+          <p><strong>Nombre:</strong> {{ pedido.nombre }}</p>
+          <p><strong>Washo:</strong> {{ pedido.Washo }}</p>
+          <p><strong>Hora:</strong> {{ pedido.hora }} {{ pedido.ampm }}</p>
+          <p><strong>Ubicación:</strong> {{ pedido.Ubicacion }}</p>
+          <p><strong>Fecha Solicitud:</strong> {{ pedido.FechaSolicitud }}</p>
+          <p><strong>Fecha Entrega:</strong> {{ pedido.FechaEntrega }}</p>
+          <p><strong>Detergentes:</strong> {{ pedido.Detergentes.join(', ') }}</p>
+          <p><strong>Status:</strong> {{ pedido.Status }}</p>
+          <p><strong>Kilos:</strong> {{ pedido.kg }} Kg</p>
+          <p><strong>Precio por kg:</strong>{{pedido.precio}} Kg</p>
+          <p><strong>Total:</strong> $ {{pedido.total}}</p>
+          <p><strong>Comentarios:</strong> {{ pedido.comentarios }}</p>
+        </ion-label>
+      </ion-item>
+    </div>
+    
+    <div *ngIf="historial.length === 0">
+      <p id="validar_array">No tienes historial disponible :D</p>
+    </div>
+    
 
 
-    <ion-item *ngFor="let hist of historial">
-      <ion-label>
-        <p>{{hist.nombre}}</p>
-      </ion-label>
-
-    </ion-item>
   </ion-list>
 </ion-content>
+
+<!--Author: Jesus Gonzalez Leal IDGS08 -->
+
+
+
+
+
+
+
+
+<!-- Navbar inferior solo para móvil 
+<ion-footer class="mobile-only">
+  <ion-toolbar>
+    <ion-segment>
+      <ion-segment-button value="home">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map">
+        <ion-icon name="list-outline" color="warning"></ion-icon>
+        <ion-label>Pendientes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="schedule">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>Configuración</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="profile">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>
+
+-->
