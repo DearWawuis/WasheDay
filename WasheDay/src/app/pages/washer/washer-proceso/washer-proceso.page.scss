@@ -374,16 +374,50 @@
     }
   }
 
-  #boton-lavar{
-
-
-    margin-left: 1100px !important;
+  #boton-lavar {
     --border-radius: 12px;
     --background: #28a745 !important;
     --color: #ffffff !important;
-
-
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
   }
+  
+  /* Estilos para pantallas grandes */
+  @media (min-width: 768px) {
+    #boton-lavar {
+      width: auto;
+      margin-left: 0;
+    }
+  }
+  
+  /* Estilos para pantallas pequeñas */
+  @media (max-width: 576px) {
+    #boton-lavar {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+  
+  /* Estilos para pantallas medianas */
+  @media (max-width: 992px) {
+    #boton-lavar {
+      font-size: 16px;
+    }
+  }
+
+#validar_array{
+
+  margin-top: 40px;
+
+  text-align: center;
+
+  align-items: center;
+
+ font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+}  
+  
   
   
   

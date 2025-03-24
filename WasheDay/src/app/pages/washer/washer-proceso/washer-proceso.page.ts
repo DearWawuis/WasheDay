@@ -13,7 +13,6 @@ import { AlertController,  AlertInput } from '@ionic/angular';
 
 import { ToastController } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-washer-proceso',
   templateUrl: './washer-proceso.page.html',
@@ -34,35 +33,21 @@ export class WasherProcesoPage implements OnInit {
   filteredItems: any[] = [];
 
 
-  pedidos_aceptados: any[] = [];
-
-
-
-  
-
-
-
   ocupados = [
-    { id: '101', nombre: 'Servicio 101', Washo: 'Mario Torres', Hora: '09:00 AM', Ubicacion: 'Av. Libertad 789' },
-    { id: '102', nombre: 'Servicio 102', Washo: 'Lucía Fernández', Hora: '10:45 AM', Ubicacion: 'Calle 8 No. 32' }
-  ];
-
-  recibidos = [
-    
-      { id: '001', nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
-      { id: '002', nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
-      { id: '003', nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
-
     { 
       id: '101', 
       nombre: 'Servicio 101', 
       Washo: 'Mario Torres', 
       Hora: '09:00 AM', 
       Ubicacion: 'Av. Libertad 789', 
-      FechaSolicitud: 'lunes, 17 de febrero de 2025', 
-      FechaEntrega: 'martes, 18 de febrero', 
+      FechaSolicitud: new Date().toISOString().split("T")[0],
+      FechaEntrega: new Date().toISOString(), 
       Detergentes: ['Tide Free & Gentle', 'Ariel Detergente', 'Ecovor'], 
-      EstadoPago: 'Pendiente por pagar o definir pago' 
+      Status: 'Pendiente por pagar o definir pago' ,
+      estadoActual: 3,
+      kg: 32,
+      precio: 34,
+      total: 450.0
     },
     { 
       id: '102', 
@@ -70,32 +55,33 @@ export class WasherProcesoPage implements OnInit {
       Washo: 'Lucía Fernández', 
       Hora: '10:45 AM', 
       Ubicacion: 'Calle 8 No. 32', 
-      FechaSolicitud: 'Martes, 27 de enero de 2025', 
+      FechaSolicitud: new Date().toISOString().split("T")[0],
       FechaEntrega: 'martes, 03 de marzo', 
       Detergentes: ['Tide Free & Gentle', 'Ariel Detergente', 'Ecovor'], 
-      EstadoPago: 'Pago realizado' 
+      Status: 'Pago realizado',
+      estadoActual: 0,
+      kg: 32,
+      precio: 34,
+      total: 450.0
+
     }
   ];
   
 
   recibidos = [
     
-      { id: '001', kg: 12, nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
-      { id: '002', kg: 33, nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
-      { id: '003', kg: 21, nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
-
+      { id: '001', nombre: 'Pedido 001', Washo: 'Juan Pérez', Hora: '10:30 AM', Ubicacion: 'Av. Central 123' },
+      { id: '002', nombre: 'Pedido 002', Washo: 'Ana López', Hora: '11:15 AM', Ubicacion: 'Calle Falsa 456' },
+      { id: '003', nombre: 'Pedido 003', Washo: 'Carlos Díaz', Hora: '12:00 PM', Ubicacion: 'Plaza Principal' }
     
   ];
 
-  historial = [
-    { id: '201', nombre: 'Historial 201', Washo: 'Pedro Ramírez', Hora: '08:00 AM', Ubicacion: 'Zona Industrial' },
-    { id: '202', nombre: 'Historial 202', Washo: 'Sofía Méndez', Hora: '07:30 AM', Ubicacion: 'Barrio Centro' }
-  ];
+  historial : any[] = [];
+
 
   pedido_recibido: string = "";
 
 
-  constructor() { }
   constructor(private alertController: AlertController, private toastController: ToastController) { 
 
     this.todos_array = [...this.ocupados, ...this.recibidos,...this.historial];
@@ -103,52 +89,18 @@ export class WasherProcesoPage implements OnInit {
     this.filteredItems = [...this.todos_array];
 
 
-    console.log("Son pedidos ya aceptados recibidos . . ", this.pedidos_aceptados );
-
-
-
-    
-
-
+    console.log("Soy array de historial . . ", this.historial);
 
   }
 
   ngOnInit() {
-  }
-
- 
 
 
-  recoger_pedido(pedido : any){
-
-
-    console.log("soy tu pedido lokote ..", pedido);
-
-    this.pedido_recibido = pedido.id;
-
-    console.log("Soy id del pedido. . ", pedido.id);
-
-
-    console.log("Soy id del pedido guardado .. ", this.pedido_recibido);
-
-
-    console.log("Soy cambios para washer-proceso");
-    
-    
-    
-      setTimeout(() => {
-        this.pedido_recibido = "";
-
-      }, 5000);
-
-
-
-
-
-
-
+    console.log("Soy el historial de historia . . ajaj " +   this.historial);
 
   }
+
+
   closeModal(){
 
 
@@ -177,13 +129,13 @@ export class WasherProcesoPage implements OnInit {
       ///Pero el campo de id, washo y total los bloqueamos para que no se pueda editar
       inputs: [
         { name: 'id', type: 'text', placeholder: 'ID WASHO', value: pedido.id, disabled: true },
-        { name: 'washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.Washo, disabled: true },
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.Washo, disabled: true },
         /*
           Le agregue nadamas unos id para poder detectarlos en la funcion de de flecha que 
           esta bajo con el setTimeout
         */
-        { name: 'kg', type: 'number', placeholder: 'Kilo de ropa', value: pedido.kg , id: 'kg-input' },
-        { name: 'precio', type: 'number', placeholder: 'Precio por kilo', value: '', id: 'precio-input' },
+        { name: 'kg', type: 'number', placeholder: 'Kilo de ropa', value: '' , id: 'kg-input' },
+        { name: 'precio', type: 'number', placeholder: 'Precio por kilo', value: 34, id: 'precio-input' , disabled: true },
         { name: 'total', type: 'number', placeholder: 'Total a pagar', value: '', id: 'total-input', disabled: true },
         { name: 'fecha_entrega', type: 'text', placeholder: 'Fecha de entrega', value: '' },
       ],
@@ -195,17 +147,39 @@ export class WasherProcesoPage implements OnInit {
             try {
               const newData = {
                 id: pedido.id,
-                washo: pedido.nombre,
-                kg: data.kg,
-                precio: data.precio,
-                total: data.total,
-                fecha_entrega: data.fecha_entrega
+                nombre: pedido.nombre,
+                Washo: pedido.Washo,
+                Hora: data.hora || "00:00",
+                Ubicacion: data.ubicacion || "Sin ubicación",
+                FechaSolicitud: new Date().toISOString().split("T")[0],
+                FechaEntrega: data.fecha_entrega || new Date().toISOString(),
+                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], 
+                Status: data.estado_pago || "Pendiente",
+                estadoActual: 0,
+                kg: data.kg || 0,
+                precio: 34,
+                total: parseFloat((data.kg * 34).toFixed(2)),
+
+
               };
   
               console.log("Soy Pedido aceptado . . ", newData);
-              this.pedidos_aceptados.push(newData);
+
+
+              
+              this.ocupados.push(newData);
+             
+              const index = this.recibidos.findIndex(recibido => recibido.id === pedido.id);
+              
+              
+              if (index !== -1) {
+                this.recibidos.splice(index, 1);
+              } else {
+                console.log("Elemento no encontrado, no se eliminó nada.");
+              }
+
   
-              this.mostrarToast(`ROPA RECIBIDA EN MI WASHER`, "success");
+              this.mostrarToast('ROPA RECIBIDA EN MI WASHER', "success");
 
 
               this.pedido_recibido = "";
@@ -290,6 +264,115 @@ export class WasherProcesoPage implements OnInit {
 
     })
 
+
+
+  }
+
+  async finalizar_servicio(finalizar_ped : any){
+
+    console.log("Soy Finalizar pedido", finalizar_ped);
+
+
+    console.log("Soy id del pedido. . ", finalizar_ped.id);
+    console.log("Soy cambios para washer-proceso");
+
+
+    console.log(typeof finalizar_ped.total);
+
+    let total_pedido = finalizar_ped.total;
+
+
+
+
+  
+    const alert = await this.alertController.create({
+      header: 'Entrega',
+      message: 'Si el pago es contra la entrega recuerda cobrar la cantidad de la orden',
+      cssClass: 'custom-modal-size',
+
+      inputs: [
+
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: finalizar_ped.Washo, disabled: true },
+
+        { name: 'comentarios', type: 'text', placeholder: 'Especificaciones pedido', value: '' },
+        { name: 'hora', type: 'number', placeholder: 'Selecciona una hora en especifico', value: ''},
+        {
+          name: 'ampm',
+          type: 'text',
+          placeholder: 'Escribe AM o PM',
+          value: 'PM'
+        },
+    
+       
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel', handler: () => {} },
+        {
+          text: 'Guardar',
+          handler: async (data) => {
+            try {
+              const newData = {
+                id: finalizar_ped.id,
+                nombre: finalizar_ped.nombre,
+                Washo: finalizar_ped.Washo,
+                Hora: data.hora || "00:00",
+                Ubicacion: data.ubicacion || "Sin ubicación",
+                FechaSolicitud: new Date().toISOString().split("T")[0],
+                FechaEntrega: data.fecha_entrega || new Date().toISOString(),
+                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], 
+                Status: data.estado_pago || "Pendiente",
+                estadoActual: 0,
+                kg: finalizar_ped.kg,
+                precio: 34,
+                total: total_pedido,
+                comentarios : data.comentarios,
+                hora: data.hora,
+                ampm: data.ampm
+
+
+
+
+              };
+
+              console.log("Soy pedido ya ya ya finalizado . .", newData);
+
+              this.historial.push(newData);
+
+
+              const index = this.ocupados.findIndex(ocupados => ocupados.id === finalizar_ped.id );
+
+              if (index !== -1) {
+                this.ocupados.splice(index, 1);
+              } else {
+                console.log("Elemento no encontrado, no se eliminó nada.");
+              }
+
+
+              console.log("Soy array yo con su hijito", this.historial);
+
+
+
+             
+
+
+  
+              this.mostrarToast('PEDIDO FINZALIDO', "success");
+
+
+              this.pedido_recibido = "";
+
+              return true;
+            } catch (error) {
+              console.error("Error al aceptar pedidos:", error);
+              this.mostrarToast("Error al aceptar pedido", "danger");
+              return false;
+            }
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
 
 
   }

@@ -34,7 +34,7 @@ export class TabBarComponent implements OnInit {
   ngOnInit() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        if (event.url.includes('login') || event.url.includes('register')) {
+        if (event.url.includes('login') || event.url.includes('register') || event.url.includes('payment-method-washo') || event.url.includes('stripe-washo')) {
           this.showTabs = false;
         } else {
           this.showTabs = true;

@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.labanderia.washeday;
 
 import com.getcapacitor.BridgeActivity;
 
