@@ -91,17 +91,6 @@ export class WasherProcesoPage implements OnInit {
 
     console.log("Soy array de historial . . ", this.historial);
 
-
-
-
-   
-
-
-
-    
-
-
-
   }
 
   ngOnInit() {
