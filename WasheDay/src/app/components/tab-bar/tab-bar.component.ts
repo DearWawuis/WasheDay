@@ -7,6 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
+import { AuthService } from 'src/app/services/auth.service';
 import { GeneralService } from '../../services/general.service';
 
 @Component({
@@ -26,7 +27,8 @@ export class TabBarComponent implements OnInit {
     private menuCtrl: MenuController,
     private router: Router,
     private alertController: AlertController,
-    private generalService: GeneralService
+    private generalService: GeneralService,
+    private authService: AuthService
   ) {
     this.isLargeScreen = window.innerWidth >= 765;
   }
@@ -78,9 +80,9 @@ export class TabBarComponent implements OnInit {
         {
           text: 'salir',
           handler: () => {
-            // this.authService.logout();
+            this.authService.logout();
             // this.router.navigate(['/login']);
-            window.location.href = '/login';
+            // window.location.href = '/login';
           },
         },
       ],
