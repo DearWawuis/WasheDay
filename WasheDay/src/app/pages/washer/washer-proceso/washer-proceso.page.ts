@@ -76,10 +76,8 @@ export class WasherProcesoPage implements OnInit {
     
   ];
 
-  historial = [
-    { id: '201', nombre: 'Historial 201', Washo: 'Pedro Ramírez', Hora: '08:00 AM', Ubicacion: 'Zona Industrial' },
-    { id: '202', nombre: 'Historial 202', Washo: 'Sofía Méndez', Hora: '07:30 AM', Ubicacion: 'Barrio Centro' }
-  ];
+  historial : any[] = [];
+
 
   pedido_recibido: string = "";
 
@@ -89,6 +87,11 @@ export class WasherProcesoPage implements OnInit {
     this.todos_array = [...this.ocupados, ...this.recibidos,...this.historial];
 
     this.filteredItems = [...this.todos_array];
+
+
+    console.log("Soy array de historial . . ", this.historial);
+
+
 
 
    
@@ -102,6 +105,10 @@ export class WasherProcesoPage implements OnInit {
   }
 
   ngOnInit() {
+
+
+    console.log("Soy el historial de historia . . ajaj " +   this.historial);
+
   }
 
 
@@ -174,6 +181,8 @@ export class WasherProcesoPage implements OnInit {
               this.ocupados.push(newData);
              
               const index = this.recibidos.findIndex(recibido => recibido.id === pedido.id);
+              
+              
               if (index !== -1) {
                 this.recibidos.splice(index, 1);
               } else {
@@ -273,6 +282,109 @@ export class WasherProcesoPage implements OnInit {
   async finalizar_servicio(finalizar_ped : any){
 
     console.log("Soy Finalizar pedido", finalizar_ped);
+
+
+    console.log("Soy id del pedido. . ", finalizar_ped.id);
+    console.log("Soy cambios para washer-proceso");
+
+
+    console.log(typeof finalizar_ped.total);
+
+    let total_pedido = finalizar_ped.total;
+
+
+
+
+  
+    const alert = await this.alertController.create({
+      header: 'Entrega',
+      message: 'Si el pago es contra la entrega recuerda cobrar la cantidad de la orden',
+      cssClass: 'custom-modal-size',
+
+      inputs: [
+
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: finalizar_ped.Washo, disabled: true },
+
+        { name: 'comentarios', type: 'text', placeholder: 'Especificaciones pedido', value: '' },
+        { name: 'hora', type: 'number', placeholder: 'Selecciona una hora en especifico', value: ''},
+        {
+          name: 'ampm',
+          type: 'text',
+          placeholder: 'Escribe AM o PM',
+          value: 'PM'
+        },
+    
+       
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel', handler: () => {} },
+        {
+          text: 'Guardar',
+          handler: async (data) => {
+            try {
+              const newData = {
+                id: finalizar_ped.id,
+                nombre: finalizar_ped.nombre,
+                Washo: finalizar_ped.Washo,
+                Hora: data.hora || "00:00",
+                Ubicacion: data.ubicacion || "Sin ubicación",
+                FechaSolicitud: new Date().toISOString().split("T")[0],
+                FechaEntrega: data.fecha_entrega || new Date().toISOString(),
+                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], 
+                Status: data.estado_pago || "Pendiente",
+                estadoActual: 0,
+                kg: finalizar_ped.kg,
+                precio: 34,
+                total: total_pedido,
+                comentarios : data.comentarios,
+                hora: data.hora,
+                ampm: data.ampm
+
+
+
+
+              };
+
+              console.log("Soy pedido ya ya ya finalizado . .", newData);
+
+              this.historial.push(newData);
+
+
+              const index = this.ocupados.findIndex(ocupados => ocupados.id === finalizar_ped.id );
+
+              if (index !== -1) {
+                this.ocupados.splice(index, 1);
+              } else {
+                console.log("Elemento no encontrado, no se eliminó nada.");
+              }
+
+
+              console.log("Soy array yo con su hijito", this.historial);
+
+
+
+             
+
+
+  
+              this.mostrarToast('PEDIDO FINZALIDO', "success");
+
+
+              this.pedido_recibido = "";
+
+              return true;
+            } catch (error) {
+              console.error("Error al aceptar pedidos:", error);
+              this.mostrarToast("Error al aceptar pedido", "danger");
+              return false;
+            }
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+
 
   }
   async mostrarToast(mensaje: string, color: string) {
