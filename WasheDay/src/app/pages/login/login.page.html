@@ -20,13 +20,13 @@
         <div class="container-form-title">
           Inicia sesión
         </div>
-        <form style="width: 100%;" [formGroup]="loginForm" >
+        <form style="width: 100%;" [formGroup]="loginForm" (ngSubmit)="onLogin()" >
           <ion-item class="container-form-input">
-            <ion-input  type="email" placeholder="Correo" formControlName="correo"></ion-input>
+            <ion-input  type="email" placeholder="Correo" formControlName="email"></ion-input>
           </ion-item>
-          <div *ngIf="loginForm.get('correo')?.invalid && loginForm.get('correo')?.touched" class="container-form-input-error">
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="container-form-input-error">
             <ion-text>
-              <p>{{ getErrorMessage('correo') }}</p>
+              <p>{{ getErrorMessage('email') }}</p>
             </ion-text>
           </div>
           <ion-item class="container-form-input">
@@ -43,7 +43,7 @@
             </ion-text>
           </div>
           <div class="container-washeday">
-            <ion-button shape="round" class="container-form-button" [disabled]="loginForm.invalid">Registrar</ion-button>
+            <ion-button shape="round" class="container-form-button" [disabled]="loginForm.invalid" type="submit">Iniciar sesión</ion-button>
           </div>
         </form>
         <div class="container-form-title">
