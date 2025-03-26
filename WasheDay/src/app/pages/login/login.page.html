@@ -47,8 +47,10 @@
           </div>
         </form>
         <div class="container-form-title">
-          <p><ion-text >¿No tienes cuenta? </ion-text>
-            <ion-text class="container-link" (click)="goToRegister()">Registrate aquí</ion-text></p>
+          <p>
+            <span>¿No tienes cuenta? </span>
+            <a class="container-link" [routerLink]="['/register']">Regístrate aquí</a>
+          </p>
         </div>
       </div>
     </div>

@@ -60,30 +60,23 @@
 
 
   <ion-list *ngIf ="selectedSegment == 'recibir'">
-
     <ion-item *ngFor="let recibido of recibidos">
       <ion-label>
         <p> ID: {{recibido.id}}</p>
-
         <p>Washo: {{recibido.Washo}}</p>
-
         <p>Hora: {{recibido.Hora}}</p>
-
         <p>Ubicacion: {{recibido.Ubicacion}}</p>
       </ion-label>
-
-
       <p *ngIf="pedido_recibido == recibido.id" id="recogiendo_pedido">Recogiendo...</p>
 
       <ion-button id="boton-recoger" color="primary" slot="end" fill="solid" (click)="recoger_pedido(recibido)">
         Recibir
       </ion-button>
-
     </ion-item>
-
-
   </ion-list>
 
+
+  
   <ion-list *ngIf="selectedSegment == 'ocupados'">
 
     <div *ngIf="ocupados.length > 0">
@@ -104,7 +97,7 @@
           <ion-card>
             <ion-grid>
               <ion-row>
-                <ion-col *ngFor="let estado of ['Orden Creada', 'Lavando', 'Secando', 'Finalizado']; let i = index">
+                <ion-col *ngFor="let estado of estados; let i = index">
                   <ion-chip [color]="i <= ocupado.estadoActual ? 'success' : 'medium'">
                     {{ estado }}
                   </ion-chip>
@@ -131,8 +124,8 @@
           <ion-chip>ID: {{ ocupado.id }}</ion-chip>
           <ion-chip color="primary">WASHO: {{ ocupado.Washo }}</ion-chip>
     
-          <ion-button id="boton-lavar" expand="block" color="primary" (click)="finalizar_servicio(ocupado)">
-            {{ ocupado.estadoActual === 0 ? 'Orden Creada' : ocupado.estadoActual === 1 ? 'Lavando' : ocupado.estadoActual === 2 ? 'Secando' : 'Finalizado' }}
+          <ion-button id="boton-lavar" expand="block" color="primary" (click)="cambiarEstado(ocupado)">
+            {{ estados[ocupado.estadoActual] }}
           </ion-button>
           
           <!-- Estado del servicio en formato iCard -->
