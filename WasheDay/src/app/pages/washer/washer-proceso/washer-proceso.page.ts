@@ -32,6 +32,11 @@ export class WasherProcesoPage implements OnInit {
 
   filteredItems: any[] = [];
 
+  estados = ['Orden Creada', 'Lavando', 'Secando', 'Finalizado'];
+
+
+
+
 
   ocupados = [
     { 
@@ -205,25 +210,12 @@ export class WasherProcesoPage implements OnInit {
 
     */
     setTimeout(() => {
-
-      /*
-        Aqui detectamos los inpur que temos en la modal de input
-        lo que son el precio y KG
-        y tambien detectamos el input de total
-
-      */
       const kgInput = document.querySelector('input#kg-input') as HTMLInputElement;
       const precioInput = document.querySelector('input#precio-input') as HTMLInputElement;
       const totalInput = document.querySelector('input#total-input') as HTMLInputElement;
   
       if (kgInput && precioInput && totalInput) {
-        //Aqui solo validamos que el input no este vacio
 
-        ///Adentro creamos una funcion de flecha para poder 
-        /*
-        REALIZAR LA MULTIPLICACION CORRESPONDIENTE
-
-        */
         const actualizarTotal = () => {
           /*
             Aqui solo accedemos al input y obtenemos el value
@@ -267,6 +259,17 @@ export class WasherProcesoPage implements OnInit {
 
 
   }
+
+  cambiarEstado(ocupado: any) {
+    if (ocupado.estadoActual < this.estados.length - 1) {
+      ocupado.estadoActual++;
+    } 
+  
+    if (ocupado.estadoActual === this.estados.length - 1) {
+      this.finalizar_servicio(ocupado);
+    }
+  }
+  
 
   async finalizar_servicio(finalizar_ped : any){
 
