@@ -46,7 +46,11 @@ const routes: Routes = [
   {
     path: 'stripe-washo/:id',
     loadChildren: () => import('./pages/washo/stripe-washo/stripe-washo.module').then( m => m.StripeWashoPageModule)
+  },  {
+    path: 'homewasher-config',
+    loadChildren: () => import('./pages/washer/homewasher-config/homewasher-config.module').then( m => m.HomewasherConfigPageModule)
   },
+
 
 
 ];

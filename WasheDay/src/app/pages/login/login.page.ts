@@ -2,38 +2,63 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn, ReactiveFormsModule} from "@angular/forms";
-//import { AuthService } from '../../services/auth.service'; // Asegúrate de tener la ruta correcta
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AlertController } from '@ionic/angular'; // Importa AlertController
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    ReactiveFormsModule,
+    RouterModule,
+    HttpClientModule,
+  ],
 })
 export class LoginPage {
   loginForm: FormGroup = this.formBuilder.group({
-    correo: ['',[Validators.required, Validators.email, this.noWhitespace()]],
-    password: ['', [
-      Validators.required, 
-      Validators.minLength(6), 
-      Validators.pattern(/^(?!.*(\d)\1\1)(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*(\d{3})).{8,}$/), 
-      this.noWhitespace()]]});
+    email: ['', [Validators.required, Validators.email, this.noWhitespace()]],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(
+          /^(?!.*(\d)\1\1)(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*(\d{3})).{8,}$/
+        ),
+        this.noWhitespace(),
+      ],
+    ],
+  });
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
-  users: any[] = [
-    { email: 'washer@gmail.com', password: '123456', home: '/home-washer', tipo: 'washer' },
-    { email: 'washo@gmail.com', password: '123456', home: '/home-washo', tipo: 'washo' },
-  ];
+  isLoading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-  private router: Router,
-    private alertController: AlertController
+    private router: Router,
+    private alertController: AlertController,
+    private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.authService.checkTokenAndRedirect();
+  }
 
   //Obtener mensaje de error para mostrar en cada campo
   getErrorMessage(controlName: string) {
@@ -45,8 +70,8 @@ export class LoginPage {
       return 'Por favor ingrese un correo electrónico válido.';
     }
     if (control?.hasError('pattern')) {
-      if(controlName=='password'){
-        return 'La contraseña debe tener al menos 1 mayúscula, 1 número, 1 carácter especial, NO números consecutivos y NO números repetidos.'; 
+      if (controlName == 'password') {
+        return 'La contraseña debe tener al menos 1 mayúscula, 1 número, 1 carácter especial, NO números consecutivos y NO números repetidos.';
       }
       return 'El formato del campo es incorrecto.';
     }
@@ -61,43 +86,49 @@ export class LoginPage {
 
   async onLogin() {
     if (this.loginForm.valid) {
+      this.isLoading = true;
       const { email, password } = this.loginForm.value;
-      const user = this.users.find(
-        (u) => u.email === email && u.password === password
-      );
-
-      if (user) {
-        this.router.navigate([user.home]); 
-        this.showAlert('Inicio de sesión exitoso', `Bienvenido ${user.email}`);
-      } else {
-        this.showAlert('Error', 'Credenciales incorrectas');
-      }
-      /*
-      this.authService.login(this.loginForm.value).subscribe(
-        response => {
-          console.log('Login exitoso', response);
-          this.authService.handleLogin(response.user); // Guarda el usuario
-          this.showAlert('Inicio de sesión exitoso', 'Has iniciado sesión correctamente.'); // Muestra alerta de éxito
-          this.router.navigate(['/home']); // Navegar a la página de inicio
-        },
-        error => {
-          console.error('Error en el login', error);
-          this.handleLoginError(error); // Manejar el error de login
+      
+      console.log(email, password);
+      try {
+        // Paso 1: Iniciar sesión para obtener el token
+        await this.authService.login(email, password).toPromise();
+        
+        // Paso 2: Obtener información del usuario incluyendo el rol
+        const userInfo = await this.authService.getUserInfo().toPromise();
+        
+        if (userInfo) {
+          // Guardar el rol en localStorage
+          localStorage.setItem('userRole', userInfo.role);
+          localStorage.setItem('userEmail', userInfo.email);
+          localStorage.setItem('userName', userInfo.name);
+          
+          // Redirigir según el rol
+          if (userInfo.role === 'washer') {
+            this.router.navigate(['/home-washer']);
+          } else if (userInfo.role === 'washo') {
+            this.router.navigate(['/home-washo']);
+          }
+          
+          this.showAlert('Inicio de sesión exitoso', `Bienvenido ${userInfo.name}`);
         }
-      );
-      */
+      } catch (error: any) {
+        this.handleLoginError(error);
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 
   //Validar que no tenga espacios
-noWhitespace(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    if (control.value && control.value.includes(' ')) {
-      return { 'whitespace': true }; 
-    }
-    return null; 
-  };
-}
+  noWhitespace(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value && control.value.includes(' ')) {
+        return { whitespace: true };
+      }
+      return null;
+    };
+  }
 
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({

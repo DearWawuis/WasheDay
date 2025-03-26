@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, 
 import { Router, RouterModule  } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -36,9 +37,11 @@ registerForm: FormGroup = this.formBuilder.group({
 constructor(
   private formBuilder: FormBuilder,
   private router: Router,
+  private authService: AuthService
   ) { }
 
   ngOnInit() {
+    this.authService.checkTokenAndRedirect();
   }
 
 //Función para comparar las contraseñas

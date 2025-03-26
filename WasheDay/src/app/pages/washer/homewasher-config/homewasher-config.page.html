@@ -1,0 +1,149 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>homewasher-config</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item button>
+      <ion-label>
+        <h2>Datos del Washer</h2>
+        <p>La perla</p>
+        <p>Dueño: Perla Domínguez López</p>
+        <p>Tel: 4423658742</p>
+        <p>Correo: washerlaperla&#64;gmail.com</p>
+      </ion-label>
+    </ion-item>
+    <ion-item button (click)="abrir_ubicacion()">
+      <ion-label>
+        <h2>Ubicación</h2>
+        <p>Calle Reforma 45, col Centro. CP 7600, Querétaro, Qro</p>
+      </ion-label>
+    </ion-item>
+    <ion-item button>
+      <ion-label>
+        <h2>Horario</h2>
+        <p>Lunes a viernes 8:00am a 8:00pm</p>
+        <p>Sábado: 9:00am a 6:00pm</p>
+        <p>Domingo: cerrado</p>
+      </ion-label>
+    </ion-item>
+    <ion-item button>
+      <ion-label>
+        <h2>Configuración de conexión</h2>
+        <p>Cierra y abre manualmente</p>
+      </ion-label>
+    </ion-item>
+    <ion-item button (click)="abrirModalServicios()">
+      <ion-label>
+        <h2>Servicios</h2>
+        <p *ngFor="let ser of servicios">{{ser}}</p>
+        <p><strong>Ver mas...</strong></p>
+      </ion-label>
+    </ion-item>
+    <ion-item button (click)="abrirModalDetergentes()">
+      <ion-label>
+        <h2>Detergentes</h2>
+        <p *ngFor="let detergente of detergentes">{{ detergente }}</p>
+        <p><strong>Agregar más...</strong></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+
+
+<ion-modal [isOpen]="modalAbierta" id="modal-inicio"  backdropDismiss="false" animated="false">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Seleccionar Detergentes</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+  <ion-content class="modal-content">
+    <ion-list>
+      <ion-item *ngFor="let detergente of detergentes">
+        <ion-label>{{ detergente }}</ion-label>
+        <ion-checkbox slot="end"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    
+    <ion-item>
+      <ion-input [(ngModel)]="nuevoDetergente" placeholder="Nuevo detergente"></ion-input>
+      <ion-button expand="full" (click)="agregarDetergente()">Agregar</ion-button>
+    </ion-item>
+  </ion-content>
+
+
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="modalAbierta_servicio" id="modal-inicio" backdropDismiss="false" animated="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Servicios que ofrezco</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarModal_servicios()">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="modal-content">
+      <ion-list>
+        <ion-item *ngFor="let ser of servicios">
+          <ion-label>{{ ser }}</ion-label>
+          <ion-checkbox slot="end"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    
+    <ion-footer>
+      <ion-toolbar>
+        <div class="footer-buttons">
+          <ion-button expand="full" color="primary" (click)="aceptar_servicios()">Aceptar</ion-button>
+          <ion-button expand="full" color="medium" (click)="cerrarModal_servicios()">Cerrar</ion-button>
+        </div>
+
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+
+<style>
+   ion-footer ion-toolbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+  }
+
+  ion-button {
+    width: 100%;
+  }
+</style>
+
+
+<ion-modal [isOpen]="modalUbicacion" id="modal-inicio" backdropDismiss="false" animated="false">
+  <ng-template>
+
+    <ion-toolbar>
+      <ion-title>Ubicación Washer</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="cerrarModalUbicacion()">Cerrar</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <ion-content class="modal-content">
+      <!-- Mapa incrustado -->
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.384030995011!2d-100.40866872577175!3d20.65394950054841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d35a486363880d%3A0xd927286fe3c75218!2sUTEQ!5e0!3m2!1ses!2smx!4v1742977373315!5m2!1ses!2smx" width="100%" height="100%" style="border:0; height: 80vh;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </ion-content>
+
+  </ng-template>
+</ion-modal>
+
+
+
