@@ -1,0 +1,56 @@
+ion-footer {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .modal-content{
+    padding: 5px;
+  }
+  .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 100%;
+  }
+  .mapContainer {
+    width: 100%;
+    height: 350px;
+    cursor: pointer;
+  }
+  .container-form-button{
+    --background: #219EBC !important;
+    border-radius: 32px !important;   
+    text-transform: capitalize;
+}
+.container-form-button-cancel{
+  --background: #8F8F8F;
+  border-radius: 32px !important;   
+  text-transform: capitalize;
+}
+ion-checkbox {
+  --background: transparent;
+  --border-color: #219EBC; 
+  --checkmark-color: #fff; 
+  --checkbox-background-checked: #219EBC;
+  --checked-border-color: #219EBC; 
+}
+ion-checkbox::part(container) {
+  border: 3px solid #219EBC;
+}
+.custom-select {
+  --background: transparent; 
+  --border-color: #219EBC; 
+  --color: #219EBC; 
+  --placeholder-color: #219EBC; 
+  --icon-color: #219EBC; 
+  --selected-text-color: #219EBC; 
+  --item-background: transparent; 
+  --item-color: #219EBC; 
+}
+.custom-select ion-select-option {
+  --item-color: #219EBC; 
+  --item-background: transparent; 
+  --item-hover-background: #e0f7fa; 
+  --item-selected-background: #219EBC; 
+  --item-selected-color: white; 
+}
