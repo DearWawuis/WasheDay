@@ -189,4 +189,28 @@ export class LoginPage {
       this.passwordIcon = 'eye-off';
     }
   }
+
+  openRoleSelectionModal() {
+    const modal = document.getElementById('roleSelectionModal');
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+  
+  closeModal() {
+    const modal = document.getElementById('roleSelectionModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+  
+  selectRole(role: string) {
+    this.closeModal();
+    this.router.navigate(['/register'], { 
+      state: { selectedRole: role } 
+    });
+  }
+
+  
 }
+
