@@ -91,7 +91,7 @@
             </ion-text>
           </div>
           <div class="container-washeday">
-            <ion-button shape="round" class="container-form-button" [disabled]="registerForm.invalid">Registrar</ion-button>
+            <ion-button shape="round" class="container-form-button" (click)="onRegister()" [disabled]="registerForm.invalid || isLoading">{{ isLoading ? 'Registrando...' : 'Registrarse' }}</ion-button>
           </div>
         </form>
         <div class="container-form-title">
