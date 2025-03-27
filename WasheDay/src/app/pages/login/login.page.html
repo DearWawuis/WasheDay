@@ -49,7 +49,7 @@
         <div class="container-form-title">
           <p>
             <span>¿No tienes cuenta? </span>
-            <a class="container-link" [routerLink]="['/register']">Regístrate aquí</a>
+            <a class="container-link" (click)="openRoleSelectionModal()">Regístrate aquí</a>
           </p>
         </div>
       </div>
@@ -57,3 +57,49 @@
    </div>
   </div>
 </ion-content>
+<!-- Modal de selección de rol -->
+<div id="roleSelectionModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    
+    <div class="modal-header">
+      <h1>¿Qué eres?</h1>
+    </div>
+    
+    <div class="role-options">
+      <!-- Botón WASHO -->
+      <div class="role-option" (click)="selectRole('WASHO')">
+        <div class="role-image-wrapper">
+          <img src="assets/images/washo-option.png" alt="WASHO" class="role-image">
+        </div>
+        <div class="role-info">
+          <h2>WASHO</h2>
+          <p>Mandar mi ropa a lavar</p>
+          <div class="benefit">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>AHORRAR TIEMPO</span>
+          </div>
+          <div class="benefit">
+            <ion-icon name="search-outline"></ion-icon>
+            <span>Encuentra Washes Confiables</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Botón WASHER -->
+      <div class="role-option" (click)="selectRole('WASHER')">
+        <div class="role-image-wrapper">
+          <img src="assets/images/washer-option.png" alt="WASHER" class="role-image">
+        </div>
+        <div class="role-info">
+          <h2>WASHER</h2>
+          <p>Ofrecer mis servicios</p>
+          <div class="benefit">
+            <ion-icon name="cash-outline"></ion-icon>
+            <span>AUMENTAR INGRESOS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -22,14 +22,10 @@ import { AlertController } from '@ionic/angular';
 })
 export class RegisterPage implements OnInit {
   isLoading: boolean = false;
-  client: string = 'WASHER'; //***Esto será dinamico de acuerdo al tipo de registro que eligen
-  client_text1: string =
-    this.client == 'WASHO' ? 'A UN PASO PARA' : 'MIS INGRESOS AL';
-  client_text2: string = this.client == 'WASHO' ? 'SER FELIZ' : 'SIG. NIVEL';
-  client_image: string =
-    this.client == 'WASHO'
-      ? 'register-image-washo.png'
-      : 'register-image-washer.png';
+  client?: string; //***Esto será dinamico de acuerdo al tipo de registro que eligen
+  client_text1?: string;
+  client_text2?: string;
+  client_image?: string;
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
   confirmPasswordType: string = 'password';
@@ -50,7 +46,7 @@ export class RegisterPage implements OnInit {
           Validators.required,
           Validators.minLength(6),
           Validators.pattern(
-            /^(?!.*(\d)\1\1)(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*(\d{3})).{8,}$/
+            /^(?!.(\d)\1\1)(?=.[A-Z])(?=.\d)(?=.[\W_])(?!.*(\d{3})).{8,}$/
           ),
           this.noWhitespace(),
         ],
@@ -69,6 +65,19 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
     this.authService.checkTokenAndRedirect();
+
+    // Obtener el rol de la navegación
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      this.client = navigation.extras.state['selectedRole'] || 'WASHER';
+      this.updateClientTexts();
+    }
+  }
+
+  private updateClientTexts() {
+    this.client_text1 = this.client == 'WASHO' ? 'A UN PASO PARA' : 'MIS INGRESOS AL';
+    this.client_text2 = this.client == 'WASHO' ? 'SER FELIZ' : 'SIG. NIVEL';
+    this.client_image = this.client == 'WASHO' ? 'register-image-washo.png' : 'register-image-washer.png';
   }
 
   //Función para comparar las contraseñas
@@ -151,7 +160,7 @@ export class RegisterPage implements OnInit {
       this.isLoading = true;
       const { correo, nombre, apellidos, direccion, password } =
         this.registerForm.value;
-        console.log(this.client.toLowerCase());
+      console.log(this.client?.toLowerCase());
 
       try {
         // Paso 1: Registrar al usuario
@@ -162,7 +171,7 @@ export class RegisterPage implements OnInit {
             lname: apellidos,
             address: direccion,
             password: password,
-            roles: [this.client.toLowerCase()], // 'washer' o 'washo' según lo que tengas en this.client
+            roles: [this.client?.toLowerCase()], // 'washer' o 'washo' según lo que tengas en this.client
           })
           .toPromise();
 
@@ -185,7 +194,7 @@ export class RegisterPage implements OnInit {
             this.router.navigate([redirectPath]);
 
             // Mostrar mensaje de éxito
-            this.showAlert('Registro exitoso', `Bienvenido ${userInfo.name}`);
+            this.showAlert('Registro exitoso', 'Bienvenido ${userInfo.name}');
           }
         }
       } catch (error: any) {
