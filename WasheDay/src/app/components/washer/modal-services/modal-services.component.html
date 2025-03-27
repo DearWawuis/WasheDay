@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Selecciona tus servicios</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #Form="ngForm">
+  <ion-row *ngFor="let service of services" class="ion-align-items-center">
+    <ion-col size="4">
+      <ion-checkbox 
+        [(ngModel)]="service.active" 
+        [name]="service.name + '-selected'" 
+        labelPlacement="end">
+        {{ service.name }}
+      </ion-checkbox>
+    </ion-col>
+    <ion-item-divider></ion-item-divider>
+  </ion-row>
+
+</form>
+</ion-content>
+<ion-footer style="background: #f5f5f5;">
+  <ion-button shape="round" class="container-form-button-cancel" (click)="dismiss()">Cancelar</ion-button>
+  <ion-button shape="round" class="container-form-button" (click)="saveServices()"  [disabled]="!Form.valid">Guardar</ion-button>
+</ion-footer>
+

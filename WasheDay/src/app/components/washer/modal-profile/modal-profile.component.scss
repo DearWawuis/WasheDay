@@ -1,0 +1,42 @@
+ion-footer {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .modal-content{
+    padding: 5px;
+  }
+  .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height: 100%;
+  }
+  .mapContainer {
+    width: 100%;
+    height: 350px;
+    cursor: pointer;
+  }
+  .container-form-button{
+    --background: #219EBC !important;
+    border-radius: 32px !important;   
+    text-transform: capitalize;
+}
+.container-form-button-cancel{
+  --background: #8F8F8F;
+  border-radius: 32px !important;   
+  text-transform: capitalize;
+}
+.invalid {
+    border-color: red !important;
+  }
+  
+  ion-input.ng-invalid.ng-touched {
+    border-color: red;
+  }
+  
+  ion-label {
+    color: #333;
+  }
+
+

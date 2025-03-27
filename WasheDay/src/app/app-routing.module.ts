@@ -15,6 +15,11 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule)
+  }, 
+  //Falta proteger esta ruta
+  {
+    path: 'configuration-washer',
+    loadChildren: () => import('./pages/washer/configuration-washer/configuration-washer.module').then( m => m.ConfigurationWasherPageModule)
   },
   // Rutas protegidas para washo
   {

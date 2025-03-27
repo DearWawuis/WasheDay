@@ -1,0 +1,115 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Configuración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container-washeday">
+    <div class="container-form-card clickable-card" (click)="openModalProfile()">
+      <div class="checkout-user">
+        <img class="avatar" src="assets/images/logo-home.png" alt="">
+      </div>
+      <div class="container-form-card-intern">
+        <div class="container-form-title">
+          
+        </div>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <strong class="text-item">Datos del Washer</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                <span *ngIf="washerProfile?.washerProfile?.name; else profileError">
+                  {{this.washerProfile?.washerProfile?.name}} <br>
+                Tel: {{this.washerProfile?.washerProfile?.phone}}
+                </span>
+                <ng-template #profileError>
+                  <span class="error-message">Datos requeridos para tener visibilidad.</span>
+                </ng-template>
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list> 
+      </div>
+    </div>
+    <div class="container-form-card" *ngIf="washerProfile?.washerProfile?._id">
+      <div class="container-form-card-intern">
+        <ion-item>
+          <ion-toggle 
+          [checked]="washerProfile?.washerProfile?.status === 'Abierto'" 
+          [disabled]="!washerProfile?.washerProfile?.status" 
+          (ionChange)="onStatusChange($event)">
+        <ion-label>Status de lavandería</ion-label>
+        <ion-note color="medium">{{ this.washerProfile?.washerProfile?.status }}</ion-note>
+      </ion-toggle>
+        </ion-item>
+      </div>
+    </div>
+    <div class="container-form-card clickable-card" (click)="openModal()">
+      <div class="container-form-card-intern">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <strong class="text-item">Ubicación</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                <span *ngIf="washerProfile?.washerProfile?.address; else addressError">
+                  {{ this.washerProfile?.washerProfile?.address }}
+                </span>
+                <ng-template #addressError>
+                  <span class="error-message">La dirección es requerida para tener visibilidad.</span>
+                </ng-template>
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list> 
+      </div> 
+    </div>
+
+    <div class="container-form-card clickable-card" (click)="openModalSchedule()">
+      <div class="container-form-card-intern">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <strong class="text-item">Horario</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                Ver detalles
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list> 
+      </div> 
+    </div>
+
+    <div class="container-form-card clickable-card" (click)="openModalServices()">
+      <div class="container-form-card-intern">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <strong class="text-item">Servicios</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                Ver detalles
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list> 
+      </div> 
+    </div>
+
+    <div class="container-form-card clickable-card" (click)="openModalDetergents()">
+      <div class="container-form-card-intern">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <strong class="text-item">Detergentes</strong><br />
+              <ion-note color="medium" class="ion-text-wrap">
+                Ver detalles
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ion-list> 
+      </div> 
+    </div>
+    <br><br><br>
+   </div>
+</ion-content>
+
