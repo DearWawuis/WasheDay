@@ -1,4 +1,4 @@
-import OrderService from "../models/orderService";
+import OrderService from "../models/OrderService";
 import Washer from "../models/Washer";
 
 //Obtener una orden de servicio por su ID

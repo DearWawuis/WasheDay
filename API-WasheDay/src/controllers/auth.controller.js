@@ -15,7 +15,7 @@ export const signToken = (user) => {
     const payload = {
         id: user.id,
     };
-    return jwt.sign(payload, SECRET);
+    return jwt.sign(payload, SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '1h' });
 }
 
 export const signUp = async (req, res) => {
