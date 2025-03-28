@@ -29,10 +29,13 @@
     <ion-card-content class="center-content">
 
       <ion-img src="assets/images/logo-lavadoras.png"></ion-img>
-
-     
     </ion-card-content>
-    <p id="texto-logo">Esperando nuevos servicios de Washos</p>
+    <p class="design-center">Esperando nuevos servicios de Washos</p>
+    <p class="design-center"><ion-button shape="round" class="container-form-button design-center" (click)="goToProcess()">Ver actividad</ion-button></p>
+    <br>
+    <p *ngIf="orders" >
+      No tienes servicios pendientes por aceptar o rechazar
+    </p>
   </ion-card>
 
   <!--<ion-card>

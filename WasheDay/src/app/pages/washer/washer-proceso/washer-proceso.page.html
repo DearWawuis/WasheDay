@@ -23,16 +23,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
     <ion-card-header>
       <ion-segment [(ngModel)]="selectedSegment">
-        <ion-segment-button value="recibir">
-          <p>Por recibir</p>
+        <ion-segment-button value="recibir" [ngClass]="{'selected-segment': selectedSegment === 'recibir'}">
+          <p>Recibir</p>
         </ion-segment-button>
-        <ion-segment-button value="ocupados">
-          <p>Servicios ocupados</p>
+        <ion-segment-button value="ocupados" [ngClass]="{'selected-segment': selectedSegment === 'ocupados'}">
+          <p>En curso</p>
         </ion-segment-button>
-        <ion-segment-button value="historial">
+        <ion-segment-button value="historial" [ngClass]="{'selected-segment': selectedSegment === 'historial'}">
           <p>Historial</p>
         </ion-segment-button>
       </ion-segment>
@@ -40,7 +39,6 @@
     <ion-card-content>
       <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
-  </ion-card>
 
 
 

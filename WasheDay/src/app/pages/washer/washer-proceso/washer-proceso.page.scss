@@ -429,7 +429,62 @@
 border-radius: 32px !important;   
 text-transform: capitalize;
 }  
+ion-segment-button {
+  padding: 5px 10px; 
+  text-transform: capitalize;
+  border-bottom: solid 3px #dadada ;
+}  
+/*@media only screen and (min-width: 1024px) {*/
+  .selected-segment {
+    background-color: #219EBC; 
+    color: white;  
+    border-radius: 10px 10px 0 0; 
+    padding: 5px 10px; 
+    text-transform: capitalize;
+    border-bottom: transparent;
+  }
   
+  ion-segment-button {
+    padding: 0 !important; /* Remover padding por defecto */
+  }
   
+  /* Asegurarse de que el ion-segment tenga el borde y el fondo transparente */
+  ion-segment {
+    border: none;
+    background-color: transparent;
+  }
+/*}*/
+@media only screen and (max-width: 768px) {
+  .container-form-card{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      gap: 5px;
+      position: relative;
+      width: 90%;
+      background: #FFFFFF;
+      border-radius: 30px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+  }   
+}
+@media only screen and (min-width: 769px) and (max-width: 1023px) {
+  .container-form-card{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      gap: 5px;
+      position: relative;
+      width: 60%;
+      background: #FFFFFF;
+      border-radius: 30px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+  }   
+}  
   
   
