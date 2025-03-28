@@ -33,4 +33,7 @@ export class HomeWasherPage implements OnInit {
 connect(){
   this.router.navigate(['/monitoring-washer']);
 }
+config(){
+  this.router.navigate(['/configuration-washer']);
+}
 }

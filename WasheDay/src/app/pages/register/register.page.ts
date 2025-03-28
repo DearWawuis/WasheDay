@@ -44,9 +44,9 @@ export class RegisterPage implements OnInit {
         '',
         [
           Validators.required,
-          Validators.minLength(6),
+          Validators.minLength(8),
           Validators.pattern(
-            /^(?!.(\d)\1\1)(?=.[A-Z])(?=.\d)(?=.[\W_])(?!.*(\d{3})).{8,}$/
+            /^(?!.*(\d)\1\1)(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?!.*(\d{3})).{8,}$/
           ),
           this.noWhitespace(),
         ],

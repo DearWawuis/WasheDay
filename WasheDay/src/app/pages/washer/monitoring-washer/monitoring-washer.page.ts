@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderServiceService } from 'src/app/services/order-service.service';
 import { GeneralService } from '../../../services/general.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-monitoring-washer',
   templateUrl: './monitoring-washer.page.html',
@@ -9,14 +10,16 @@ import { GeneralService } from '../../../services/general.service';
 })
 export class MonitoringWasherPage implements OnInit {
   orders: any; 
-  userId:string = '67e3b16ad08a04cfef644901';
+  userId:string = '';
 
   constructor(
     private orderServiceService: OrderServiceService,
-    private generalService: GeneralService
+    private generalService: GeneralService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('userId') || '';
     this.getNewOrders(this.userId);
   }
 
@@ -28,7 +31,8 @@ export class MonitoringWasherPage implements OnInit {
       console.log(this.orders)
     },
     (error) => {
-      console.error('Error al obtener ordenes', error);
+      //No hay registros
+      this.orders = [];
     }
   );
 }
@@ -54,5 +58,10 @@ changeOrderStatus(orderId: string, status: string) {
       console.error('Error al actualizar el estado de la orden', error);
     }
   );
+}
+
+goToProcess() {
+  console.log('weee');
+  this.router.navigate(['/washer-proceso']);
 }
 }

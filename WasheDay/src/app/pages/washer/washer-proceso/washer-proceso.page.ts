@@ -25,7 +25,7 @@ export class WasherProcesoPage implements OnInit {
   ordersToReceive: any; 
   ordersInProgress: any;
   ordersInHistory: any;
-  userId:string = '67e3b16ad08a04cfef644901';
+  userId:string = '';
   statusToReceive = ['Creada', 'Aceptada', 'Cancelada', 'Cotizada', 'Pago efectivo', 'Pago tarjeta', 'Lavando', 'Secando', 'Finalizado', 'Entregado']
 
   selectedSegment: string = 'recibir';
@@ -107,6 +107,7 @@ export class WasherProcesoPage implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('userId') || '';
     this.getOrders(this.userId);
 
     console.log("Soy el historial de historia . . ajaj " +   this.historial);
@@ -124,7 +125,10 @@ getOrders(userId: string) {
       
     },
     (error) => {
-      console.error('Error al obtener ordenes', error);
+      //No hay registros
+      this.ordersToReceive = [];
+      this.ordersInProgress = [];
+      this.ordersInHistory = [];
     }
   );
 }

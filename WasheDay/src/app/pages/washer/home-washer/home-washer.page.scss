@@ -41,6 +41,7 @@
 
   .disconnect-btn {
    // background-color: #40e0d0;
+   text-transform: capitalize;
     color: white;
     font-size: 14px;
     padding: 5px 10px;
@@ -81,4 +82,17 @@
   
   ion-buttons ion-button {
     padding: 0;
+  }
+  .container-form-button{
+    --background: #219EBC !important;
+    text-transform: capitalize;
+    color: white;
+    font-size: 14px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
   }
