@@ -185,3 +185,13 @@ ion-toolbar {
 ion-buttons ion-button {
   padding: 0;
 }
+.container-form-button{
+  --background: #219EBC !important;
+  border-radius: 32px !important;   
+  text-transform: capitalize;
+}
+.container-form-button-cancel{
+--background: #8F8F8F;
+border-radius: 32px !important;   
+text-transform: capitalize;
+}

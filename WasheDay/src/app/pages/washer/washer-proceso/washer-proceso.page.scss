@@ -185,7 +185,8 @@
 
 
   #boton-recoger {
-    --background: #b0b0b0 !important; /* Color gris */
+    --background: #219EBC !important;
+      text-transform: capitalize;
     --color: white !important; /* Color del texto */
     --border-radius: 50px !important; /* Bordes redondeados */
   
@@ -376,7 +377,8 @@
 
   #boton-lavar {
     --border-radius: 12px;
-    --background: #28a745 !important;
+    --background: #219EBC !important;  
+      text-transform: capitalize;
     --color: #ffffff !important;
     width: 100%;
     padding: 10px;
@@ -417,7 +419,16 @@
  font-family: Verdana, Geneva, Tahoma, sans-serif;
 
 }  
-  
+.container-form-button{
+  --background: #219EBC !important;
+  border-radius: 32px !important;   
+  text-transform: capitalize;
+}
+.container-form-button-cancel{
+--background: #8F8F8F;
+border-radius: 32px !important;   
+text-transform: capitalize;
+}  
   
   
   
