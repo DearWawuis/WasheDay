@@ -50,7 +50,7 @@ export const getOrderServiceById = async (req, res) => {
 
 //Crear o actualizar una orden de servicio
 export const createOrUpdateOrderService = async (req, res) => {
-    const { orderId, washerId, serviceId, userWashoId, detergents, kg, payType, estimatedDeliveryDate, status, rating, comment } = req.body;
+    const { orderId, washerId, serviceId, userWashoId, detergents, kg, payType, estimatedDeliveryDate, status, rating, comment, total, deliveryDate } = req.body;
 
     try {
         //Si existe el orderId, actualizamos la orden
@@ -72,6 +72,8 @@ export const createOrUpdateOrderService = async (req, res) => {
             orderService.status = status || orderService.status;
             orderService.rating = rating || orderService.rating;
             orderService.comment = comment || orderService.comment;
+            orderService.total = total || orderService.total;
+            orderService.deliveryDate = deliveryDate || orderService.deliveryDate;
 
             //Guardamos la orden actualizada
             await orderService.save();
@@ -88,7 +90,9 @@ export const createOrUpdateOrderService = async (req, res) => {
                 estimatedDeliveryDate,
                 status,
                 rating,
-                comment
+                comment,
+                total,
+                deliveryDate
             });
 
             await newOrderService.save();

@@ -13,9 +13,8 @@ import { MonitoringWasherPage } from './monitoring-washer.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    MonitoringWasherPageRoutingModule,
-    MonitoringWasherPage
+    MonitoringWasherPageRoutingModule
   ],
-  declarations: []
+  declarations: [MonitoringWasherPage]
 })
 export class MonitoringWasherPageModule {}
