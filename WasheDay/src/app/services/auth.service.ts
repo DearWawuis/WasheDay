@@ -65,6 +65,7 @@ export class AuthService {
         const userInfo = await this.getUserInfo().toPromise();
         
         if (userInfo) {
+          localStorage.setItem('userId', userInfo.id),
           localStorage.setItem('userRole', userInfo.role);
           localStorage.setItem('userEmail', userInfo.email);
           localStorage.setItem('userName', userInfo.name);
