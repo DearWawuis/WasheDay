@@ -106,7 +106,7 @@ export const getUserInfo = async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         
         // Verificar y decodificar el token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.SECRET);
         const user = await User.findById(decoded.id).populate("roles");
 
         if (!user) {
@@ -114,6 +114,7 @@ export const getUserInfo = async (req, res) => {
         }
 
         res.json({
+            id: user._id,
             name: user.name,
             role: user.roles[0].name, // Ajusta según cómo guardes los roles
             email: user.email
