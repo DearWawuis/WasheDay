@@ -19,11 +19,70 @@ import { GeneralService } from '../../../services/general.service';
 })
 export class MapaComponent implements OnInit {
   @ViewChild('mapContainer', { static: false }) mapElement!: ElementRef;
-  @Output() addressChanged = new EventEmitter<string>(); // emitimos una variable como evento
+  @Output() addressChanged = new EventEmitter<string>();
 
   map!: google.maps.Map;
   user: { lat: number; lon: number } = { lat: 19.432608, lon: -99.133209 };
   modalStatus: boolean = false;
+
+  // Definimos las lavanderías estáticas
+  lavanderias = [
+    {
+      _id: 1,
+      nombre: 'Lavandería El Buen Lavado',
+      ubicacion: { lat: 20.653043, lng: -100.403132 },
+      calificacion: 4.5,
+      comentarios: [
+        { comentario: 'Excelente servicio y ropa bien cuidada.', usuario: 'Carlos M.' },
+        { comentario: 'Rápidos y atentos, recomendados.', usuario: 'Ana P.' },
+      ],
+      fotografia: 'assets/images/prueba1.jpg'
+    },
+    {
+      _id: 2,
+      nombre: 'Lavandería La Perla',
+      ubicacion: { lat: 20.657120, lng:  -100.399854 },
+      calificacion: 3.8,
+      comentarios: [
+        { comentario: 'El servicio es bueno pero el tiempo de entrega podría mejorar.', usuario: 'Luis G.' },
+        { comentario: 'Personal amable, pero la ropa no queda tan fresca como esperaba.', usuario: 'María T.' },
+      ],
+      fotografia: 'assets/images/prueba2.jpg'
+    },
+    {
+      _id: 3,
+      nombre: 'Limpieza Rápida',
+      ubicacion: { lat: 20.657100, lng: -100.405850 }, // ~500m SE
+      calificacion: 4.0,
+      comentarios: [
+        { comentario: 'Buen servicio y rápido, pero un poco caro.', usuario: 'Pedro H.' },
+        { comentario: 'Excelente atención al cliente, pero las máquinas están algo antiguas.', usuario: 'Sara D.' },
+      ],
+      fotografia: 'assets/images/prueba3.jpg'
+    },
+    {
+      _id: 4,
+      nombre: 'Lavandería Express',
+      ubicacion: { lat: 20.655950, lng: -100.403980 }, // ~450m NO
+      calificacion: 4.2,
+      comentarios: [
+        { comentario: 'Muy rápido el servicio, lo recomiendo.', usuario: 'Juan L.' },
+        { comentario: 'Buen precio por el servicio que ofrecen.', usuario: 'Laura M.' },
+      ],
+      fotografia: 'assets/images/prueba4.jpg'
+    },
+    {
+      _id: 5,
+      nombre: 'Lavandería Moderna',
+      ubicacion: { lat: 20.657300, lng: -100.403800 }, // ~500m NE
+      calificacion: 4.7,
+      comentarios: [
+        { comentario: 'Las mejores máquinas de la zona.', usuario: 'Roberto S.' },
+        { comentario: 'Siempre dejo mi ropa aquí, nunca me ha fallado.', usuario: 'Patricia V.' },
+      ],
+      fotografia: 'assets/images/prueba5.jpg'
+    }
+  ];
 
   constructor(
     public modalController: ModalController,
@@ -32,10 +91,6 @@ export class MapaComponent implements OnInit {
 
   ngOnInit() {
     this.getLocation();
-  }
-
-  ngAfterViewInit() {
-    // this.getLocation();
   }
 
   async getLocation(): Promise<void> {
@@ -50,7 +105,6 @@ export class MapaComponent implements OnInit {
           const position = await Geolocation.getCurrentPosition({
             enableHighAccuracy: true,
           });
-          // this.generalService.showToast('Ubicación optenida', 'success');
           this.user.lat = position.coords.latitude;
           this.user.lon = position.coords.longitude;
           this.loadMap();
@@ -69,7 +123,6 @@ export class MapaComponent implements OnInit {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            // this.generalService.showToast('Ubicación optenida', 'success');
             this.user.lat = position.coords.latitude;
             this.user.lon = position.coords.longitude;
             this.loadMap();
@@ -109,7 +162,7 @@ export class MapaComponent implements OnInit {
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-    //  yoo
+    // Marcador del usuario
     new google.maps.Marker({
       position: { lat: this.user.lat, lng: this.user.lon },
       map: this.map,
@@ -121,15 +174,14 @@ export class MapaComponent implements OnInit {
       },
     });
 
-    // 4 marcadores aleatorios
-    this.RandomLavadoras(9);
+    // Marcadores de lavanderías estáticas
+    this.addLavanderiasMarkers();
   }
 
-  // ☢️ Función para cargar dinámicamente el script de Google Maps
   async loadGoogleMapsScript(apiKey: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=maps,marker`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=maps,marker`;
 
       script.onload = () => resolve();
       script.onerror = (error) => reject('Error al cargar la API de Google Maps: ' + error);
@@ -138,49 +190,22 @@ export class MapaComponent implements OnInit {
     });
   }
 
-  RandomLavadoras(count: number) {
-    for (let i = 0; i < count; i++) {
-      const { lat, lng } = this.generateRandomLavadoras(
-        this.user.lat,
-        this.user.lon
-      );
-
+  addLavanderiasMarkers() {
+    this.lavanderias.forEach(lavanderia => {
       const marker = new google.maps.Marker({
-        position: { lat, lng },
+        position: lavanderia.ubicacion,
         map: this.map,
-        title: `Marcador ${i + 1}`,
+        title: lavanderia.nombre,
         icon: {
           url: 'assets/icon/icon-lava.png',
           scaledSize: new google.maps.Size(27, 27),
         },
       });
+
       marker.addListener('click', async () => {
-        await this.abrirModal();
+        await this.abrirModal(lavanderia);
       });
-    }
-  }
-
-  generateRandomLavadoras(
-    lat: number,
-    lon: number
-  ): { lat: number; lng: number } {
-    const earthRadius = 6371; // Radio de la Tierra en km
-    const maxDistance = 1; // Distancia máxima en km (1000m)
-
-    // Generar una distancia y ángulo aleatorio
-    const randomDistance =
-      (Math.random() * (maxDistance - 0.3) + 0.3) / earthRadius;
-    const randomAngle = Math.random() * 2 * Math.PI;
-
-    // Desplazamiento en latitud y longitud
-    const newLat =
-      lat + randomDistance * Math.cos(randomAngle) * (180 / Math.PI);
-    const newLng =
-      lon +
-      (randomDistance * Math.sin(randomAngle) * (180 / Math.PI)) /
-        Math.cos((lat * Math.PI) / 180);
-
-    return { lat: newLat, lng: newLng };
+    });
   }
 
   getAddress(lat: number, lon: number) {
@@ -198,67 +223,11 @@ export class MapaComponent implements OnInit {
     });
   }
 
-  async abrirModal() {
-    const imagenes = [
-      'assets/images/prueba1.jpg',
-      'assets/images/prueba2.jpg',
-      'assets/images/prueba3.jpg',
-      'assets/images/prueba4.jpg',
-      'assets/images/prueba5.jpg',
-    ];
-
-    const obtenerImagenAleatoria = () =>
-      imagenes[Math.floor(Math.random() * imagenes.length)];
-
-    const lavanderias = [
-      {
-        _id: 1,
-        nombre: 'Lavandería El Buen Lavado',
-        ubicacion: { lat: 19.432608, lng: -99.133209 },
-        calificacion: 4.5,
-        comentarios: [
-          { comentario: 'Excelente servicio y ropa bien cuidada.', usuario: 'Carlos M.' },
-          { comentario: 'Rápidos y atentos, recomendados.', usuario: 'Ana P.' },
-          { comentario: 'El servicio es bueno pero el tiempo de entrega podría mejorar.', usuario: 'Luis G.' },
-          { comentario: 'Personal amable, pero la ropa no queda tan fresca como esperaba.', usuario: 'María T.' },
-        ],
-        fotografia: obtenerImagenAleatoria(),
-      },
-      {
-        _id: 2,
-        nombre: 'Lavandería La Perla',
-        ubicacion: { lat: 19.43567, lng: -99.132 },
-        calificacion: 3.8,
-        comentarios: [
-          { comentario: 'El servicio es bueno pero el tiempo de entrega podría mejorar.', usuario: 'Luis G.' },
-          { comentario: 'Personal amable, pero la ropa no queda tan fresca como esperaba.', usuario: 'María T.' },
-          { comentario: 'Buen servicio y rápido, pero un poco caro.', usuario: 'Pedro H.' },
-          { comentario: 'Excelente servicio y ropa bien cuidada.', usuario: 'Carlos M.' },
-        ],
-        fotografia: obtenerImagenAleatoria(),
-      },
-      {
-        _id: 3,
-        nombre: 'Limpieza Rápida',
-        ubicacion: { lat: 19.430123, lng: -99.1352 },
-        calificacion: 4.0,
-        comentarios: [
-          { comentario: 'Buen servicio y rápido, pero un poco caro.', usuario: 'Pedro H.' },
-          { comentario: 'Excelente atención al cliente, pero las máquinas están algo antiguas.', usuario: 'Sara D.' },
-        ],
-        fotografia: obtenerImagenAleatoria(),
-      },
-    ];
-    
-
-    // aleatoria del array
-    const lavanderiaRandom =
-      lavanderias[Math.floor(Math.random() * lavanderias.length)];
-
+  async abrirModal(lavanderia: any) {
     const modal = await this.modalController.create({
       component: ModalComponent,
       componentProps: {
-        lavanderia: lavanderiaRandom,
+        lavanderia: lavanderia,
       },
     });
     await modal.present();
