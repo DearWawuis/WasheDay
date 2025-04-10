@@ -111,6 +111,14 @@ ion-searchbar {
 
   text-align: center;
 }
+.design-center {
+  margin-top: 10px;
+  text-align: justify;
+
+  align-items: center;
+
+  text-align: center;
+}
 
 .envio {
   color: rgb(47, 0, 255);
@@ -184,4 +192,14 @@ ion-toolbar {
 
 ion-buttons ion-button {
   padding: 0;
+}
+.container-form-button{
+  --background: #219EBC !important;
+  border-radius: 32px !important;   
+  text-transform: capitalize;
+}
+.container-form-button-cancel{
+--background: #8F8F8F;
+border-radius: 32px !important;   
+text-transform: capitalize;
 }

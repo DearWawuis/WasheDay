@@ -89,7 +89,7 @@ export class LoginPage {
       this.isLoading = true;
       const { email, password } = this.loginForm.value;
       
-      console.log(email, password);
+      //console.log(email, password);
       try {
         // Paso 1: Iniciar sesión para obtener el token
         await this.authService.login(email, password).toPromise();
@@ -99,6 +99,7 @@ export class LoginPage {
         
         if (userInfo) {
           // Guardar el rol en localStorage
+          localStorage.setItem('userId', userInfo.id);
           localStorage.setItem('userRole', userInfo.role);
           localStorage.setItem('userEmail', userInfo.email);
           localStorage.setItem('userName', userInfo.name);

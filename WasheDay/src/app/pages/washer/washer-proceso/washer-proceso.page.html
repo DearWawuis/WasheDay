@@ -23,16 +23,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
     <ion-card-header>
       <ion-segment [(ngModel)]="selectedSegment">
-        <ion-segment-button value="recibir">
-          <p>Por recibir</p>
+        <ion-segment-button value="recibir" [ngClass]="{'selected-segment': selectedSegment === 'recibir'}">
+          <p>Recibir</p>
         </ion-segment-button>
-        <ion-segment-button value="ocupados">
-          <p>Servicios ocupados</p>
+        <ion-segment-button value="ocupados" [ngClass]="{'selected-segment': selectedSegment === 'ocupados'}">
+          <p>En curso</p>
         </ion-segment-button>
-        <ion-segment-button value="historial">
+        <ion-segment-button value="historial" [ngClass]="{'selected-segment': selectedSegment === 'historial'}">
           <p>Historial</p>
         </ion-segment-button>
       </ion-segment>
@@ -40,7 +39,6 @@
     <ion-card-content>
       <ion-searchbar [(ngModel)]="searchQuery" (ionInput)= "buscar_pedidos()" placeholder="Buscar por ID o nombre de Washo"></ion-searchbar>
     </ion-card-content>
-  </ion-card>
 
 
 
@@ -60,16 +58,14 @@
 
 
   <ion-list *ngIf ="selectedSegment == 'recibir'">
-    <ion-item *ngFor="let recibido of recibidos">
+    <ion-item *ngFor="let order of ordersToReceive">
       <ion-label>
-        <p> ID: {{recibido.id}}</p>
-        <p>Washo: {{recibido.Washo}}</p>
-        <p>Hora: {{recibido.Hora}}</p>
-        <p>Ubicacion: {{recibido.Ubicacion}}</p>
+        <p> ID: {{order._id}}</p>
+        <p>Washo: {{order.userWashoId.name}} {{order.userWashoId.lname}}</p>
+        <p>Hora: {{order.estimatedDeliveryDate | date:'short'}}</p>
       </ion-label>
-      <p *ngIf="pedido_recibido == recibido.id" id="recogiendo_pedido">Recogiendo...</p>
 
-      <ion-button id="boton-recoger" color="primary" slot="end" fill="solid" (click)="recoger_pedido(recibido)">
+      <ion-button id="boton-recoger" slot="end" shape="round" (click)="recoger_pedido(order)">
         Recibir
       </ion-button>
     </ion-item>
@@ -79,26 +75,33 @@
   
   <ion-list *ngIf="selectedSegment == 'ocupados'">
 
-    <div *ngIf="ocupados.length > 0">
+    <div *ngIf="ordersInProgress.length > 0">
 
-      <ion-card *ngFor="let ocupado of ocupados">
+      <ion-card *ngFor="let order of ordersInProgress">
         <ion-card-header>
-          <ion-card-title>{{ ocupado.FechaSolicitud }}</ion-card-title>
+          <ion-card-title>{{ order.createdAt }}</ion-card-title>
         </ion-card-header>
     
-        <ion-badge [color]="ocupado.Status === 'Pago realizado' ? 'success' : 'danger'">
-          {{ ocupado.Status }}
+        <ion-badge [color]="
+  (order.status === 'Pago efectivo' || order.status === 'Pago tarjeta') ? 'success' : 
+  (order.status === 'Lavando' || order.status === 'Secando' || order.status === 'Finalizado') ? 'success' : 'danger'">
+          {{ 
+            order.status === 'Cotizada' ? 'Pendiente por pagar o definir pago' : 
+            order.status === 'Pago efectivo' ? 'Pago en efectivo contra entrega' :
+            order.status === 'Pago tarjeta' ? 'Pago realizado: ' + order.status : 
+            order.payType 
+          }}
         </ion-badge>
     
         <ion-card-content>
-          <p>Fecha de entrega: {{ ocupado.FechaEntrega }}</p>
+          <p>Fecha de entrega: {{ order.estimatedDeliveryDate }}</p>
   
           
           <ion-card>
             <ion-grid>
               <ion-row>
                 <ion-col *ngFor="let estado of estados; let i = index">
-                  <ion-chip [color]="i <= ocupado.estadoActual ? 'success' : 'medium'">
+                  <ion-chip [color]="i <= getStatusNow(order.status) ? 'success' : 'medium'">
                     {{ estado }}
                   </ion-chip>
                 </ion-col>
@@ -108,24 +111,20 @@
   
     
           <p><strong>Detergentes:</strong></p>
-          <div *ngIf="ocupado.Detergentes && ocupado.Detergentes.length > 0; else noDetergents">
-            <ion-list>
-              <ion-item *ngFor="let det of ocupado.Detergentes">
-                <ion-label>{{ det }}</ion-label>
-              </ion-item>
-            </ion-list>
+          <div *ngIf="order.detergentsName && order.detergentsName.length > 0; else noDetergents">
+            <p>{{ order.detergentsName.join(', ') }}</p> 
           </div>
     
           <ng-template #noDetergents>
-            <p>No hay detergentes disponibles.</p>
+            <p>No hay detergentes seleccionados.</p>
           </ng-template>
   
     
-          <ion-chip>ID: {{ ocupado.id }}</ion-chip>
-          <ion-chip color="primary">WASHO: {{ ocupado.Washo }}</ion-chip>
+          <ion-chip>ID: {{ order._id }}</ion-chip>
+          <ion-chip color="primary">WASHO: {{order.userWashoId.name}} {{order.userWashoId.lname}}</ion-chip>
     
-          <ion-button id="boton-lavar" expand="block" color="primary" (click)="cambiarEstado(ocupado)">
-            {{ estados[ocupado.estadoActual] }}
+          <ion-button id="boton-lavar" expand="block" (click)="cambiarEstado(order)">
+            {{ order.status === 'Finalizado' ? 'Entregar ropa' : estados[getStatusNow(order.status)+1] }}
           </ion-button>
           
           <!-- Estado del servicio en formato iCard -->
@@ -134,7 +133,7 @@
       </ion-card>
 
     </div>
-    <div *ngIf="ocupados.length === 0">
+    <div *ngIf="ordersInProgress.length === 0">
 
       <p id="validar_array">No hay servicios ocupados :c</p>
 
@@ -148,27 +147,25 @@
 
   <ion-list *ngIf="selectedSegment == 'historial'">
 
-    <div *ngIf="historial.length > 0">
-      <ion-item *ngFor="let pedido of historial">
+    <div *ngIf="ordersInHistory.length > 0">
+      <ion-item *ngFor="let pedido of ordersInHistory">
         <ion-label>
-          <h2>Pedido #{{ pedido.id }}</h2>
+          <h2>Pedido #{{ pedido._id }}</h2>
           <p><strong>Nombre:</strong> {{ pedido.nombre }}</p>
-          <p><strong>Washo:</strong> {{ pedido.Washo }}</p>
-          <p><strong>Hora:</strong> {{ pedido.hora }} {{ pedido.ampm }}</p>
-          <p><strong>Ubicación:</strong> {{ pedido.Ubicacion }}</p>
-          <p><strong>Fecha Solicitud:</strong> {{ pedido.FechaSolicitud }}</p>
-          <p><strong>Fecha Entrega:</strong> {{ pedido.FechaEntrega }}</p>
-          <p><strong>Detergentes:</strong> {{ pedido.Detergentes.join(', ') }}</p>
-          <p><strong>Status:</strong> {{ pedido.Status }}</p>
+          <p><strong>Washo:</strong> {{pedido.userWashoId.name}} {{pedido.userWashoId.lname}}</p>
+          <p><strong>Fecha Solicitud:</strong> {{ pedido.createdAt }}</p>
+          <p><strong>Fecha Entrega:</strong> {{ pedido.deliveryDate }}</p>
+          <p><strong>Detergentes:</strong> {{ pedido.detergentsName.join(', ') }}</p>
+          <p><strong>Status:</strong> {{ pedido.status }}</p>
           <p><strong>Kilos:</strong> {{ pedido.kg }} Kg</p>
-          <p><strong>Precio por kg:</strong>{{pedido.precio}} Kg</p>
+          <p><strong>Precio por kg:</strong>34 Kg</p>
           <p><strong>Total:</strong> $ {{pedido.total}}</p>
-          <p><strong>Comentarios:</strong> {{ pedido.comentarios }}</p>
+          <p><strong>Comentarios:</strong> {{ pedido.comment }}</p>
         </ion-label>
       </ion-item>
     </div>
     
-    <div *ngIf="historial.length === 0">
+    <div *ngIf="ordersInHistory.length === 0">
       <p id="validar_array">No tienes historial disponible :D</p>
     </div>
     

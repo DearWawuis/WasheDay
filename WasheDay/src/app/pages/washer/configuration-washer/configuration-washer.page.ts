@@ -17,7 +17,7 @@ import { GeneralService } from '../../../services/general.service';
 })
 export class ConfigurationWasherPage implements OnInit {
   washerProfile: any; 
-  userId:string = '67e3b16ad08a04cfef644901';  //Falta consumir servicio de usuario logueado !#########
+  userId:string = '';
   status: boolean | undefined;
   constructor(
     private modalController: ModalController,
@@ -26,6 +26,7 @@ export class ConfigurationWasherPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('userId') || '';
     this.getWasherProfile(this.userId);
   }
 

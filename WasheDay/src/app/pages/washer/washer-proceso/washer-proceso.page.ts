@@ -12,6 +12,8 @@ import { AlertController,  AlertInput } from '@ionic/angular';
 
 
 import { ToastController } from '@ionic/angular';
+import { OrderServiceService } from 'src/app/services/order-service.service';
+import { GeneralService } from '../../../services/general.service';
 
 @Component({
   selector: 'app-washer-proceso',
@@ -20,6 +22,11 @@ import { ToastController } from '@ionic/angular';
   standalone: false,
 })
 export class WasherProcesoPage implements OnInit {
+  ordersToReceive: any; 
+  ordersInProgress: any;
+  ordersInHistory: any;
+  userId:string = '';
+  statusToReceive = ['Creada', 'Aceptada', 'Cancelada', 'Cotizada', 'Pago efectivo', 'Pago tarjeta', 'Lavando', 'Secando', 'Finalizado', 'Entregado']
 
   selectedSegment: string = 'recibir';
 
@@ -87,7 +94,8 @@ export class WasherProcesoPage implements OnInit {
   pedido_recibido: string = "";
 
 
-  constructor(private alertController: AlertController, private toastController: ToastController) { 
+  constructor(private alertController: AlertController, private toastController: ToastController,private orderServiceService: OrderServiceService,
+    private generalService: GeneralService) { 
 
     this.todos_array = [...this.ocupados, ...this.recibidos,...this.historial];
 
@@ -99,12 +107,49 @@ export class WasherProcesoPage implements OnInit {
   }
 
   ngOnInit() {
-
+    this.userId = localStorage.getItem('userId') || '';
+    this.getOrders(this.userId);
 
     console.log("Soy el historial de historia . . ajaj " +   this.historial);
 
   }
+//Obtener las ordenes de servicio que tengan status Creada 
+getOrders(userId: string) {
+  this.orderServiceService.getOrderServiceByWasherId(userId).subscribe(
+    (orders) => {
+      this.ordersToReceive = orders.filter(order => order.status === 'Aceptada');
+      this.ordersInProgress = orders.filter(order => 
+        ['Cotizada', 'Pago efectivo', 'Pago tarjeta', 'Lavando', 'Secando', 'Finalizado'].includes(order.status)
+      );
+      this.ordersInHistory = orders.filter(order => order.status === 'Entregado');
+      
+    },
+    (error) => {
+      //No hay registros
+      this.ordersToReceive = [];
+      this.ordersInProgress = [];
+      this.ordersInHistory = [];
+    }
+  );
+}
 
+//Obtener estados
+getStatusNow(status: string): number {
+  switch (status) {
+    case 'Cotizada':
+    case 'Pago efectivo':
+    case 'Pago tarjeta':
+      return 0;  
+    case 'Lavando':
+      return 1;  
+    case 'Secando':
+      return 2;  
+    case 'Finalizado':
+      return 3; 
+    default:
+      return 4;  
+  }
+}
 
   closeModal(){
 
@@ -122,9 +167,9 @@ export class WasherProcesoPage implements OnInit {
   async recoger_pedido(pedido: any) {
     console.log("Soy tu pedido lokote ..", pedido);
   
-    this.pedido_recibido = pedido.id;
+    this.pedido_recibido = pedido._id;
   
-    console.log("Soy id del pedido. . ", pedido.id);
+    console.log("Soy id del pedido. . ", pedido._id);
     console.log("Soy cambios para washer-proceso");
   
     const alert = await this.alertController.create({
@@ -133,8 +178,8 @@ export class WasherProcesoPage implements OnInit {
       ///Aqui declaro los inputs de campos
       ///Pero el campo de id, washo y total los bloqueamos para que no se pueda editar
       inputs: [
-        { name: 'id', type: 'text', placeholder: 'ID WASHO', value: pedido.id, disabled: true },
-        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.Washo, disabled: true },
+        { name: 'orderId', type: 'text', placeholder: 'ID ORDER', value: pedido._id, disabled: true },
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.userWashoId.name +' '+pedido.userWashoId.lname, disabled: true },
         /*
           Le agregue nadamas unos id para poder detectarlos en la funcion de de flecha que 
           esta bajo con el setTimeout
@@ -151,18 +196,11 @@ export class WasherProcesoPage implements OnInit {
           handler: async (data) => {
             try {
               const newData = {
-                id: pedido.id,
-                nombre: pedido.nombre,
-                Washo: pedido.Washo,
-                Hora: data.hora || "00:00",
-                Ubicacion: data.ubicacion || "Sin ubicación",
-                FechaSolicitud: new Date().toISOString().split("T")[0],
-                FechaEntrega: data.fecha_entrega || new Date().toISOString(),
-                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], 
-                Status: data.estado_pago || "Pendiente",
-                estadoActual: 0,
+                orderId: pedido._id,
+                //FechaSolicitud: new Date().toISOString().split("T")[0],
+                estimatedDeliveryDate: data.fecha_entrega || new Date().toISOString(),
+                status: "Cotizada",
                 kg: data.kg || 0,
-                precio: 34,
                 total: parseFloat((data.kg * 34).toFixed(2)),
 
 
@@ -172,12 +210,12 @@ export class WasherProcesoPage implements OnInit {
 
 
               
-              this.ocupados.push(newData);
+              this.saveOrder(newData, 'recibir');
              
-              const index = this.recibidos.findIndex(recibido => recibido.id === pedido.id);
+              //const index = this.ordersToReceive.findIndex(recibido => recibido.id === pedido.id);
               
               
-              if (index !== -1) {
+            /*  if (index !== -1) {
                 this.recibidos.splice(index, 1);
               } else {
                 console.log("Elemento no encontrado, no se eliminó nada.");
@@ -187,7 +225,7 @@ export class WasherProcesoPage implements OnInit {
               this.mostrarToast('ROPA RECIBIDA EN MI WASHER', "success");
 
 
-              this.pedido_recibido = "";
+              this.pedido_recibido = "";*/
 
               return true;
             } catch (error) {
@@ -239,7 +277,29 @@ export class WasherProcesoPage implements OnInit {
     }, 300);
   }
   
+  // Función para recibir ropa
+saveOrder(orderData: any, doing: string) {
+  //Preparar los datos que se guardaran
   
+  this.orderServiceService.saveOrder(orderData).subscribe(
+    (response) => {
+      if(doing == 'recibir'){
+        this.generalService.showToast('ROPA RECIBIDA EN MI WASHER', 'success');
+      }
+      if(doing == 'status'){
+        this.generalService.showToast('Se cambio status', 'success');
+      }
+      if(doing == 'entregar'){
+        this.generalService.showToast('Ropa entregada', 'success');
+      }
+      
+      this.getOrders(this.userId);
+    },
+    (error) => {
+      this.generalService.showToast('Ocurrio un error', 'danger');
+    }
+  );
+}
   
 
   buscar_pedidos(){
@@ -260,23 +320,21 @@ export class WasherProcesoPage implements OnInit {
 
   }
 
-  cambiarEstado(ocupado: any) {
-    if (ocupado.estadoActual < this.estados.length - 1) {
-      ocupado.estadoActual++;
+  cambiarEstado(order: any) {
+    if (this.getStatusNow(order.status) < this.estados.length - 1) {
+    this.saveOrder({orderId:order._id, status: this.estados[this.getStatusNow(order.status)+1]}, 'status')
     } 
-  
-    if (ocupado.estadoActual === this.estados.length - 1) {
-      this.finalizar_servicio(ocupado);
+    if (this.getStatusNow(order.status) +1 === this.estados.length) {
+      this.finalizar_servicio(order);
     }
   }
-  
 
   async finalizar_servicio(finalizar_ped : any){
 
     console.log("Soy Finalizar pedido", finalizar_ped);
 
 
-    console.log("Soy id del pedido. . ", finalizar_ped.id);
+    console.log("Soy id del pedido. . ", finalizar_ped._id);
     console.log("Soy cambios para washer-proceso");
 
 
@@ -295,15 +353,15 @@ export class WasherProcesoPage implements OnInit {
 
       inputs: [
 
-        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: finalizar_ped.Washo, disabled: true },
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: finalizar_ped.userWashoId.name +' '+finalizar_ped.userWashoId.lname, disabled: true },
 
-        { name: 'comentarios', type: 'text', placeholder: 'Especificaciones pedido', value: '' },
-        { name: 'hora', type: 'number', placeholder: 'Selecciona una hora en especifico', value: ''},
+        { name: 'Total', type: 'number', placeholder: 'Total', value: finalizar_ped.total, disabled: true},
         {
           name: 'ampm',
           type: 'text',
-          placeholder: 'Escribe AM o PM',
-          value: 'PM'
+          placeholder: 'fecha',
+          value: new Date().toISOString().split("T")[0],
+          disabled: true
         },
     
        
@@ -315,29 +373,12 @@ export class WasherProcesoPage implements OnInit {
           handler: async (data) => {
             try {
               const newData = {
-                id: finalizar_ped.id,
-                nombre: finalizar_ped.nombre,
-                Washo: finalizar_ped.Washo,
-                Hora: data.hora || "00:00",
-                Ubicacion: data.ubicacion || "Sin ubicación",
-                FechaSolicitud: new Date().toISOString().split("T")[0],
-                FechaEntrega: data.fecha_entrega || new Date().toISOString(),
-                Detergentes: Array.isArray(data.detergentes) ? data.detergentes : [], 
-                Status: data.estado_pago || "Pendiente",
-                estadoActual: 0,
-                kg: finalizar_ped.kg,
-                precio: 34,
-                total: total_pedido,
-                comentarios : data.comentarios,
-                hora: data.hora,
-                ampm: data.ampm
-
-
-
-
+                orderId: finalizar_ped._id,
+                status: "Entregado",
+                deliveryDate: new Date().toISOString(),
               };
-
-              console.log("Soy pedido ya ya ya finalizado . .", newData);
+              this.saveOrder(newData, 'entregar');
+             /* console.log("Soy pedido ya ya ya finalizado . .", newData);
 
               this.historial.push(newData);
 
@@ -348,7 +389,7 @@ export class WasherProcesoPage implements OnInit {
                 this.ocupados.splice(index, 1);
               } else {
                 console.log("Elemento no encontrado, no se eliminó nada.");
-              }
+              }*/
 
 
               console.log("Soy array yo con su hijito", this.historial);
@@ -359,7 +400,7 @@ export class WasherProcesoPage implements OnInit {
 
 
   
-              this.mostrarToast('PEDIDO FINZALIDO', "success");
+             // this.mostrarToast('PEDIDO FINZALIDO', "success");
 
 
               this.pedido_recibido = "";

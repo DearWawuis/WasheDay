@@ -29,13 +29,16 @@
     <ion-card-content class="center-content">
 
       <ion-img src="assets/images/logo-lavadoras.png"></ion-img>
-
-     
     </ion-card-content>
-    <p id="texto-logo">Esperando nuevos servicios de Washos</p>
+    <p class="design-center">Esperando nuevos servicios de Washos</p>
+    <p class="design-center"><ion-button shape="round" class="container-form-button design-center" (click)="goToProcess()">Ver actividad</ion-button></p>
+    <br>
+    <p *ngIf="orders" >
+      No tienes servicios pendientes por aceptar o rechazar
+    </p>
   </ion-card>
 
-  <ion-card>
+  <!--<ion-card>
     <ion-card-header>
       <ion-segment value="domicilio">
         <ion-segment-button value="domicilio"><p>Recoleccion a domicilio</p></ion-segment-button>
@@ -45,24 +48,34 @@
     <ion-card-content>
       <ion-searchbar placeholder="Buscar..."></ion-searchbar>
     </ion-card-content>
-  </ion-card>
+  </ion-card>-->
 
   <ion-list>
-    <ion-item *ngFor="let servicio of servicios">
+    <ion-item *ngFor="let order of orders">
       <ion-thumbnail slot="start">
-
-
         <img src="assets/images/pedido.png">
       </ion-thumbnail>
       <ion-label>
-        <p>ID: {{ servicio.id }}</p>
-        <p>Washo: {{ servicio.nombre }}</p>
-        <p>Fecha: {{ servicio.fecha }} - {{ servicio.hora }}</p>
-        <p class="envio">Envío: {{ servicio.tipoEnvio }}</p>
+        <p>ID: {{ order._id }}</p>
+        <p>Washo: {{ order.userWashoId.name }} {{ order.userWashoId.lname }}</p>
+        <p>Fecha de solicitud: {{ order.createdAt | date }}</p>
+        <p class="envio">Envío: {{ order.serviceName }}</p>
         <div class="buttons">
-          <ion-button id="boton-cancelar" size="large" fill="solid">Cancelar</ion-button>
-
-          <ion-button id="btn-aceptar" size="large" color="primary">Aceptar</ion-button>
+          <ion-button 
+            id="boton-cancelar" 
+            shape="round" 
+            class="container-form-button-cancel"
+            (click)="changeOrderStatus(order._id, 'Cancelada')">
+            Cancelar
+          </ion-button>
+  
+          <ion-button 
+            id="btn-aceptar" 
+            shape="round" 
+            class="container-form-button"
+            (click)="changeOrderStatus(order._id, 'Aceptada')">
+            Aceptar
+          </ion-button>
         </div>
       </ion-label>
     </ion-item>
