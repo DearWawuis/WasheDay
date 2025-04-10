@@ -194,7 +194,7 @@ export class RegisterPage implements OnInit {
             this.router.navigate([redirectPath]);
 
             // Mostrar mensaje de éxito
-            this.showAlert('Registro exitoso', 'Bienvenido ${userInfo.name}');
+            this.showAlert('Registro exitoso', `Bienvenido ${userInfo.name}`);
           }
         }
       } catch (error: any) {
