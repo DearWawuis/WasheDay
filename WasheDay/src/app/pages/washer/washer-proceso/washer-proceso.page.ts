@@ -175,17 +175,11 @@ getStatusNow(status: string): number {
     const alert = await this.alertController.create({
       header: 'Recibir ropa de washo',
       cssClass: 'custom-modal-size',
-      ///Aqui declaro los inputs de campos
-      ///Pero el campo de id, washo y total los bloqueamos para que no se pueda editar
       inputs: [
         { name: 'orderId', type: 'text', placeholder: 'ID ORDER', value: pedido._id, disabled: true },
-        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.userWashoId.name +' '+pedido.userWashoId.lname, disabled: true },
-        /*
-          Le agregue nadamas unos id para poder detectarlos en la funcion de de flecha que 
-          esta bajo con el setTimeout
-        */
-        { name: 'kg', type: 'number', placeholder: 'Kilo de ropa', value: '' , id: 'kg-input' },
-        { name: 'precio', type: 'number', placeholder: 'Precio por kilo', value: 34, id: 'precio-input' , disabled: true },
+        { name: 'Washo', type: 'text', placeholder: 'Nombre Washo', value: pedido.userWashoId.name + ' ' + pedido.userWashoId.lname, disabled: true },
+        { name: 'kg', type: 'number', placeholder: 'Kilo de ropa', value: '', id: 'kg-input' },
+        { name: 'precio', type: 'number', placeholder: 'Precio por kilo', value: 34, id: 'precio-input', disabled: true },
         { name: 'total', type: 'number', placeholder: 'Total a pagar', value: '', id: 'total-input', disabled: true },
         { name: 'fecha_entrega', type: 'text', placeholder: 'Fecha de entrega', value: '' },
       ],
@@ -195,38 +189,24 @@ getStatusNow(status: string): number {
           text: 'Guardar',
           handler: async (data) => {
             try {
+              // Validación de que el campo "kg" no esté vacío
+              if (data.kg === '' || isNaN(data.kg) || data.kg <= 0) {
+                this.mostrarToast('El campo "Kilo de ropa" no puede estar vacío o ser menor o igual a cero', 'danger');
+                return false; // No proceder con el guardado si la validación falla
+              }
+  
               const newData = {
                 orderId: pedido._id,
-                //FechaSolicitud: new Date().toISOString().split("T")[0],
                 estimatedDeliveryDate: data.fecha_entrega || new Date().toISOString(),
                 status: "Cotizada",
-                kg: data.kg || 0,
+                kg: data.kg,
                 total: parseFloat((data.kg * 34).toFixed(2)),
-
-
               };
   
               console.log("Soy Pedido aceptado . . ", newData);
-
-
-              
-              this.saveOrder(newData, 'recibir');
-             
-              //const index = this.ordersToReceive.findIndex(recibido => recibido.id === pedido.id);
-              
-              
-            /*  if (index !== -1) {
-                this.recibidos.splice(index, 1);
-              } else {
-                console.log("Elemento no encontrado, no se eliminó nada.");
-              }
-
   
-              this.mostrarToast('ROPA RECIBIDA EN MI WASHER', "success");
-
-
-              this.pedido_recibido = "";*/
-
+              this.saveOrder(newData, 'recibir');
+  
               return true;
             } catch (error) {
               console.error("Error al aceptar pedidos:", error);
@@ -239,43 +219,25 @@ getStatusNow(status: string): number {
     });
   
     await alert.present();
-
-    /*
-
-    Aqui se agrego el tiempo un setTimeout para que le tiempo
-    de realizar la operacion de total que solo es una 
-    multiplicacion de kg x precio
-
-    */
+  
     setTimeout(() => {
       const kgInput = document.querySelector('input#kg-input') as HTMLInputElement;
       const precioInput = document.querySelector('input#precio-input') as HTMLInputElement;
       const totalInput = document.querySelector('input#total-input') as HTMLInputElement;
   
       if (kgInput && precioInput && totalInput) {
-
         const actualizarTotal = () => {
-          /*
-            Aqui solo accedemos al input y obtenemos el value
-            y despues hacemos la multiplicacion y lo actualiza al momento
-          */
           const kg = parseFloat(kgInput.value) || 0;
           const precio = parseFloat(precioInput.value) || 0;
           totalInput.value = (kg * precio).toFixed(2);
         };
   
-        
-        /*
-        Aqui nadamas le mandamos el actualizar a total con
-        la funcion de actualizarTotal y se lo asiganmos al momento
-
-
-        */
         kgInput.addEventListener("input", actualizarTotal);
         precioInput.addEventListener("input", actualizarTotal);
       }
     }, 300);
   }
+  
   
   // Función para recibir ropa
 saveOrder(orderData: any, doing: string) {
