@@ -1,0 +1,344 @@
+.service-container {
+  padding: 16px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.header-section {
+  margin-bottom: 20px;
+}
+
+.sending-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.service-info {
+  margin-bottom: 30px;
+}
+
+.service-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background-color: #ccc;
+    z-index: 0;
+  }
+}
+
+.status-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.step-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
+
+  &.active {
+    background-color: #3880ff;
+  }
+}
+
+.step-label {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+  text-align: center;
+}
+
+.washer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.washer-name {
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.washer-attributes {
+  display: flex;
+  gap: 10px;
+}
+
+.attribute {
+  padding: 3px 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.payment-method {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.my-services {
+  margin-top: 40px;
+}
+
+.services-button {
+  --background: #3880ff;
+  --color: white;
+  --border-radius: 8px;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Estilos para el modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+  h1 {
+    font-size: 1.4rem;
+    color: #333;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #666;
+  }
+}
+
+.delivery-options {
+  background: transparent;
+  margin: 15px 0;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 8px;
+  }
+
+  ion-checkbox {
+    margin-right: 10px;
+    --size: 18px;
+  }
+
+
+
+
+  ion-radio {
+    margin-right: 10px;
+    --size: 18px;
+  }
+
+  ion-label {
+    font-size: 0.9rem;
+    white-space: normal;
+  }
+}
+
+.date-time-section {
+  margin: 20px 0;
+
+  h3 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+}
+
+.date-picker, .time-picker {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+
+  .day, .time {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .month, .year, .ampm {
+    font-size: 1rem;
+    color: #666;
+  }
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+
+  ion-button {
+    margin-left: 10px;
+  }
+
+  .close-btn {
+    --color: #666;
+  }
+
+  .accept-btn {
+    --background: #3880ff;
+    --color: white;
+  }
+}
+
+/* Asegurarse que el contenido detrás del modal no sea interactivo */
+.modal-overlay ~ .service-container {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.status-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.step-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+
+  &.active {
+    background-color: var(--ion-color-primary);
+  }
+}
+
+.step-label {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &.active {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+  }
+}
+
+
+
+
+.payment-method {
+  text-align: center;
+  margin-top: 15px;
+
+  p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.pay-button {
+  --background: #ffc409;  /* Amarillo de Ionic */
+  --color: #000;
+  --border-radius: 8px;
+  font-weight: bold;
+  margin: 10px 0;
+
+  &:hover {
+    --background: #e0b008;  /* Un poco más oscuro al hover */
+  }
+}
+
+
+.warning-message {
+  display: flex;
+  align-items: center;
+  background-color: #fff3cd; /* Amarillo claro de advertencia */
+  border-left: 4px solid #ffc409; /* Borde amarillo */
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.warning-icon {
+  color: #ffc409; /* Amarillo de Ionic */
+  font-size: 24px;
+  margin-right: 12px;
+  min-width: 24px;
+}
+
+.warning-text {
+  color: #856404; /* Color de texto para contraste */
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}

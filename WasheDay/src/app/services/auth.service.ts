@@ -47,7 +47,7 @@ export class AuthService {
   // Guardar datos de autenticación
   private setAuthData(token: string): void {
     localStorage.setItem('authToken', token);
-    
+
     // Decodificar el token para obtener información básica
     const decodedToken = this.jwtHelper.decodeToken(token);
     if (decodedToken) {
@@ -58,18 +58,18 @@ export class AuthService {
   // Verifica si hay un token válido
   async checkTokenAndRedirect(): Promise<void> {
     const token = this.getToken();
-    
+
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       try {
         // Verificar con el backend que el token sigue siendo válido
         const userInfo = await this.getUserInfo().toPromise();
-        
+
         if (userInfo) {
           localStorage.setItem('userId', userInfo.id),
           localStorage.setItem('userRole', userInfo.role);
           localStorage.setItem('userEmail', userInfo.email);
           localStorage.setItem('userName', userInfo.name);
-          
+
           const route = userInfo.role === 'washer' ? '/home-washer' : '/home-washo';
           this.router.navigate([route]);
         }
@@ -94,8 +94,18 @@ export class AuthService {
   // Cerrar sesión
   logout(): void {
     // Limpiar almacenamiento
-    localStorage.clear(); // Esto limpia TODO el localStorage
-    
+    // localStorage.clear();
+    const itemsAEliminar = [
+      'userId',
+      'userRole',
+      'userEmail',
+      'userName'
+    ];
+
+    itemsAEliminar.forEach(item => {
+      localStorage.removeItem(item);
+    });
+
     // Forzar recarga completa después de un pequeño delay
     setTimeout(() => {
       window.location.href = '/login'; // Esto causa una recarga completa

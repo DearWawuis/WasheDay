@@ -5,14 +5,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="container-washeday">
+  <div class="container-washeday" *ngIf="!paymentCompleted">
     <div class="container-form-card">
       <div class="checkout-user">
         <img class="avatar" src="assets/images/logo-home.png" alt="">
       </div>
       <div class="container-form-card-intern">
         <div class="container-form-title">
-          
+
         </div>
         <ion-list>
           <ion-item>
@@ -31,7 +31,7 @@
               </div>
             </ion-label>
           </ion-item>
-        </ion-list> 
+        </ion-list>
         <ion-list>
           <div class="text-item-price">
             <div class="total">
@@ -71,4 +71,13 @@
       </div>
     </div>
    </div>
+
+   <div class="payment-completed" *ngIf="paymentCompleted">
+    <div class="success-message">
+      <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+      <h2>Pago realizado</h2>
+      <p>Tu pago ha sido procesado exitosamente</p>
+      <ion-button fill="clear" (click)="goBack()">Volver al inicio</ion-button>
+    </div>
+  </div>
 </ion-content>
