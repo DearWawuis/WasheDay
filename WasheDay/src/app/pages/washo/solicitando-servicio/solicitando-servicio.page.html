@@ -1,0 +1,130 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>solicitando-servicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Modal overlay (se muestra automáticamente) -->
+  <div class="modal-overlay" id="serviceModal" *ngIf="showModal">
+    <div class="modal-content">
+      <h1>SOLICITAR SERVICIO</h1>
+      <p>Selecciona tipo de servicio, tipo de recolección y entrega si el Washer ofrece servicio a domicilio.</p>
+
+      <div class="service-options">
+        <p>- Servicio de lavado normal</p>
+        <p>- Envío:</p>
+      </div>
+
+
+      <ion-list class="delivery-options">
+        <ion-radio-group [(ngModel)]="selectedServiceOption" name="serviceOption">
+          <ion-item>
+            <ion-radio slot="start" value="llevar_recoger_washer"></ion-radio>
+            <ion-label>Llevar y recoger en Washer</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-radio slot="start" value="recoleccion_entrega_domicilio"></ion-radio>
+            <ion-label>Recolección y entrega a domicilio</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-radio slot="start" value="recoleccion_domicilio_entrega_washer"></ion-radio>
+            <ion-label>Recolección a domicilio y entrega en Washer</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-radio slot="start" value="llevar_washer_entrega_domicilio"></ion-radio>
+            <ion-label>Llevar a Washer y entrega a domicilio</ion-label>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+
+      <div class="date-time-section">
+        <h3>Seleccionar fecha:</h3>
+
+        <div class="select-group">
+          <!-- Selector de día -->
+          <ion-item>
+            <ion-label>Día</ion-label>
+            <ion-select [(ngModel)]="selectedDay" placeholder="Seleccione" interface="popover">
+              <ion-select-option *ngFor="let day of days" [value]="day">{{day}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Selector de mes -->
+          <ion-item>
+            <ion-label>Mes</ion-label>
+            <ion-select [(ngModel)]="selectedMonth" placeholder="Seleccione" interface="popover">
+              <ion-select-option *ngFor="let month of months" [value]="month">{{month}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <h3>Seleccionar horario:</h3>
+
+        <!-- Selector de hora -->
+        <ion-item>
+          <ion-label>Hora</ion-label>
+          <ion-select [(ngModel)]="selectedHour" placeholder="Seleccione" interface="popover">
+            <ion-select-option *ngFor="let hour of availableHours" [value]="hour">{{hour}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="modal-buttons">
+        <ion-button fill="clear" (click)="closeModal()">Cerrar</ion-button>
+        <ion-button (click)="acceptService()" [disabled]="!formValid()">Aceptar</ion-button>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="service-container">
+    <div class="header-section">
+      <h2 class="sending-text">Enviando a washer...</h2>
+    </div>
+
+    <div class="service-info" *ngIf="selectedDay && selectedMonth && selectedHour">
+      <p class="service-date">Servicio programado para: {{getFormattedSelectedDate()}}</p>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-step" *ngFor="let step of [1,2,3,4]; let i = index">
+        <div class="step-icon" [class.active]="activeSteps[i]">{{step}}</div>
+        <p class="step-label" [class.active]="activeSteps[i]">
+          {{ getStepLabel(step) }}
+        </p>
+      </div>
+    </div>
+
+    <div class="washer-info">
+      <div class="washer-details">
+        <h3 class="washer-name">WASHER: {{lavanderia?.nombre || 'Cargando...'}}</h3>
+        <div class="washer-attributes">
+          <span class="attribute">MG</span>
+          <span class="attribute">G</span>
+        </div>
+      </div>
+      <div class="payment-method">
+        <ion-button *ngIf="currentStep === 4"
+                    class="pay-button"
+                    expand="block"
+                    (click)="goToPayment()">
+          PAGAR AHORA
+        </ion-button>
+        <p *ngIf="currentStep < 4">MÉTODO DE PAGO</p>
+      </div>
+    </div>
+
+    <div class="warning-message">
+      <ion-icon name="warning" class="warning-icon"></ion-icon>
+      <p class="warning-text">
+        Advertencia: Esta pantalla es una simulación para demostración.
+        En un entorno real, un washer (lavandero) respondería en tiempo real
+        con el estado actual de tu ropa.
+      </p>
+    </div>
+
+  </div>
+</ion-content>

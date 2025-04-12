@@ -3,15 +3,6 @@
   <ion-toolbar>
     <ion-title>Inicio</ion-title>
   </ion-toolbar>
-  <!-- <ion-toolbar>
-    <ion-buttons slot="start">
-      <img src="assets/images/icon-logo.png" alt="Logo" class="logo-header">
-      <div style="display: flex; flex-direction: column;">
-        <span>Mi dirección</span>
-        <p class="text-direction">{{ address }}</p>
-      </div>
-    </ion-buttons>
-  </ion-toolbar> -->
 </ion-header>
 
 <ion-content>
@@ -42,5 +33,43 @@
         </ion-grid>
       </div>
     </div>
+
+    <div *ngIf="misCompras.length > 0" class="historial-compras">
+      <h2>Mis Compras ({{misCompras.length}})</h2>
+
+      <ion-list>
+        <ion-item *ngFor="let compra of misCompras" class="compra-item">
+          <ion-avatar slot="start">
+            <img [src]="compra.lavanderia.fotografia" [alt]="compra.lavanderia.nombre">
+          </ion-avatar>
+
+          <ion-label>
+            <h3>{{compra.lavanderia.nombre}}</h3>
+            <p>
+              <ion-icon name="calendar" color="primary"></ion-icon>
+              {{compra.date}} a las {{compra.time}}
+            </p>
+            <p>
+              <ion-icon [name]="compra.paymentMethod === 'card' ? 'card' : 'cash'" color="primary"></ion-icon>
+              {{compra.paymentMethod === 'card' ? 'Tarjeta' : 'Efectivo'}}
+            </p>
+            <p>
+              <ion-icon name="mail" color="primary"></ion-icon>
+              {{compra.email}}
+            </p>
+          </ion-label>
+
+          <ion-badge slot="end" [color]="compra.status === 'completed' ? 'success' : 'warning'">
+            {{compra.status === 'completed' ? 'Completado' : 'Pendiente'}}
+          </ion-badge>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngIf="misCompras.length === 0" class="sin-compras">
+      <ion-icon name="receipt-outline" size="large"></ion-icon>
+      <p>No tienes compras registradas</p>
+    </div>
+
   </main>
 </ion-content>
